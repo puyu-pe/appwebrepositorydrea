@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^www.edwin.educatics.org$ [NC]
+RewriteRule ^(.*)$ https://edwin.educatics.org/$1 [R=301,L]
+RewriteRule ^(.*)$ public/$1 [L]

@@ -1,0 +1,93 @@
+<?php
+namespace App\Http\Controllers;
+
+use App\Helper\PlatformHelper;
+use App\Http\Controllers\Controller;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ZipArchive;
+
+use Illuminate\Contracts\Routing\ResponseFactory;
+
+class GeneralController extends Controller
+{
+    public function actionWelcomeDashboard()
+    {
+        return view('general/panel');
+    }
+
+    public function actionBackupDatabase(ResponseFactory $responseFactory)
+	{
+        try
+        {
+            $db_database=env('DB_DATABASE');
+            $db_user=env('DB_USERNAME');
+            $db_password=env('DB_PASSWORD');
+            $db_date=date('Y-m-d_H-i-s');
+
+            $fileName=$db_database.'_'.$db_date.'.sql';
+            $fileNameDownload='backup_'.$db_database.'_'.$db_date.'.sql';
+
+            $directory=storage_path('/'.$fileName);
+
+            $dump="mysqldump $db_database -B -v --opt --events --routines --triggers --default-character-set=utf8 --user=$db_user --password=$db_password > $directory";
+
+            //$dump="mysqldump $db_database --column-statistics=0 -B -v --opt --events --routines --triggers --default-character-set=utf8 --user=$db_user --password=$db_password > $directory";
+
+            exec($dump);
+
+            return $responseFactory->download(storage_path().'/'.$fileName, $fileNameDownload)->deleteFileAfterSend(true);
+        }
+        catch (\Exception $e)
+        {
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/');
+        }
+	}
+
+    public function actionDownloadImage()
+    {
+        try
+        {
+            $files = glob(storage_path('/app/backupimage/*'));
+
+            foreach($files as $values)
+            {
+                if(is_file($values))
+                {
+                    unlink($values);
+                }
+            }
+            $db_date=date('Ymd-His');
+
+            $zip=new ZipArchive();
+
+            $zip_name=storage_path('/app/backupimage/avatar-'.$db_date.'.zip');
+
+            $directory_avatar=public_path('/img');
+
+            $zip->open($zip_name, ZipArchive::CREATE || ZipArchive::OVERWRITE);
+
+            $files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory_avatar), RecursiveIteratorIterator::LEAVES_ONLY);
+
+            foreach ($files as $name => $file)
+            {
+                if (!$file->isDir())
+                {
+                    $filePath = $file->getRealPath();
+                    $relativePath = substr($filePath, strlen($directory_avatar));
+
+                    $zip->addFile($filePath, $relativePath);
+                }
+            }
+            $zip->close();
+
+            return response()->download($zip_name);
+        }
+        catch (\Exception $e)
+        {
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/');
+        }
+    }
+}
+?>

@@ -1,0 +1,97 @@
+@keyframes loadingLogo
+{
+  from
+  {
+    transform: rotate(0deg);
+  }
+  to
+  {
+    transform: rotate(-180deg);
+  }
+}
+
+@keyframes loadingOne
+{
+  from
+  {
+    transform: rotate(0deg);
+  }
+  to
+  {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loadingTwo
+{
+  from
+  {
+    transform: rotate(0deg);
+  }
+  to
+  {
+    transform: rotate(-180deg);
+  }
+}
+
+table > thead > tr > th, table > tbody > tr > td
+{
+  vertical-align: middle !important;
+}
+
+#modalLoading
+{
+  background-color:rgba(241, 241, 241, 0.7);
+  bottom: 0px;
+  display: inline-table;
+  height: 100%;
+  left: 0px;
+  position: fixed;
+  right: 0px;
+  text-align: center;
+  top: 0px;
+  width: 100%;
+  z-index: 50000;
+}
+
+#modalLoading > div
+{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#modalLoading > div > div
+{
+  animation: loadingTwo 1s infinite;
+  border-bottom: 7px solid transparent;
+  border-left: 7px solid #283fc3;
+  border-right: 7px solid #283fc3;
+  border-top: 7px solid transparent;
+  border-radius: 70px;
+  display: inline-block;
+  padding: 20px;
+}
+
+#modalLoading > div > div > div
+{
+  animation: loadingOne 1s infinite;
+  border-bottom: 7px solid #0dac77;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #0dac77;
+  border-radius: 70px;
+  display: inline-block;
+  padding: 30px;
+}
+
+#modalLoading >  div > div > div > div
+{
+  animation: loadingLogo 1s infinite linear;
+  width: 70px;
+  z-index: 50000;
+}
+
+.btn-xs
+{
+  margin-bottom: 2px;
+}
