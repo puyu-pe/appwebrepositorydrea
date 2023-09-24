@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;
+use App\Models\TTypeExam;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ZipArchive;
@@ -11,6 +12,16 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 
 class GeneralController extends Controller
 {
+    public function actionWelcome()
+    {
+        $tTypeExam=TTypeExam::all();
+
+        return view('general/welcome',
+        [
+            'tTypeExam' => $tTypeExam
+        ]);
+    }
+
     public function actionWelcomeDashboard()
     {
         return view('general/panel');
@@ -44,49 +55,41 @@ class GeneralController extends Controller
         }
 	}
 
-    public function actionDownloadImage()
+    public function actionDownloadExam(ResponseFactory $responseFactory)
     {
         try
         {
-            $files = glob(storage_path('/app/backupimage/*'));
-
-            foreach($files as $values)
-            {
-                if(is_file($values))
-                {
-                    unlink($values);
-                }
-            }
-            $db_date=date('Ymd-His');
+            $db_date=date('Y-m-d_H-i-s');
 
             $zip=new ZipArchive();
 
-            $zip_name=storage_path('/app/backupimage/avatar-'.$db_date.'.zip');
+            $zip_name='backup_exam_'.$db_date.'.zip';
 
-            $directory_avatar=public_path('/img');
+            $zip_directory=storage_path('/'.$zip_name);
 
-            $zip->open($zip_name, ZipArchive::CREATE || ZipArchive::OVERWRITE);
+            $directory_exam=storage_path('/app/file/exam');
 
-            $files = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($directory_avatar), RecursiveIteratorIterator::LEAVES_ONLY);
+            $zip->open($zip_directory, ZipArchive::CREATE || ZipArchive::OVERWRITE);
 
-            foreach ($files as $name => $file)
+            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory_exam), RecursiveIteratorIterator::LEAVES_ONLY);
+
+            foreach ($files as $file)
             {
                 if (!$file->isDir())
                 {
                     $filePath = $file->getRealPath();
-                    $relativePath = substr($filePath, strlen($directory_avatar));
+                    $relativePath = substr($filePath, strlen($directory_exam));
 
                     $zip->addFile($filePath, $relativePath);
                 }
             }
             $zip->close();
 
-            return response()->download($zip_name);
+            return $responseFactory->download(storage_path().'/'.$zip_name, $zip_name)->deleteFileAfterSend(true);
         }
         catch (\Exception $e)
         {
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/panel');
         }
     }
 }

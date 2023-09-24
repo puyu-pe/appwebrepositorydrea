@@ -10,8 +10,10 @@ use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/',[GeneralController::class, 'actionWelcome'])->middleware('GenericMiddleware:/');
 Route::get('panel',[GeneralController::class, 'actionWelcomeDashboard'])->middleware('GenericMiddleware:panel');
-Route::get('/',[ExamController::class, 'actionWelcome'])->middleware('GenericMiddleware:/');
+Route::get('sistema/generarbackup',[GeneralController::class, 'actionBackupDatabase'])->middleware('GenericMiddleware:sistema/generarbackup');
+Route::get('sistema/descargar',[GeneralController::class, 'actionDownloadExam'])->middleware('GenericMiddleware:sistema/descargar');
 
 Route::match(['get','post'],'usuario/acceder',[UserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
 Route::get('usuario/salir',[UserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');

@@ -26,19 +26,6 @@
                 <li id="mGetAllUser" class="{{Session::get('subMenu')=='mGetAllUser' ? 'active' : ''}}"><a href="{{url('usuario/mostrar/1')}}"><i class="fa fa-circle-o"></i>Usuarios del sistema</a></li>
             </ul>
         </li>
-        <li id="mSetting" class="{{Session::get('menu')=='mSetting' ? 'active' : ''}} treeview">
-            <a href="#">
-                <i class="fa fa-cog"></i>
-                <span>Módulo Administrador</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
-                <li id="mBackupSystem" class="{{Session::get('subMenu')=='mBackupSystem' ? 'active' : ''}}"><a href="{{url('gym/generate')}}"><i class="fa fa-circle-o"></i>Backup de Datos</a></li>
-                <li id="mDownloadImage" class="{{Session::get('subMenu')=='mDownloadImage' ? 'active' : ''}}"><a href="{{url('gym/downloadimage')}}"><i class="fa fa-circle-o"></i>Backup de Imágenes</a></li>
-            </ul>
-        </li>
     @endif
     @if (stristr(Session::get('roleUser'), 'Administrador')==true || stristr(Session::get('roleUser'), 'Vendedor')==true || stristr(Session::get('roleUser'), 'Colaborador')==true)
         <li id="mPrincipal" class="{{Session::get('menu')=='mPrincipal' ? 'active' : ''}} treeview">
@@ -55,6 +42,19 @@
                 <li id="mGetAllGrade" class="{{Session::get('subMenu')=='mGetAllGrade' ? 'active' : ''}}"><a href="{{url('grado/mostrar/1')}}"><i class="fa fa-circle-o"></i>Grado académicos</a></li>
                 <li id="mInsertExam" class="{{Session::get('subMenu')=='mInsertExam' ? 'active' : ''}}"><a href="{{url('examen/insertar')}}"><i class="fa fa-circle-o"></i>Registrar examen</a></li>
                 <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Exámenes registrados</a></li>
+            </ul>
+        </li>
+        <li id="mSetting" class="{{Session::get('menu')=='mSetting' ? 'active' : ''}} treeview">
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span>Módulo Administrador</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li id="mBackupSystem" class="{{Session::get('subMenu')=='mBackupSystem' ? 'active' : ''}}"><a href="{{url('sistema/generarbackup')}}"><i class="fa fa-circle-o"></i>Backup de datos</a></li>
+                <li id="mDownloadExam" class="{{Session::get('subMenu')=='mDownloadExam' ? 'active' : ''}}"><a href="{{url('sistema/descargar')}}"><i class="fa fa-circle-o"></i>Backup de evaluaciones</a></li>
             </ul>
         </li>
     @endif

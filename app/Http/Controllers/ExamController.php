@@ -196,14 +196,4 @@ class ExamController extends Controller
 
         return $response;
     }
-
-    public function actionWelcome()
-    {
-        $tTypeExam=TTypeExam::all();
-
-        return view('exam/welcome',
-        [
-            'tTypeExam' => $tTypeExam
-        ]);
-    }
 }

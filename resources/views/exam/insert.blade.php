@@ -60,7 +60,7 @@
                 </div>
                 <div class="row" >
                     <div class="form-group col-md-3" style="font-weight: bold; font-size: 16px;">
-                        ¿Registrar respuestas para examenes?
+                        ¿Registrar respuestas para la evaluación?
                     </div>
                     <div class="form-group col-md-1" style="font-weight: bold; font-size: 16px;">
                         <label style="font-weight: bold;">

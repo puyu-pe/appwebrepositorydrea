@@ -12,8 +12,8 @@ class GenericMiddleware
         $allowUrl=
         [
             ['Público', '/', 'mTemplate', null],
-            ['Administrador', 'gym/generate', 'mSetting', 'mBackupSystem'],
-            ['Administrador', 'gym/downloadimage', 'mSetting', 'mDownloadImage'],
+            ['Administrador', 'sistema/generarbackup', 'mSetting', 'mBackupSystem'],
+            ['Administrador', 'sistema/descargar', 'mSetting', 'mDownloadExam'],
             ['Administrador,Registrador', 'panel', 'mDashboard', null],
 
             ['Público', 'usuario/registrar', null, null],
