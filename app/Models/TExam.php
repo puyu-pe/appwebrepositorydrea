@@ -26,6 +26,11 @@ class TExam extends Model
         return $this->belongsTo('App\Models\TGrade', 'idGrade');
     }
 
+    public function tAnswer()
+    {
+        return $this->hasMany('App\Models\TAnswer', 'idExam');
+    }
+
     public function tUserExam()
     {
         return $this->hasMany('App\Models\TUserExam', 'idExam');

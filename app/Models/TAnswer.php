@@ -11,9 +11,9 @@ class TAnswer extends Model
     public $incrementing=false;
     public $timestamps=true;
 
-    public function tQuestion()
+    public function tExam()
     {
-        return $this->belongsTo('App\Models\TQuestion', 'idQuestion');
+        return $this->belongsTo('App\Models\TExam', 'idExam');
     }
 }
 ?>

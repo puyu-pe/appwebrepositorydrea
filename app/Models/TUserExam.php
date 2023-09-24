@@ -16,7 +16,7 @@ class TUserExam extends Model
         return $this->belongsTo('App\Models\TUser', 'idUser');
     }
 
-    public function tRole()
+    public function tExam()
     {
         return $this->belongsTo('App\Models\TExam', 'idExam');
     }
