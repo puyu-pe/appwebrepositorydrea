@@ -20,7 +20,7 @@ primary key(idUser)
 
 create table trole
 (
-idRole int auto_increment,
+idRole char(13) not null,
 nameRole varchar(50) not null,
 descriptionRole varchar(200) not null,
 created_at datetime not null,
@@ -32,7 +32,7 @@ create table tuserrole
 (
 idUserRole char(13) not null,
 idUser char(13) not null,
-idRole int not null,
+idRole char(13) not null,
 created_at datetime not null,
 updated_at datetime not null,
 foreign key(idUser) references tuser(idUser) on delete cascade on update cascade,
@@ -85,12 +85,27 @@ yearExam int not null,
 stateExam varchar(20) not null,
 keywordExam varchar(700) not null,
 extensionExam varchar(7) not null,
+statusAnwser tinyint not null,
 created_at datetime not null,
 updated_at datetime not null,
 foreign key(idTypeExam) references ttypeexam(idTypeExam) on delete cascade on update cascade,
 foreign key(idGrade) references tgrade(idGrade) on delete cascade on update cascade,
 foreign key(idSubject) references tsubject(idSubject) on delete cascade on update cascade,
 primary key(idExam)
+) engine=innodb;
+
+-- alter table texam add column statusAnwser tinyint not null after extensionExam;
+
+-- falta evaluar
+create table tkeywordexam
+(
+idKeywordExam char(13) not null,
+idExam char(13) not null,
+descriptionKeyword varchar(100) not null,
+created_at datetime not null,
+updated_at datetime not null,
+foreign key(idExam) references texam(idExam) on delete cascade on update cascade,
+primary key(idKeywordExam)
 ) engine=innodb;
 
 create table tuserexam
@@ -107,33 +122,21 @@ foreign key(idExam) references texam(idExam) on delete cascade on update cascade
 primary key(idUserExam)
 ) engine=innodb;
 
-create table tquestion
-(
-idQuestion char(13) not null,
-idExam char(13) not null,
-numberQuestion int not null,
-descriptionQuestion text not null, 
-created_at datetime not null,
-updated_at datetime not null,
-foreign key(idExam) references texam(idExam) on delete cascade on update cascade,
-primary key(idQuestion)
-) engine=innodb;
-
 create table tanswer
 (
 idAnswer char(13) not null,
-idQuestion char(13) not null,
+idExam char(13) not null,
+numberAnswer int not null,
 descriptionAnswer text not null,
-correctAnswer bool not null,
 created_at datetime not null,
 updated_at datetime not null,
-foreign key(idQuestion) references tquestion(idQuestion) on delete cascade on update cascade,
+foreign key(idExam) references texam(idExam) on delete cascade on update cascade,
 primary key(idAnswer)
 ) engine=innodb;
 
 create table tsetting
 (
-idSetting int auto_increment,
+idSetting char(13) not null,
 key_setting varchar(30) not null,
 type_data varchar(200),
 description_setting varchar(100) not null,

@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
-
+use App\Models\TAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -57,21 +57,42 @@ class ExamController extends Controller
 
                 $tExam->idExam=uniqid();
 
-                $tExam->idTypeExam=$request->input('selectTypeExam');
-                $tExam->idGrade=$request->input('selectGrade');
-                $tExam->idSubject=$request->input('selectSubject');
-                $tExam->codeExam='';
-                $tExam->nameExam='Evaluación '.strtoupper($tTypeExam->acronymTypeExam).' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
-                $tExam->descriptionExam=trim($request->input('txtDescriptionExam'));
-                $tExam->totalPageExam=$request->input('txtTotalPageExam');
-                $tExam->yearExam=$request->input('txtYearExam');
-                $tExam->stateExam='Publico';
-                $tExam->keywordExam=implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
-                $tExam->extensionExam=strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
+                $tExam->idTypeExam = $request->input('selectTypeExam');
+                $tExam->idGrade = $request->input('selectGrade');
+                $tExam->idSubject = $request->input('selectSubject');
+                $tExam->codeExam = '';
+                $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
+                $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
+                $tExam->totalPageExam = $request->input('txtTotalPageExam');
+                $tExam->yearExam = $request->input('txtYearExam');
+                $tExam->stateExam = 'Publico';
+                $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
+                $tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
+                $tExam->statusAnwser = 0;
 
                 $tExam->save();
 
                 $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $tExam->idExam.'.'.$tExam->extensionExam);
+
+                if ($request->has('txtValueResponseExam'))
+                {
+                    foreach ($request->input('txtValueResponseExam') as $number => $valueResponse)
+                    {
+                        $tAnswer = new TAnswer();
+
+                        $tAnswer->idAnswer=uniqid();
+                        $tAnswer->idExam=$tExam->idExam;
+                        $tAnswer->numberAnswer=$number+1;
+                        $tAnswer->descriptionAnswer=$valueResponse;
+
+                        $tAnswer->save();
+                    }
+
+                    $tExam = TExam::find($tExam->idExam);
+                    $tExam->statusAnwser = 1;
+
+                    $tExam->save();
+                }
 
                 DB::commit();
 
