@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
+use App\Models\TRole;
 use App\Validation\UserValidation;
 
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\TUser;
+use App\Models\TUserRole;
 
 class UserController extends Controller
 {
@@ -147,7 +149,7 @@ class UserController extends Controller
 
                 if($tUserExists==true)
                 {
-                    return PlatformHelper::redirectError(['Correo ya utilizado.'],'usuario/registrar');
+                    return PlatformHelper::redirectError(['Este correo ya está siendo utilizado, ingrese otro.'],'usuario/registrar');
                 }
 
                 $tUser= new TUser();
@@ -164,6 +166,21 @@ class UserController extends Controller
                 $tUser->state='Deshabilitado';
 
                 $tUser->save();
+
+                $tRoleDefault = TRole::whereRaw('nameRole=?', ['Normal'])->first();
+
+                if($tRoleDefault == null)
+                {
+                    return PlatformHelper::redirectError(['Sucedio un error inesperado, contacte con el administrador.'],'usuario/registrar');
+                }
+
+                $tUserRole = new TUserRole();
+
+                $tUserRole->idUserRole=uniqid();
+                $tUserRole->idUser=$tUser->idUser;
+                $tUserRole->idRole=$tRoleDefault->idRole;
+
+                $tUserRole->save();
 
                 DB::commit();
 

@@ -28,6 +28,12 @@ updated_at datetime not null,
 primary key(idRole)
 ) engine=innodb;
 
+insert into trole values ('5ece4797eaf5e', 'Administrador', 'Acceso total al sistema', now(), now());
+insert into trole values ('651508865dd1e', 'Supervisor', 'Posibilidad de manipular las evaluaciones, aprobar la publicación de las mismas', now(), now());
+insert into trole values ('6515073a329ac', 'Registrador', 'Acceso para poder registrar evaluaciones y/o respuestas y solo se puede publicar previa aprobación', now(), now());
+insert into trole values ('6515074f590dc', 'Normal', 'Acceso básico para un usuario que desee crearse un usuario en el sistema', now(), now());
+
+
 create table tuserrole
 (
 idUserRole char(13) not null,
