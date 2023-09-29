@@ -53,8 +53,8 @@
                                     <div>{{$value->email}}</div>
                                 </td>
                                 <td class="text-center">
-                                    @if ($value->roleUser!='')
-                                        @foreach(explode(',', $value->roleUser) as $item)
+                                    @if ($value->roles!='')
+                                        @foreach(explode(',', $value->roles) as $item)
                                             <span class="label label-default">{{$item}}</span>
                                         @endforeach
                                     @else
@@ -62,7 +62,7 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <span class="label label-{{$value->state=='Habilitado' ? 'info' : 'danger'}}" style="display: inline-block; width: 70px;">{{$value->state}}</span>
+                                    <span class="label label-{{$value->state=='Habilitado' ? 'info' : 'danger'}}">{{$value->state}}</span>
                                 </td>
                                 <td class="text-center">
                                     <div>{{date('d-m-Y', strtotime($value->created_at))}}</div>

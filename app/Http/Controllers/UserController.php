@@ -41,6 +41,13 @@ class UserController extends Controller
                     return PlatformHelper::redirectError(['No tiene Acceso al Sistema'],'usuario/acceder');
                 }
 
+                $tUserRole = TUserRole::where('idUser', $tUser->idUser)
+                ->join('trole', 'trole.idRole', '=', 'tuserrole.idRole')
+                ->pluck('trole.nameRole')
+                ->toArray();
+
+                $roleNamesString = implode(',', $tUserRole);
+
                 $sessionManager->put('idUser',$tUser->idUser);
                 $sessionManager->put('email',$tUser->email);
                 $sessionManager->put('firstName',$tUser->firstName);
@@ -48,8 +55,8 @@ class UserController extends Controller
                 $sessionManager->put('numberDni',$tUser->numberDni);
                 $sessionManager->put('avatarExtension', $tUser->avatarExtension);
                 $sessionManager->put('updated_at',$tUser->updated_at);
-                $sessionManager->put('roleUser', $tUser->roleUser);
-                $sessionManager->put('mainRole',$tUser->roleUser);
+                $sessionManager->put('roleUser', $roleNamesString);
+                $sessionManager->put('mainRole',$roleNamesString);
 
                 return PlatformHelper::redirectCorrect(['Bienvenido al sistema, '.$tUser->firstName.' '.$tUser->surName.'.'],'/');
             }
@@ -93,7 +100,6 @@ class UserController extends Controller
                 $sessionManager->put('numberDni',$tUser->numberDni);
                 $sessionManager->put('avatarExtension', $tUser->avatarExtension);
                 $sessionManager->put('updated_at',$tUser->updated_at);
-                $sessionManager->put('roleUser', $tUser->roleUser);
                 $sessionManager->put('mainRole',$tUser->roleUser);
 
                 return PlatformHelper::redirectCorrect(['Bienvenido al sistema, '.$tUser->firstName.' '.$tUser->surName.'.'],'/');
@@ -117,7 +123,10 @@ class UserController extends Controller
     {
         $searchParameter=$request->has('searchParameter') ? $request->input('searchParameter') : '';
 
-        $paginate=PlatformHelper::preparePaginate(TUser::whereRaw('compareFind(concat(email, numberDni, firstName, surName, state), ?, 77)=1', [$searchParameter])->orderby('created_at', 'desc'), 7, $currentPage);
+        $paginate=PlatformHelper::preparePaginate(TUser::select('tuser.*', DB::raw('GROUP_CONCAT(trole.nameRole SEPARATOR \',\') as roles'))
+        ->leftJoin('tuserrole', 'tuser.idUser', '=', 'tuserrole.idUser')
+        ->leftJoin('trole', 'tuserrole.idRole', '=', 'trole.idRole')
+        ->groupBy('tuser.idUser')->whereRaw('compareFind(concat(tuser.email, tuser.numberDni, tuser.firstName, tuser.surName, tuser.state), ?, 77)=1', [$searchParameter])->orderby('tuser.created_at', 'desc'), 7, $currentPage);
 
         return view('user/getall',
         [
@@ -161,7 +170,6 @@ class UserController extends Controller
                 $tUser->numberDni=$request->input('txtNumberDni');
                 $tUser->firstName=trim($request->input('txtFirstName'));
                 $tUser->surName=trim($request->input('txtSurName'));
-                $tUser->roleUser='';
                 $tUser->avatarExtension='';
                 $tUser->state='Deshabilitado';
 
@@ -260,16 +268,18 @@ class UserController extends Controller
     {
         try
         {
+            DB::beginTransaction();
+
             $tUser=TUser::find($idUser);
+
+            $tUserRole = TUserRole::whereRaw('idUser=?', [$tUser->idUser])->exists();
 
             $valueStatus=$tUser->state;
 
-            if($valueStatus=='Deshabilitado' && $tUser->roleUser=='')
+            if($valueStatus=='Deshabilitado' && $tUserRole==false)
             {
                 return PlatformHelper::redirectError(['Asigne al menos un rol al usuario para poder habilitar su acceso.'], 'usuario/mostrar/1');
             }
-
-            DB::beginTransaction();
 
             $tUser->state=$valueStatus=='Habilitado' ? 'Deshabilitado' : 'Habilitado';
 
@@ -320,16 +330,27 @@ class UserController extends Controller
             {
                 DB::beginTransaction();
 
-                $tUser=TUser::find($request->input('HdIdUser'));
+                $tRole=TRole::find($request->input('selectRoleUser'));
+                $tRoleUserExists = TUserRole::whereRaw('idUser=?', [$request->input('HdIdUser')])->exists();
 
-                if(stristr($tUser->roleUser, 'Administrador')==true)
+                if ($tRoleUserExists == true)
                 {
-                    return PlatformHelper::redirectError(['No puede cambiar el rol del usuario tipo "Administrador".'], 'usuario/mostrar/1');
+                    $tUserRole = TUserRole::whereRaw('idUser=?', [$request->input('HdIdUser')])->first();
+
+                    $tUserRole->idRole = $tRole->idRole;
+
+                    $tUserRole->save();
                 }
+                else
+                {
+                    $tUserRole = new TUserRole();
 
-                $tUser->roleUser=implode('__7SEPARATOR7__', $request->input('selectRoleUser'));
+                    $tUserRole->idUserRole = uniqid();
+                    $tUserRole->idUser = $request->input('HdIdUser');
+                    $tUserRole->idRole = $request->input('selectRoleUser');
 
-                $tUser->save();
+                    $tUserRole->save();
+                }
 
                 DB::commit();
 
@@ -344,16 +365,20 @@ class UserController extends Controller
             }
         }
 
-        $tUser=TUser::find($request->input('idUser'));
+        $tUser = TUser::find($request->input('idUser'));
+        $tUserRole = TUserRole::where('idUser', $tUser->idUser)->pluck('idRole')->toArray();
+        $tRole = TRole::all();
 
-        if($tUser==null)
+        if($tUser==null && $tRole== null)
         {
             return PlatformHelper::ajaxDataNoExists();
         }
 
         return view('user/role',
         [
-            'tUser' => $tUser
+            'tRole' => $tRole,
+            'tUser' => $tUser,
+            'tUserRole' => $tUserRole
         ]);
     }
 }

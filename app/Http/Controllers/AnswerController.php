@@ -6,12 +6,10 @@ use App\Helper\PlatformHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\TExam;
-use App\Models\TQuestion;
 use App\Models\TAnswer;
 use App\Validation\SubjectValidation;
 
-class QuestionController extends Controller
+class AnswerController extends Controller
 {
     public function actionRegister(Request $request, $idExam)
     {
@@ -42,7 +40,7 @@ class QuestionController extends Controller
             }
         }
 
-        $tExam=TExam::find($idExam);
+        $tExam=TAnswer::find($idExam);
 
         if($tExam==null)
         {
@@ -84,7 +82,7 @@ class QuestionController extends Controller
             }
         }
 
-        $tExam=TExam::find($idExam);
+        $tExam=TAnswer::find($idExam);
 
         if($tExam==null)
         {
@@ -102,7 +100,7 @@ class QuestionController extends Controller
     {
         try
         {
-            $tExam=TExam::whereRaw('idSubject=?',[$idSubject])->exists();
+            $tExam=TAnswer::whereRaw('idSubject=?',[$idSubject])->exists();
 
             if($tExam==true)
             {
