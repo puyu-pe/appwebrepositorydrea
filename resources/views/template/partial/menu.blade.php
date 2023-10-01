@@ -8,5 +8,13 @@
             @endforeach
         </ul>
     </li>
+    @if (stristr(Session::get('roleUser'), 'Administrador')==true || stristr(Session::get('roleUser'), 'Registrador')==true)
+        <li id="mModuleExam" class="dropdown {{Session::get('menu')=='mModuleExam' ? 'active' : ''}}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opciones para pruebas<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                    <li id="mRegisterExam" class="{{Session::get('subMenu')=='mRegisterExam' ? 'active' : ''}}"><a href="{{url('examen/registrar')}}">Registrar una evaluación</a></li>
+            </ul>
+        </li>
+    @endif
     <li id="mTramiteBuscar" class="{{Session::get('menu')=='mTramiteBuscar' ? 'active' : ''}}"><a href="{{url('general/contactos')}}">Contáctanos</a></li>
 </ul>

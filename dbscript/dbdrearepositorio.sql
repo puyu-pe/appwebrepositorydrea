@@ -102,16 +102,16 @@ primary key(idExam)
 -- alter table texam add column statusAnwser tinyint not null after extensionExam;
 
 -- falta evaluar
-create table tkeywordexam
-(
-idKeywordExam char(13) not null,
-idExam char(13) not null,
-descriptionKeyword varchar(100) not null,
-created_at datetime not null,
-updated_at datetime not null,
-foreign key(idExam) references texam(idExam) on delete cascade on update cascade,
-primary key(idKeywordExam)
-) engine=innodb;
+-- create table tkeywordexam
+-- (
+-- idKeywordExam char(13) not null,
+-- idExam char(13) not null,
+-- descriptionKeyword varchar(100) not null,
+-- created_at datetime not null,
+-- updated_at datetime not null,
+-- foreign key(idExam) references texam(idExam) on delete cascade on update cascade,
+-- primary key(idKeywordExam)
+-- ) engine=innodb;
 
 create table tuserexam
 (
@@ -119,6 +119,7 @@ idUserExam char(13) not null,
 idUser char(13) not null,
 idExam char(13) not null,
 typeFunctionExam varchar(50) not null,
+dataExam text not null,
 dateUserExam date not null,
 created_at datetime not null,
 updated_at datetime not null,
