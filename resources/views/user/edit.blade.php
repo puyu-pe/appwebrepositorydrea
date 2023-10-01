@@ -8,7 +8,7 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_1">
-            <form id="frmEditUserProfile" action="{{url('usuario/modificar')}}" method="post" enctype="multipart/form-data">
+            <form id="frmEditUserProfile" action="{{url('usuario/editar')}}" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="text-center">

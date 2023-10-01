@@ -27,7 +27,7 @@
             </ul>
         </li>
     @endif
-    @if (stristr(Session::get('roleUser'), 'Administrador')==true || stristr(Session::get('roleUser'), 'Vendedor')==true || stristr(Session::get('roleUser'), 'Colaborador')==true)
+    @if (stristr(Session::get('roleUser'), 'Administrador')==true || stristr(Session::get('roleUser'), 'Supervisor')==true)
         <li id="mPrincipal" class="{{Session::get('menu')=='mPrincipal' ? 'active' : ''}} treeview">
             <a href="#">
                 <i class="fa fa-book"></i>
@@ -44,6 +44,8 @@
                 <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Exámenes registrados</a></li>
             </ul>
         </li>
+    @endif
+    @if (stristr(Session::get('roleUser'), 'Administrador')==true)
         <li id="mSetting" class="{{Session::get('menu')=='mSetting' ? 'active' : ''}} treeview">
             <a href="#">
                 <i class="fa fa-cog"></i>

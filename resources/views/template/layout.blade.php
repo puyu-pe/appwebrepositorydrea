@@ -92,11 +92,13 @@
                             <span class="hidden-xs">{{Session::get('firstName').' '.Session::get('surName')}}</span>
                           </a>
                       </li>
-                      <li class="dropdown">
-                        <a href="{{url('panel')}}" class="dropdown-toggle" data-toggle="tooltip" data-original-title="Panel Usuario" data-placement="bottom">
-                            <i class="fa fa-gear"></i>
-                        </a>
-                      </li>
+                      @if (stristr(Session::get('roleUser'), 'Administrador')==true || stristr(Session::get('roleUser'), 'Supervisor')==true)
+                        <li class="dropdown">
+                            <a href="{{url('panel')}}" class="dropdown-toggle" data-toggle="tooltip" data-original-title="Panel Usuario" data-placement="bottom">
+                                <i class="fa fa-gear"></i>
+                            </a>
+                        </li>
+                      @endif
                       <li class="dropdown">
                           <a href="{{url('usuario/salir')}}" class="dropdown-toggle" data-toggle="tooltip" data-original-title="Cerrar Sesión" data-placement="bottom">
                               <i class="fa fa-sign-out"></i>

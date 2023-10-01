@@ -75,56 +75,26 @@ class UserValidation
         return $this->globalMessage;
     }
 
-    public function validationModify($request)
-    {
-        $validator=Validator::make(
-        [
-            'finaldate' => $request->input('txtDateFinal')
-        ],
-        [
-            'finaldate' => ['required','regex:/^([0-9]{2}\-[0-9]{2}\-[1-2]{1}[0-9]{3})?$/']
-        ],
-        [
-            'finaldate.required' => 'El campo "finaldate" es requerido.',
-            'finaldate.regex' => 'El campo "finaldate" no cumple con el formato correspondiente.'
-        ]);
-
-        if($validator->fails())
-        {
-            $errors=$validator->errors()->all();
-
-            foreach($errors as $value)
-            {
-                $this->globalMessage[]=$value;
-            }
-        }
-
-        return $this->globalMessage;
-    }
-
     public function validationEdit($request)
     {
         $validator=Validator::make(
         [
             'firstName' => trim($request->input('txtFirstNameUser')),
             'surName' => trim($request->input('txtSurNameUser')),
-            'dni' => $request->input('txtDniUser'),
-            'phonenumber' =>$request->input('txtNumberPhone'),
+            'numberDni' => $request->input('txtDniUser'),
             'avatarExtension' => $request->input('fileAvatarExtension')
         ],
         [
             'firstName' => ['required'],
             'surName' => ['required'],
-            'dni' => ['required','regex:/^[0-9]{8}$/'],
-            'phonenumber' =>['regex:/^[0-9]{9}$/'],
+            'numberDni' => ['required','regex:/^[0-9]{8}$/'],
             'avatarExtension.*' => ['mimes:jpg,png,jpeg','size:4096']
         ],
         [
             'firstName.required' => 'El campo "firstName" es requerido.',
             'surName.required' => 'El campo "surName" es requerido.',
-            'dni.required' => 'El campo "dni" es requerido.',
-            'dni.regex' => 'El campo "dni" no cumple con el formato correspondiente.',
-            'phonenumber.regex' => 'El campo "phonenumber" no cumple con el formato correspondiente.',
+            'numberDni.required' => 'El campo "numberDni" es requerido.',
+            'numberDni.regex' => 'El campo "numberDni" no cumple con el formato correspondiente.',
             'avatarExtension.mimes' => 'El archivo "avatarExtension" no tiene un formato permitido.',
             'avatarExtension.size' => 'El campo "avatarExtension" excede el tamaño permitido.'
         ]);

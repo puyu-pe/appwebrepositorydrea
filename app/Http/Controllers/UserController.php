@@ -224,8 +224,7 @@ class UserController extends Controller
 
                 $tUser->firstName=trim($request->input('txtFirstNameUser'));
                 $tUser->surName=trim($request->input('txtSurNameUser'));
-                $tUser->dni=$request->input('txtDniUser');
-                $tUser->phonenumber=$request->input('txtNumberPhone')=='' ? '' : $request->input('txtNumberPhone');
+                $tUser->numberDni=$request->input('txtDniUser');
 
                 $tUser->save();
 
@@ -252,8 +251,7 @@ class UserController extends Controller
 
                 $sessionManager->put('firstName',$tUser->firstName);
                 $sessionManager->put('surName',$tUser->surName);
-                $sessionManager->put('dni',$tUser->dni);
-                $sessionManager->put('phonenumber',$tUser->phonenumber);
+                $sessionManager->put('numberDni',$tUser->numberDni);
                 $sessionManager->put('avatarExtension', $tUser->avatarExtension);
                 $sessionManager->put('updated_at',$tUser->updated_at);
 
