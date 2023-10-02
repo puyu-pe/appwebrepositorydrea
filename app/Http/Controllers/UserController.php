@@ -126,7 +126,7 @@ class UserController extends Controller
         $paginate=PlatformHelper::preparePaginate(TUser::select('tuser.*', DB::raw('GROUP_CONCAT(trole.nameRole SEPARATOR \',\') as roles'))
         ->leftJoin('tuserrole', 'tuser.idUser', '=', 'tuserrole.idUser')
         ->leftJoin('trole', 'tuserrole.idRole', '=', 'trole.idRole')
-        ->groupBy('tuser.idUser')->whereRaw('compareFind(concat(tuser.email, tuser.numberDni, tuser.firstName, tuser.surName, tuser.state), ?, 77)=1', [$searchParameter])->orderby('tuser.created_at', 'desc'), 7, $currentPage);
+        ->groupBy('tuser.idUser')->whereRaw('compareFind(concat(tuser.email, tuser.numberDni, tuser.firstName, tuser.surName, tuser.state), ?, 77)=1 AND tuser.idUser!=?', [$searchParameter, session('idUser')])->orderby('tuser.created_at', 'desc'), 7, $currentPage);
 
         return view('user/getall',
         [

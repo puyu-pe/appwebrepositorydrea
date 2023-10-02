@@ -69,10 +69,12 @@
                                     <div>{{date('g:i A', strtotime($value->created_at))}}</div>
                                 </td>
                                 <td class="text-center" style="width: 100px;">
-                                    <span class="btn {{$value->state=='Habilitado' ? 'btn-danger' : 'btn-success'}} btn-xs glyphicon glyphicon glyphicon-user" data-toggle="tooltip" title="{{$value->state=='Habilitado' ? 'Desabilitar' : 'Habilitar'}} Acceso" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('usuario/estado/'.$value->idUser)}}'; });"></span>
-                                    <span class="btn btn-info btn-xs glyphicon glyphicon-repeat" data-toggle="tooltip" title="Cambiar rol" data-placement="left" onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Modificar rol del usuario {{$value->firstName.' '.$value->surName}}', {_token: '{{csrf_token()}}', idUser: '{{$value->idUser}}'}, '{{url('usuario/rol')}}', 'POST', null, null, false, true);"></span>
-                                    @if ($value->state=='Deshabilitado')
-                                        <span class="btn btn-warning btn-xs glyphicon glyphicon-trash" data-toggle="tooltip" title="Eliminar Usuario" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('usuario/eliminar/'.$value->idUser)}}'; });"></span>
+                                    @if (stristr($value->roles, 'Administrador') == false)
+                                        <span class="btn {{$value->state=='Habilitado' ? 'btn-danger' : 'btn-success'}} btn-xs glyphicon glyphicon glyphicon-user" data-toggle="tooltip" title="{{$value->state=='Habilitado' ? 'Desabilitar' : 'Habilitar'}} Acceso" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('usuario/estado/'.$value->idUser)}}'; });"></span>
+                                        <span class="btn btn-info btn-xs glyphicon glyphicon-repeat" data-toggle="tooltip" title="Cambiar rol" data-placement="left" onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Modificar rol del usuario {{$value->firstName.' '.$value->surName}}', {_token: '{{csrf_token()}}', idUser: '{{$value->idUser}}'}, '{{url('usuario/rol')}}', 'POST', null, null, false, true);"></span>
+                                        @if ($value->state=='Deshabilitado')
+                                            <span class="btn btn-warning btn-xs glyphicon glyphicon-trash" data-toggle="tooltip" title="Eliminar Usuario" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('usuario/eliminar/'.$value->idUser)}}'; });"></span>
+                                        @endif
                                     @endif
                                 </td>
                             </tr>
