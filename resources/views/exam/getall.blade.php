@@ -68,8 +68,17 @@
                                 </td>
                                 <td class="text-center" style="width: 100px;">
                                     <span class="btn btn-info btn-xs glyphicon glyphicon-pencil" data-toggle="tooltip" title="Modificar datos" data-placement="left" onclick="ajaxDialog('divGeneralContainer', 'modal-lg', 'Modificar datos de la evaluación', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('examen/editar')}}', 'POST', null, null, false, true);"></span>
+                                    @if ($value->statusAnwser == 0)
+                                        <span class="btn btn-info btn-xs glyphicon glyphicon-list" data-toggle="tooltip" title="Registrar respuestas" data-placement="left" onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Registrar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('cuestinario/registrar')}}', 'POST', null, null, false, true);"></span>
+                                    @else
+                                        <span class="btn btn-warning btn-xs glyphicon glyphicon-list" data-toggle="tooltip" title="Modificar respuestas" data-placement="left" onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Modificar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('cuestinario/editar')}}', 'POST', null, null, false, true);"></span>
+                                    @endif
+                                    @if ($value->stateExam== 'Publico')
+                                        <span class="btn btn-default btn-xs glyphicon glyphicon-eye-close" data-toggle="tooltip" title="Ocultar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
+                                    @else
+                                        <span class="btn btn-default btn-xs glyphicon glyphicon-eye-open" data-toggle="tooltip" title="Mostrar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
+                                    @endif
                                     <span class="btn btn-danger btn-xs glyphicon glyphicon-trash" data-toggle="tooltip" title="Eliminar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').show(); window.location.href='{{url('examen/eliminar/'.$value->idExam)}}'; });"></span>
-                                    <span class="btn btn-success btn-xs glyphicon glyphicon-list" data-toggle="tooltip" title="Registrar respuestas" data-placement="left" onclick="window.location.href='{{url('cuestionario/registrar/'.$value->idExam)}}'"></span>
                                 </td>
                             </tr>
                         @endforeach

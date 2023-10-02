@@ -20,7 +20,7 @@
                             </div>
                             <div class="box-footer">
                                 <div class="col-md-6">
-                                    <input type="button" class="btn btn-primary" value="Ver pruebas" onclick="{{url('typeexam/view/'.$value->idTypeExam)}}">
+                                    <input type="button" class="btn btn-primary" value="Ver pruebas" onclick="window.location.href = '{{ url('tipoexamen/'.$value->acronymTypeExam.'/1') }}'">
                                 </div>
                             </div>
                         </div>

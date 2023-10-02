@@ -328,6 +328,57 @@ class ExamController extends Controller
         return $response;
     }
 
+    public function actionDelete($idExam)
+    {
+        try
+        {
+            $tExam=TExam::find($idExam);
+
+            $directoryFiles= storage_path('app/file/exam/'.$tExam->idExam.'.'.$tExam->extensionExam);
+
+            if($tExam->extensionExam!='' && file_exists($directoryFiles)==true)
+            {
+                unlink($directoryFiles);
+            }
+
+            DB::delete('delete from texam where idExam = ?', [$idExam]);
+
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/mostrar/1');
+        }
+    }
+
+    public function actionChangeState($idExam)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            $tExam=TExam::find($idExam);
+
+            $valueStatus=$tExam->stateExam;
+
+            $tExam->stateExam=$valueStatus=='Publico' ? 'Oculto' : 'Publico';
+
+            $tExam->save();
+
+            DB::commit();
+
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/mostrar/1');
+        }
+    }
+
     public function convertArray($data)
     {
         $tExamData = array(
@@ -349,6 +400,5 @@ class ExamController extends Controller
         );
 
         return json_encode($tExamData);
-
     }
 }

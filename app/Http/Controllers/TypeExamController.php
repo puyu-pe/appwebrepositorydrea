@@ -192,7 +192,7 @@ class TypeExamController extends Controller
 
         $tTypeExam=TTypeExam::whereRaw('acronymTypeExam=?', [$acronymTypeExam])->first();
 
-        $paginate=PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam), ?, 77)=1 AND idTypeExam=?',[$searchParameter, $tTypeExam->idTypeExam])
+        $paginate=PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam), ?, 77)=1 AND stateExam = "Publico" AND idTypeExam=?',[$searchParameter, $tTypeExam->idTypeExam])
         ->orderby('created_at', 'desc'), 7, $currentPage);
 
         return view('typeexam/view',

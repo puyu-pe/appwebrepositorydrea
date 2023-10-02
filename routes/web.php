@@ -49,6 +49,7 @@ Route::match(['get', 'post'], 'examen/registrar',[ExamController::class,'actionR
 Route::post('examen/editar',[ExamController::class,'actionEdit'])->middleware('GenericMiddleware:examen/editar');
 Route::get('examen/eliminar/{idSubject}',[ExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
 Route::get('examen/verarchivo/{idEgress}',[ExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
+Route::get('examen/estado/{idUser}',[ExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 
 Route::match(['get','post'],'cuestionario/registrar',[QuestionController::class,'actionRegister'])->middleware('GenericMiddleware:cuestionario/registrar');
 
