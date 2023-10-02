@@ -262,6 +262,17 @@ class ExamController extends Controller
 
                 $tExam->save();
 
+                $tUserExam = new TUserExam();
+
+                $tUserExam->idUserExam = uniqid();
+                $tUserExam->idUser = session('idUser');
+                $tUserExam->idExam = $tExam->idExam;
+                $tUserExam->typeFunctionExam = 'Modificación';
+                $tUserExam->dataExam = $this->convertArray($tExam);
+                $tUserExam->dateUserExam = date('Y-m-d');
+
+                $tUserExam->save();
+
                 if($request->hasFile('fileExamExtension'))
                 {
                     $tExam=TExam::find($tExam->idExam);
