@@ -99,8 +99,6 @@ foreign key(idSubject) references tsubject(idSubject) on delete cascade on updat
 primary key(idExam)
 ) engine=innodb;
 
--- alter table texam add column statusAnwser tinyint not null after extensionExam;
-
 -- falta evaluar
 -- create table tkeywordexam
 -- (
@@ -152,22 +150,18 @@ updated_at datetime not null,
 primary key(idSetting)
 ) engine=innodb;
 
+create table tdocument
+(
+idDocument char(13) not null,
+key_document varchar(30) not null,
+number_document int not null,
+state tinyint not null,
+created_at datetime not null,
+updated_at datetime not null,
+primary key(idDocument)
+) engine=innodb;
 
-DELIMITER $$
-CREATE PROCEDURE GenerateCodeExam(IN anio INT, IN letra CHAR(1), OUT codigo VARCHAR(36))
-BEGIN
-  DECLARE contador INT DEFAULT 0;
-  SELECT COALESCE(MAX(SUBSTRING_INDEX(codigo, '-', -2)), 0) INTO contador
-  FROM tu_tabla
-  WHERE columna_denominacion = letra;
-  SET contador = contador + 1;
-  SELECT CONCAT(anio, '-', letra, '-', contador, '-', UUID()) INTO codigo;
-END $$
-DELIMITER ;
-
--- drop procedure GenerateCodeExam;
-
-call GenerateCodeExam(2023, 'S','');
+insert into tdocument values('5ece4797eaf5e', 'exam', 0, 1, now(), now());
 
 
 

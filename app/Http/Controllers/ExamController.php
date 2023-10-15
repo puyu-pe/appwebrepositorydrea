@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
 use App\Models\TAnswer;
+use App\Models\TDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -50,9 +51,10 @@ class ExamController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/insertar');
                 }
 
-                $tTypeExam=TTypeExam::find($request->input('selectTypeExam'));
-                $tSubject=TSubject::find($request->input('selectSubject'));
-                $tGrade=TGrade::find($request->input('selectGrade'));
+                $tTypeExam = TTypeExam::find($request->input('selectTypeExam'));
+                $tSubject  = TSubject::find($request->input('selectSubject'));
+                $tGrade    = TGrade::find($request->input('selectGrade'));
+                $tDocument = TDocument::whereRaw('key_document=?', ['exam'])->first();
 
                 $tExam=new TExam();
 
@@ -61,7 +63,7 @@ class ExamController extends Controller
                 $tExam->idTypeExam = $request->input('selectTypeExam');
                 $tExam->idGrade = $request->input('selectGrade');
                 $tExam->idSubject = $request->input('selectSubject');
-                $tExam->codeExam = '';
+                $tExam->codeExam = $tDocument->number_document+1;
                 $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
@@ -83,6 +85,10 @@ class ExamController extends Controller
                 $tUserExam->dateUserExam = date('Y-m-d');
 
                 $tUserExam->save();
+
+                $tDocument->number_document = $tDocument->number_document+1;
+
+                $tDocument->save();
 
                 $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $tExam->idExam.'.'.$tExam->extensionExam);
 
@@ -147,9 +153,10 @@ class ExamController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/registrar');
                 }
 
-                $tTypeExam=TTypeExam::find($request->input('selectTypeExam'));
-                $tSubject=TSubject::find($request->input('selectSubject'));
-                $tGrade=TGrade::find($request->input('selectGrade'));
+                $tTypeExam = TTypeExam::find($request->input('selectTypeExam'));
+                $tSubject  = TSubject::find($request->input('selectSubject'));
+                $tGrade    = TGrade::find($request->input('selectGrade'));
+                $tDocument = TDocument::whereRaw('key_document=?', ['exam'])->first();
 
                 $tExam=new TExam();
 
@@ -158,7 +165,7 @@ class ExamController extends Controller
                 $tExam->idTypeExam = $request->input('selectTypeExam');
                 $tExam->idGrade = $request->input('selectGrade');
                 $tExam->idSubject = $request->input('selectSubject');
-                $tExam->codeExam = '';
+                $tExam->codeExam = $tDocument->number_document+1;
                 $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
@@ -180,6 +187,10 @@ class ExamController extends Controller
                 $tUserExam->dateUserExam = date('Y-m-d');
 
                 $tUserExam->save();
+
+                $tDocument->number_document = $tDocument->number_document+1;
+
+                $tDocument->save();
 
                 $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $tExam->idExam.'.'.$tExam->extensionExam);
 
