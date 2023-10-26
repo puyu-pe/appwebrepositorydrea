@@ -42,7 +42,6 @@
                 <li id="mGetAllGrade" class="{{Session::get('subMenu')=='mGetAllGrade' ? 'active' : ''}}"><a href="{{url('grado/mostrar/1')}}"><i class="fa fa-circle-o"></i>Grados académicos</a></li>
                 <li id="mInsertExam" class="{{Session::get('subMenu')=='mInsertExam' ? 'active' : ''}}"><a href="{{url('examen/insertar')}}"><i class="fa fa-circle-o"></i>Registrar</a></li>
                 <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Publicadas</a></li>
-                <li id="mGetExamNoPublic" class="{{Session::get('subMenu')=='mGetExamNoPublic' ? 'active' : ''}}"><a href="{{url('examen/sinpublicar/1')}}"><i class="fa fa-circle-o"></i>Por publicar</a></li>
             </ul>
         </li>
     @endif

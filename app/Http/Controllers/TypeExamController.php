@@ -186,8 +186,6 @@ class TypeExamController extends Controller
 
     public function actionViewTypeExam(Request $request, $acronymTypeExam, $currentPage)
     {
-        session(['subMenu' => 'm'.strtoupper($acronymTypeExam)]);
-
         $searchParameter=$request->has('searchParameter') ? $request->input('searchParameter') : '';
 
         $tTypeExam=TTypeExam::whereRaw('acronymTypeExam=?', [$acronymTypeExam])->first();

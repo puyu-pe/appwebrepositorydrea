@@ -43,13 +43,13 @@ class GenericMiddleware
             ['Administrador', 'grado/eliminar', null, null],
 
             ['Administrador,Supervisor', 'examen/mostrar', 'mPrincipal', 'mGetAllExam'],
-            ['Administrador,Supervisor', 'examen/sinpublicar', 'mPrincipal', 'mGetExamNoPublic'],
             ['Administrador,Supervisor', 'examen/insertar', 'mPrincipal', 'mInsertExam'],
             ['Administrador,Registrador', 'examen/registrar', 'mModuleExam', 'mRegisterExam'],
             ['Administrador,Supervisor', 'examen/editar', null, null],
             ['Administrador,Supervisor', 'examen/estado', null, null],
             ['Administrador', 'examen/eliminar', null, null],
             ['Público', 'examen/verarchivo', null, null],
+            ['Público', 'examen/ver', null, null],
 
             ['Administrador,Registrador', 'cuestionario/registrar', null, null],
 

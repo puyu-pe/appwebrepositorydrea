@@ -423,4 +423,23 @@ class ExamController extends Controller
 
         return json_encode($tExamData);
     }
+
+    public function actionGetExam($codeExam)
+    {
+        try
+        {
+            $tExam=TExam::with(['tSubject', 'tGrade', 'tTypeExam'])->whereRaw('codeExam=?', [$codeExam])->first();
+
+            return view('exam/seed',
+            [
+                'tExam' => $tExam
+            ]);
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/');
+        }
+    }
 }
