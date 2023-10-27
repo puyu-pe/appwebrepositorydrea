@@ -8,6 +8,8 @@ class GenericMiddleware
 {
     public function handle($request, Closure $next, ...$params)
     {
+        $acronymTypeExam = $request->route()->parameter('acronymTypeExam');
+
         $urlAccess=false;
         $allowUrl=
         [
@@ -30,7 +32,7 @@ class GenericMiddleware
             ['Administrador,Supervisor', 'tipoexamen/insertar', null, null],
             ['Administrador,Supervisor', 'tipoexamen/editar', null, null],
             ['Administrador', 'tipoexamen/eliminar', null, null],
-            ['Público', 'tipoexamen/acronymTypeExam', 'mTypeExam', null],
+            ['Público', 'tipoexamen/acroninmo', 'mTypeExam', $acronymTypeExam != null ? 'm'.strtoupper($acronymTypeExam) : null],
 
             ['Administrador,Supervisor', 'curso/mostrar', 'mPrincipal', 'mGetAllSubject'],
             ['Administrador,Supervisor', 'curso/insertar', null, null],
@@ -86,6 +88,7 @@ class GenericMiddleware
         {
             return redirect('/');
         }
+
         return $next($request);
     }
 }

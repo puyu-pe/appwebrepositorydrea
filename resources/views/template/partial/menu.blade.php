@@ -4,7 +4,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pruebas <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
             @foreach ($menuTypeExamItem as $item)
-                <li id="{{'m'.strtoupper($item->acronymTypeExam)}}" class="{{Session::get('submenu')=='m'.strtoupper($item->acronymTypeExam) ? 'active' : ''}}"><a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}">Pruebas {{strtoupper($item->acronymTypeExam)}}</a></li>
+                <li id="{{'m'.strtoupper($item->acronymTypeExam)}}" class="{{Session::get('subMenu')=='m'.strtoupper($item->acronymTypeExam) ? 'active' : ''}}"><a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}">Pruebas {{strtoupper($item->acronymTypeExam)}}</a></li>
             @endforeach
         </ul>
     </li>
@@ -12,7 +12,7 @@
         <li id="mModuleExam" class="dropdown {{Session::get('menu')=='mModuleExam' ? 'active' : ''}}">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Opciones para pruebas<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-                    <li id="mRegisterExam" class="{{Session::get('subMenu')=='mRegisterExam' ? 'active' : ''}}"><a href="{{url('examen/registrar')}}">Registrar una evaluación</a></li>
+                <li id="mRegisterExam" class="{{Session::get('subMenu')=='mRegisterExam' ? 'active' : ''}}"><a href="{{url('examen/registrar')}}">Registrar una evaluación</a></li>
             </ul>
         </li>
     @endif

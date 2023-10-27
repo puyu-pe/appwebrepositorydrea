@@ -31,7 +31,7 @@ Route::get('tipoexamen/mostrar/{currentPage}',[TypeExamController::class,'action
 Route::match(['get', 'post'], 'tipoexamen/insertar',[TypeExamController::class,'actionInsert'])->middleware('GenericMiddleware:tipoexamen/insertar');
 Route::post('tipoexamen/editar',[TypeExamController::class,'actionEdit'])->middleware('GenericMiddleware:tipoexamen/editar');
 Route::get('tipoexamen/eliminar/{idTypeExam}',[TypeExamController::class,'actionDelete'])->middleware('GenericMiddleware:tipoexamen/eliminar');
-Route::get('tipoexamen/{acronymTypeExam}/{currentPage}',[TypeExamController::class,'actionViewTypeExam'])->middleware('GenericMiddleware:tipoexamen/acronymTypeExam');
+Route::get('tipoexamen/{acronymTypeExam}/{currentPage}',[TypeExamController::class,'actionViewTypeExam'])->middleware('GenericMiddleware:tipoexamen/acroninmo');
 
 Route::get('curso/mostrar/{currentPage}',[SubjectController::class,'actionGetAll'])->middleware('GenericMiddleware:curso/mostrar');
 Route::match(['get', 'post'], 'curso/insertar',[SubjectController::class,'actionInsert'])->middleware('GenericMiddleware:curso/insertar');
