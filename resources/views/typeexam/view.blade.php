@@ -36,11 +36,6 @@
                                 <td class="text-center">
                                     <div>{{$value->totalPageExam==1 ? $value->totalPageExam.' páginas' : $value->totalPageExam.' páginas'}}</div>
                                 </td>
-                                <td class="text-center">
-                                    @foreach(explode('__7SEPARATOR7__', $value->keywordExam) as $item)
-                                        <span class="label label-default">{{$item}}</span>
-                                    @endforeach
-                                </td>
                                 <td class="text-center" style="width: 100px;">
                                     <a href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}" target="_blank">
                                         <span class="fa fa-file-pdf-o"></span> Ver evaluación

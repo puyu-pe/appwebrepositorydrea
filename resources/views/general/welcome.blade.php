@@ -4,28 +4,23 @@
     <div class="tab-content">
         <div class="tab-pane active" id="tab_1-1">
             <div class="row">
-                @foreach($tTypeExam as $value)
-                    <div class="col-md-3 text-center">
-                        <div class="box box-default">
-                            <div class="box-header with-border">
-                                <h5 class="box-title">{{strtoupper($value->acronymTypeExam)}}</h5>
+                <div class="col-md-12 text-center">
+                    @foreach($tTypeExam as $value)
+                        <div class="examContainerCard">
+                            <div class="examContainerCardCoverImage">
+                                <img src="{{asset('img/logo/typeexam/'.$value->idTypeExam.'.'.$value->extensionImageType.'?x='.$value->updated_at)}}" height="70" width="70">
                             </div>
-                            <div class="box-body">
-                                <div class="pull-left image">
-                                    <img src="{{asset('img/logo/typeexam/'.$value->idTypeExam.'.'.$value->extensionImageType.'?x='.$value->updated_at)}}" height="70" width="70">
-                                </div>
-                                <div class="pull-left">
-                                    <div style="font-size: 15px;">{{$value->descriptionTypeExam}}</div>
-                                </div>
+                            <div class="examContainerCardTitle">
+                                <a href="{{url('tipoexamen/'.$value->acronymTypeExam.'/1')}}">
+                                    {{$value->nameTypeExam}}
+                                </a>
                             </div>
-                            <div class="box-footer">
-                                <div class="col-md-6">
-                                    <input type="button" class="btn btn-primary" value="Ver pruebas" onclick="window.location.href = '{{ url('tipoexamen/'.$value->acronymTypeExam.'/1') }}'">
-                                </div>
+                            <div class="examContainerCardDescription">
+                                <div style="font-size: 15px;">{{$value->descriptionTypeExam}}</div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

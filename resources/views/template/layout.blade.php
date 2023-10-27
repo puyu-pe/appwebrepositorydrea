@@ -32,6 +32,7 @@
         <link rel="stylesheet" href="{{asset('plugins/pnotify/pnotify.custom.min.css')}}">
         <link rel="stylesheet" href="{{asset('css/layout.css')}}">
         <link rel="stylesheet" href="{{asset('css/cssPagination.css')}}">
+        <link rel="stylesheet" href="{{asset('css/cssExamType.css')}}">
         <!-- jQuery 3 -->
         <script src="{{asset('plugins/adminlte/bower_components/jquery/dist/jquery.min.js')}}"></script>
     </head>
