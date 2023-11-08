@@ -161,6 +161,20 @@ updated_at datetime not null,
 primary key(idDocument)
 ) engine=innodb;
 
+create table tcontact
+(
+idContact char(13) not null,
+completeNameContact varchar (300) not null,
+emailContact varchar(100) not null,
+affairContact varchar(200) not null,
+messageContact text not null,
+dateContact date not null,
+statusContact tinyint not null,
+created_at datetime not null,
+updated_at datetime not null,
+primary key(idContact)
+) engine=innodb;
+
 insert into tdocument values('5ece4797eaf5e', 'exam', 0, 1, now(), now());
 
 

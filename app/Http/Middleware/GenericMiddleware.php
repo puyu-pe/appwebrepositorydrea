@@ -18,6 +18,9 @@ class GenericMiddleware
             ['Administrador', 'sistema/descargar', 'mSetting', 'mDownloadExam'],
             ['Administrador,Supervisor', 'panel', 'mDashboard', null],
 
+            ['Público', 'general/contacto', 'mContact', null],
+            ['Administrador,Supervisor', 'contacto/mostrar', 'mPrincipal', 'mGetAllContact'],
+
             ['Público', 'usuario/registrar', null, null],
             ['Público', 'usuario/acceder', null, null],
             ['Público', 'usuario/salir', null , null],

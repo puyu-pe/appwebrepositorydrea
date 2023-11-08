@@ -16,5 +16,5 @@
             </ul>
         </li>
     @endif
-    <li id="mTramiteBuscar" class="{{Session::get('menu')=='mTramiteBuscar' ? 'active' : ''}}"><a href="{{url('general/contactos')}}">Contáctanos</a></li>
+    <li id="mContact" class="{{Session::get('menu')=='mContact' ? 'active' : ''}}"><a href="{{url('general/contacto')}}">Contáctanos</a></li>
 </ul>

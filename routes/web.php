@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\GradeController;
@@ -14,6 +15,9 @@ Route::get('/',[GeneralController::class, 'actionWelcome'])->middleware('Generic
 Route::get('panel',[GeneralController::class, 'actionWelcomeDashboard'])->middleware('GenericMiddleware:panel');
 Route::get('sistema/generarbackup',[GeneralController::class, 'actionBackupDatabase'])->middleware('GenericMiddleware:sistema/generarbackup');
 Route::get('sistema/descargar',[GeneralController::class, 'actionDownloadExam'])->middleware('GenericMiddleware:sistema/descargar');
+
+Route::match(['get','post'],'general/contacto',[ContactController::class,'actionInsert'])->middleware('GenericMiddleware:general/contacto');
+Route::get('contacto/mostrar/{currentPage}',[ContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/mostrar');
 
 Route::match(['get','post'],'usuario/acceder',[UserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
 Route::get('usuario/salir',[UserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');

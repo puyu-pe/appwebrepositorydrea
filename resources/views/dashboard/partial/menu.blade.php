@@ -41,7 +41,8 @@
                 <li id="mGetAllSubject" class="{{Session::get('subMenu')=='mGetAllSubject' ? 'active' : ''}}"><a href="{{url('curso/mostrar/1')}}"><i class="fa fa-circle-o"></i>Materias</a></li>
                 <li id="mGetAllGrade" class="{{Session::get('subMenu')=='mGetAllGrade' ? 'active' : ''}}"><a href="{{url('grado/mostrar/1')}}"><i class="fa fa-circle-o"></i>Grados académicos</a></li>
                 <li id="mInsertExam" class="{{Session::get('subMenu')=='mInsertExam' ? 'active' : ''}}"><a href="{{url('examen/insertar')}}"><i class="fa fa-circle-o"></i>Registrar</a></li>
-                <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Publicadas</a></li>
+                <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de evaluaciones</a></li>
+                <li id="mGetAllContact" class="{{Session::get('subMenu')=='mGetAllContact' ? 'active' : ''}}"><a href="{{url('contacto/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de mensajes</a></li>
             </ul>
         </li>
     @endif
