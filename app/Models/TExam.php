@@ -35,5 +35,10 @@ class TExam extends Model
     {
         return $this->hasMany('App\Models\TUserExam', 'idExam');
     }
+
+    public function tDirection()
+    {
+        return $this->belongsTo('App\Models\TDirection', 'idDirection');
+    }
 }
 ?>

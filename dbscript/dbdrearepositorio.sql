@@ -51,13 +51,14 @@ idTypeExam char(13) not null,
 nameTypeExam varchar(100) not null,
 acronymTypeExam varchar(10) not null,
 descriptionTypeExam varchar(200) not null,
+numberExecuteYear int not null DEFAULT 1,
 extensionImageType varchar(7) not null,
 created_at datetime not null,
 updated_at datetime not null,
 primary key(idTypeExam)
 ) engine=innodb;
 
-ALTER TABLE ttypeexam ADD COLUMN numberExecuteYear INT DEFAULT 1 AFTER descriptionTypeExam;
+-- ALTER TABLE ttypeexam ADD COLUMN numberExecuteYear INT DEFAULT 1 AFTER descriptionTypeExam;
 
 create table tgrade
 (
@@ -99,10 +100,14 @@ updated_at datetime not null,
 foreign key(idTypeExam) references ttypeexam(idTypeExam) on delete cascade on update cascade,
 foreign key(idGrade) references tgrade(idGrade) on delete cascade on update cascade,
 foreign key(idSubject) references tsubject(idSubject) on delete cascade on update cascade,
+foreign key(idDirection) references tdirection(idDirection),
 primary key(idExam)
 ) engine=innodb;
 
-alter table texam add column idDirection char(13) null after idSubject;
+-- alter table texam add column idDirection char(13) null after idSubject;
+## ALTER TABLE texam
+## ADD CONSTRAINT fk_idDirection
+## FOREIGN KEY (idDirection) REFERENCES tdirection(idDirection);
 
 -- falta evaluar
 -- create table tkeywordexam
