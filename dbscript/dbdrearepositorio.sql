@@ -79,6 +79,18 @@ updated_at datetime not null,
 primary key(idSubject)
 ) engine=innodb;
 
+create table tdirection
+(
+idDirection char(13) not null,
+namecompleteDirection varchar(400) not null,
+namesortDirection varchar(100) not null,
+nameRegion varchar(200) not null,
+logoExtension varchar(7) not null,
+created_at datetime not null,
+updated_at datetime not null,
+primary key(idDirection)
+) engine=innodb;
+
 create table texam
 (
 idExam char(13) not null,
@@ -183,18 +195,6 @@ statusContact tinyint not null,
 created_at datetime not null,
 updated_at datetime not null,
 primary key(idContact)
-) engine=innodb;
-
-create table tdirection
-(
-idDirection char(13) not null,
-namecompleteDirection varchar(400) not null,
-namesortDirection varchar(100) not null,
-nameRegion varchar(200) not null,
-avatarDirection char(6) not null,
-created_at datetime not null,
-updated_at datetime not null,
-primary key(idDirection)
 ) engine=innodb;
 
 insert into tdocument values('5ece4797eaf5e', 'exam', 0, 1, now(), now());

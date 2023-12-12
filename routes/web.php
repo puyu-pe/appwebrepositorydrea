@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DirectionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\GradeController;
@@ -47,6 +48,11 @@ Route::match(['get', 'post'], 'grado/insertar',[GradeController::class,'actionIn
 Route::post('grado/editar',[GradeController::class,'actionEdit'])->middleware('GenericMiddleware:grado/editar');
 Route::get('grado/eliminar/{idSubject}',[GradeController::class,'actionDelete'])->middleware('GenericMiddleware:grado/eliminar');
 
+Route::get('direccion/mostrar/{currentPage}',[DirectionController::class,'actionGetAll'])->middleware('GenericMiddleware:direccion/mostrar');
+Route::match(['get', 'post'], 'direccion/insertar',[DirectionController::class,'actionInsert'])->middleware('GenericMiddleware:direccion/insertar');
+Route::post('direccion/editar',[DirectionController::class,'actionEdit'])->middleware('GenericMiddleware:direccion/editar');
+Route::get('direccion/eliminar/{idSubject}',[DirectionController::class,'actionDelete'])->middleware('GenericMiddleware:direccion/eliminar');
+
 Route::get('examen/mostrar/{currentPage}',[ExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/mostrar');
 Route::match(['get', 'post'], 'examen/insertar',[ExamController::class,'actionInsert'])->middleware('GenericMiddleware:examen/insertar');
 Route::match(['get', 'post'], 'examen/registrar',[ExamController::class,'actionRegister'])->middleware('GenericMiddleware:examen/registrar');
@@ -56,6 +62,6 @@ Route::get('examen/verarchivo/{idEgress}',[ExamController::class,'actionViewExam
 Route::get('examen/estado/{idUser}',[ExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 Route::get('examen/ver/{codeExam}',[ExamController::class,'actionGetExam'])->middleware('GenericMiddleware:examen/ver');
 
-Route::match(['get','post'],'cuestionario/registrar',[QuestionController::class,'actionRegister'])->middleware('GenericMiddleware:cuestionario/registrar');
+//Route::match(['get','post'],'cuestionario/registrar',[QuestionController::class,'actionRegister'])->middleware('GenericMiddleware:cuestionario/registrar');
 
 ?>

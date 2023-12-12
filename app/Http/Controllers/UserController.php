@@ -234,7 +234,7 @@ class UserController extends Controller
 
                     if($tUser->avatarExtension!='')
                     {
-                        $direcciónLink=public_path('img/avatar/user/'.$tUser->idUser.'/'.$tUser->idUser.'.'.$tUser->avatarExtension);
+                        $direcciónLink=public_path('img/logo/user/'.$tUser->idUser.'.'.$tUser->avatarExtension);
 
                         unlink($direcciónLink);
                     }
@@ -244,7 +244,7 @@ class UserController extends Controller
 
                     $tUser->save();
 
-                    $request->file('fileAvatarExtension')->move(public_path('/img/avatar/user/'.$tUser->idUser.'/'), $tUser->idUser.'.'.$tUser->avatarExtension);
+                    $request->file('fileAvatarExtension')->move(public_path('/img/logo/user/'), $tUser->idUser.'.'.$tUser->avatarExtension);
                 }
 
                 DB::commit();

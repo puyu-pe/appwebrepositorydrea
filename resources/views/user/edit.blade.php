@@ -14,7 +14,7 @@
                         <div class="text-center">
                             <img src="{{Session::get('avatarExtension')=='' ?
                             asset('img/userlogo.png') :
-                            asset('img/avatar/user/'.Session::get('idUser').'/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}" height="140" width="140" style="border: 1px solid #999999;border-radius: 170px;" class="img-circle" alt="User Image">
+                            asset('img/logo/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}" height="140" width="140" style="border: 1px solid #999999;border-radius: 170px;" class="img-circle" alt="User Image">
                         </div>
                     </div>
                     <div class="col-md-9" style="border-left: 1px solid #999999;">
