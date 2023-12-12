@@ -40,6 +40,16 @@ $(function()
                 }
             }
         },
+        selectDirectionExam:
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
         selectSubject:
         {
             validators:
@@ -117,6 +127,7 @@ $(function()
     }));
 
     $('.select2TypeExam').select2();
+    $('.select2DirectionExam').select2();
     $('.select2Subject').select2();
     $('.select2Grade').select2();
     $('.select2ExamKeyword').select2(

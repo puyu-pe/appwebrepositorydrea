@@ -11,10 +11,6 @@
                         <input type="text" id="txtDescriptionExam" name="txtDescriptionExam" class="form-control" autocomplete="off">
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="txtYearExam">Año*</label>
-                        <input type="number" id="txtYearExam" name="txtYearExam" min="2000" max="{{date('Y')}}" value="{{date('Y')}}" class="form-control" autocomplete="off">
-                    </div>
-                    <div class="form-group col-md-3">
                         <label for="selectTypeExam">Tipo de evaluación*</label>
                         <select name="selectTypeExam" id="selectTypeExam" style="width: 100%" class="form-control select2TypeExam" data-placeholder="Seleccione...">
                             <option value=""></option>
@@ -23,8 +19,35 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group col-md-3">
+                        <label for="selectDirectionExam">DRE a la que pertenece</label>
+                        <select name="selectDirectionExam" id="selectDirectionExam" style="width: 100%" class="form-control select2DirectionExam" data-placeholder="Seleccione...">
+                            <option value=""></option>
+                            <option value="General">General</option>
+                            @foreach ($tDirection as $valueDirection)
+                                <option value="{{$valueDirection->idDirection}}">{{$valueDirection->namesortDirection}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="row">
+                    <div class="form-group col-md-2">
+                        <label for="txtYearExam">Año*</label>
+                        <input type="number" id="txtYearExam" name="txtYearExam" min="2000" max="{{date('Y')}}" value="{{date('Y')}}" class="form-control" autocomplete="off">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="selectGrade">Grado*</label>
+                        <select name="selectGrade" id="selectGrade" style="width: 100%" class="form-control select2Grade" data-placeholder="Seleccione...">
+                            <option value=""></option>
+                            @foreach ($tGrade as $valueGrade)
+                                <option value="{{$valueGrade->idGrade}}">{{$valueGrade->numberGrade.'° de '.$valueGrade->nameGrade}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="txtTotalPageExam">N° de páginas*</label>
+                        <input type="number" id="txtTotalPageExam" name="txtTotalPageExam" min="1" class="form-control" autocomplete="off">
+                    </div>
                     <div class="form-group col-md-3">
                         <label for="selectSubject">Materia*</label>
                         <select name="selectSubject" id="selectSubject" style="width: 100%" class="form-control select2Subject" data-placeholder="Seleccione...">
@@ -35,21 +58,8 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3">
-                        <label for="selectGrade">Grado*</label>
-                        <select name="selectGrade" id="selectGrade" style="width: 100%" class="form-control select2Grade" data-placeholder="Seleccione...">
-                            <option value=""></option>
-                            @foreach ($tGrade as $valueGrade)
-                                <option value="{{$valueGrade->idGrade}}">{{$valueGrade->numberGrade.'° de '.$valueGrade->nameGrade}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
                         <label for="fileExamExtension">Archivo pdf*</label>
                         <input type="file" id="fileExamExtension" name="fileExamExtension" class="form-control" accept=".pdf" style="padding: 5px;">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="txtTotalPageExam">N° de páginas*</label>
-                        <input type="number" id="txtTotalPageExam" name="txtTotalPageExam" min="1" class="form-control" autocomplete="off">
                     </div>
                 </div>
                 <div class="row">

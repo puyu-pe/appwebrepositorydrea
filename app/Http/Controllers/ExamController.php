@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
 use App\Models\TAnswer;
+use App\Models\TDirection;
 use App\Models\TDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +55,10 @@ class ExamController extends Controller
                 $tTypeExam = TTypeExam::find($request->input('selectTypeExam'));
                 $tSubject  = TSubject::find($request->input('selectSubject'));
                 $tGrade    = TGrade::find($request->input('selectGrade'));
+                $tDirection= TDirection::find($request->input('selectDirectionExam'));
                 $tDocument = TDocument::whereRaw('key_document=?', ['exam'])->first();
+
+                $tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
 
                 $tExam=new TExam();
 
@@ -63,8 +67,9 @@ class ExamController extends Controller
                 $tExam->idTypeExam = $request->input('selectTypeExam');
                 $tExam->idGrade = $request->input('selectGrade');
                 $tExam->idSubject = $request->input('selectSubject');
+                $tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
                 $tExam->codeExam = $tDocument->number_document+1;
-                $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
+                $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
@@ -127,12 +132,14 @@ class ExamController extends Controller
         $tTypeExam=TTypeExam::all();
         $tSubject=TSubject::all();
         $tGrade=TGrade::all();
+        $tDirection=TDirection::all();
 
         return view('exam/insert',
         [
             'tTypeExam' => $tTypeExam,
             'tSubject' => $tSubject,
-            'tGrade' => $tGrade
+            'tGrade' => $tGrade,
+            'tDirection' => $tDirection
         ]);
     }
 
@@ -153,10 +160,13 @@ class ExamController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/registrar');
                 }
 
-                $tTypeExam = TTypeExam::find($request->input('selectTypeExam'));
-                $tSubject  = TSubject::find($request->input('selectSubject'));
-                $tGrade    = TGrade::find($request->input('selectGrade'));
-                $tDocument = TDocument::whereRaw('key_document=?', ['exam'])->first();
+                $tTypeExam  = TTypeExam::find($request->input('selectTypeExam'));
+                $tSubject   = TSubject::find($request->input('selectSubject'));
+                $tGrade     = TGrade::find($request->input('selectGrade'));
+                $tDirection = TDirection::find($request->input('selectDirectionExam'));
+                $tDocument  = TDocument::whereRaw('key_document=?', ['exam'])->first();
+
+                $tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
 
                 $tExam=new TExam();
 
@@ -165,8 +175,9 @@ class ExamController extends Controller
                 $tExam->idTypeExam = $request->input('selectTypeExam');
                 $tExam->idGrade = $request->input('selectGrade');
                 $tExam->idSubject = $request->input('selectSubject');
+                $tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
                 $tExam->codeExam = $tDocument->number_document+1;
-                $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
+                $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
@@ -229,12 +240,14 @@ class ExamController extends Controller
         $tTypeExam=TTypeExam::all();
         $tSubject=TSubject::all();
         $tGrade=TGrade::all();
+        $tDirection=TDirection::all();
 
         return view('exam/register',
         [
             'tTypeExam' => $tTypeExam,
             'tSubject' => $tSubject,
-            'tGrade' => $tGrade
+            'tGrade' => $tGrade,
+            'tDirection' => $tDirection
         ]);
     }
 
@@ -256,16 +269,20 @@ class ExamController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/mostrar/1');
                 }
 
-                $tTypeExam=TTypeExam::find($request->input('selectTypeExam'));
-                $tSubject=TSubject::find($request->input('selectSubject'));
-                $tGrade=TGrade::find($request->input('selectGrade'));
+                $tTypeExam  = TTypeExam::find($request->input('selectTypeExam'));
+                $tSubject   = TSubject::find($request->input('selectSubject'));
+                $tGrade     = TGrade::find($request->input('selectGrade'));
+                $tDirection = TDirection::find($request->input('selectDirectionExam'));
+
+                $tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
 
                 $tExam=TExam::find($request->input('hdIdExam'));
 
                 $tExam->idTypeExam=$request->input('selectTypeExam');
                 $tExam->idGrade=$request->input('selectGrade');
                 $tExam->idSubject=$request->input('selectSubject');
-                $tExam->nameExam='Evaluación '.strtoupper($tTypeExam->acronymTypeExam).' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
+                $tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
+                $tExam->nameExam='Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam=trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam=$request->input('txtTotalPageExam');
                 $tExam->yearExam=$request->input('txtYearExam');
@@ -322,6 +339,7 @@ class ExamController extends Controller
         $tTypeExam=TTypeExam::all();
         $tSubject=TSubject::all();
         $tGrade=TGrade::all();
+        $tDirection=TDirection::all();
 
         if($tExam==null)
         {
@@ -333,7 +351,8 @@ class ExamController extends Controller
             'tExam' => $tExam,
             'tTypeExam' => $tTypeExam,
             'tSubject' => $tSubject,
-            'tGrade' => $tGrade
+            'tGrade' => $tGrade,
+            'tDirection' => $tDirection
         ]);
     }
 
@@ -408,6 +427,7 @@ class ExamController extends Controller
             'idTypeExam' => $data->idTypeExam,
             'idGrade' => $data->idGrade,
             'idSubject' => $data->idSubject,
+            'idDirection' => $data->idDirection,
             'codeExam' => $data->codeExam,
             'nameExam' => $data->nameExam,
             'descriptionExam' => $data->descriptionExam,
