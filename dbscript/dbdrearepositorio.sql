@@ -57,6 +57,8 @@ updated_at datetime not null,
 primary key(idTypeExam)
 ) engine=innodb;
 
+ALTER TABLE ttypeexam ADD COLUMN numberExecuteYear INT DEFAULT 1 AFTER descriptionTypeExam;
+
 create table tgrade
 (
 idGrade char(13) not null,
@@ -82,6 +84,7 @@ idExam char(13) not null,
 idTypeExam char(13) not null,
 idGrade char(13) not null,
 idSubject char(13) not null,
+idDirection char(13) null,
 codeExam varchar(30) not null,
 nameExam varchar(100) not null,
 descriptionExam text not null,
@@ -98,6 +101,8 @@ foreign key(idGrade) references tgrade(idGrade) on delete cascade on update casc
 foreign key(idSubject) references tsubject(idSubject) on delete cascade on update cascade,
 primary key(idExam)
 ) engine=innodb;
+
+alter table texam add column idDirection char(13) null after idSubject;
 
 -- falta evaluar
 -- create table tkeywordexam
@@ -173,6 +178,18 @@ statusContact tinyint not null,
 created_at datetime not null,
 updated_at datetime not null,
 primary key(idContact)
+) engine=innodb;
+
+create table tdirection
+(
+idDirection char(13) not null,
+namecompleteDirection varchar(400) not null,
+namesortDirection varchar(100) not null,
+nameRegion varchar(200) not null,
+avatarDirection char(6) not null,
+created_at datetime not null,
+updated_at datetime not null,
+primary key(idDirection)
 ) engine=innodb;
 
 insert into tdocument values('5ece4797eaf5e', 'exam', 0, 1, now(), now());
