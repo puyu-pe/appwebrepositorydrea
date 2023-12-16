@@ -14,18 +14,21 @@ class TypeExamValidation
             'nameTypeExam' => trim($request->input('txtNameTypeExam')),
             'acronymTypeExam' => trim($request->input('txtAcronymTypeExam')),
             'descriptionTypeExam' => trim($request->input('txtDescriptionTypeExam')),
+            'numberExecuteYear' => $request->input('numberExecute'),
             'extensionImageType' => $request->input('fileTypeExamLogo')
         ],
         [
             'nameTypeExam' => ['required'],
             'acronymTypeExam' => ['required'],
             'descriptionTypeExam' => ['required'],
+            'numberExecuteYear' => ['required'],
             'extensionImageType.*' => ['required','mimes:jpg,png,jpeg','size:1024']
         ],
         [
             'nameTypeExam.required' => 'El campo "nameTypeExam" es requerido.',
             'acronymTypeExam.required' => 'El campo "acronymTypeExam" es requerido.',
             'descriptionTypeExam.required' => 'El campo "descriptionTypeExam" es requerido.',
+            'numberExecuteYear.required' => 'El campo "numberExecuteYear" es requerido.',
             'extensionImageType.required' => 'El campo "extensionImageType" es requerido.',
             'extensionImageType.mimes' => 'El archivo "extensionImageType" no tiene un formato permitido.',
             'extensionImageType.size' => 'El campo "extensionImageType" excede el tamaño permitido.'
@@ -51,18 +54,22 @@ class TypeExamValidation
             'nameTypeExam' => trim($request->input('txtNameTypeExam')),
             'acronymTypeExam' => trim($request->input('txtAcronymTypeExam')),
             'descriptionTypeExam' => trim($request->input('txtDescriptionTypeExam')),
+            'numberExecuteYear' => $request->input('numberExecute'),
             'extensionImageType' => $request->input('fileTypeExamLogo')
         ],
         [
             'nameTypeExam' => ['required'],
             'acronymTypeExam' => ['required'],
             'descriptionTypeExam' => ['required'],
-            'extensionImageType.*' => ['mimes:jpg,png,jpeg','size:1024']
+            'numberExecuteYear' => ['required'],
+            'extensionImageType.*' => ['required','mimes:jpg,png,jpeg','size:1024']
         ],
         [
             'nameTypeExam.required' => 'El campo "nameTypeExam" es requerido.',
             'acronymTypeExam.required' => 'El campo "acronymTypeExam" es requerido.',
             'descriptionTypeExam.required' => 'El campo "descriptionTypeExam" es requerido.',
+            'numberExecuteYear.required' => 'El campo "numberExecuteYear" es requerido.',
+            'extensionImageType.required' => 'El campo "extensionImageType" es requerido.',
             'extensionImageType.mimes' => 'El archivo "extensionImageType" no tiene un formato permitido.',
             'extensionImageType.size' => 'El campo "extensionImageType" excede el tamaño permitido.'
         ]);

@@ -103,6 +103,7 @@ nameExam text not null,
 descriptionExam text not null,
 totalPageExam int not null,
 yearExam int not null,
+numberEvaluation int not null DEFAULT 1,
 stateExam varchar(20) not null,
 keywordExam text not null,
 extensionExam varchar(7) not null,
@@ -120,6 +121,7 @@ primary key(idExam)
 ## ALTER TABLE texam
 ## ADD CONSTRAINT fk_idDirection
 ## FOREIGN KEY (idDirection) REFERENCES tdirection(idDirection);
+## ALTER TABLE texam add column numberEvaluation INT NOT NULL DEFAULT 1 AFTER yearExam;
 
 -- falta evaluar
 -- create table tkeywordexam

@@ -58,6 +58,7 @@ class ExamController extends Controller
                 $tDirection= TDirection::find($request->input('selectDirectionExam'));
                 $tDocument = TDocument::whereRaw('key_document=?', ['exam'])->first();
 
+                $tNumberExam = $tTypeExam->numberExecuteYear > 1 ? $request->input('numberEvaluationExecute').'° ': '';
                 $tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
 
                 $tExam=new TExam();
@@ -69,10 +70,11 @@ class ExamController extends Controller
                 $tExam->idSubject = $request->input('selectSubject');
                 $tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
                 $tExam->codeExam = $tDocument->number_document+1;
-                $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
+                $tExam->nameExam = $tNumberExam.'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
+                $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
                 $tExam->stateExam = 'Publico';
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
                 $tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
@@ -166,6 +168,7 @@ class ExamController extends Controller
                 $tDirection = TDirection::find($request->input('selectDirectionExam'));
                 $tDocument  = TDocument::whereRaw('key_document=?', ['exam'])->first();
 
+                $tNumberExam = $tTypeExam->numberExecuteYear > 1 ? $request->input('numberEvaluationExecute').'° ': '';
                 $tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
 
                 $tExam=new TExam();
@@ -177,10 +180,11 @@ class ExamController extends Controller
                 $tExam->idSubject = $request->input('selectSubject');
                 $tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
                 $tExam->codeExam = $tDocument->number_document+1;
-                $tExam->nameExam = 'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
+                $tExam->nameExam = $tNumberExam.'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
+                $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
                 $tExam->stateExam = 'Oculto';
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
                 $tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
@@ -274,6 +278,7 @@ class ExamController extends Controller
                 $tGrade     = TGrade::find($request->input('selectGrade'));
                 $tDirection = TDirection::find($request->input('selectDirectionExam'));
 
+                $tNumberExam = $tTypeExam->numberExecuteYear > 1 ? $request->input('numberEvaluationExecute').'° ': '';
                 $tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
 
                 $tExam=TExam::find($request->input('hdIdExam'));
@@ -282,10 +287,11 @@ class ExamController extends Controller
                 $tExam->idGrade=$request->input('selectGrade');
                 $tExam->idSubject=$request->input('selectSubject');
                 $tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
-                $tExam->nameExam='Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
+                $tExam->nameExam=$tNumberExam.'Evaluación '.strtoupper($tTypeExam->acronymTypeExam).$tSiteExam.' '.$tSubject->nameSubject.' '.$tGrade->numberGrade.'° '.$tGrade->nameGrade;
                 $tExam->descriptionExam=trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam=$request->input('txtTotalPageExam');
                 $tExam->yearExam=$request->input('txtYearExam');
+                $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
                 $tExam->keywordExam=implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
 
                 $tExam->save();
