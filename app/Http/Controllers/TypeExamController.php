@@ -84,9 +84,10 @@ class TypeExamController extends Controller
 
                 $tTypeExam=TTypeExam::find($request->input('hdIdTypeExam'));
 
-                $tTypeExam->nameTypeExam=trim($request->input('txtNameTypeExam'));
-                $tTypeExam->acronymTypeExam=trim($request->input('txtAcronymTypeExam'));
-                $tTypeExam->descriptionTypeExam=trim($request->input('txtDescriptionTypeExam'));
+                $tTypeExam->nameTypeExam = trim($request->input('txtNameTypeExam'));
+                $tTypeExam->acronymTypeExam = trim($request->input('txtAcronymTypeExam'));
+                $tTypeExam->descriptionTypeExam = trim($request->input('txtDescriptionTypeExam'));
+                $tTypeExam->numberExecuteYear = $request->input('numberExecute');
 
                 $tTypeExam->save();
 

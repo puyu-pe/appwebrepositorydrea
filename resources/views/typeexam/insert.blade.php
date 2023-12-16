@@ -14,7 +14,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-2">
+            <label for="numberExecute">Ejecución*</label>
+            <input type="number" name="numberExecute" id="numberExecute" min="1" value="1" class="form-control">
+        </div>
+        <div class="form-group col-md-10">
             <label for="txtDescriptionTypeExam">Breve Descripción*</label>
             <input type="text" id="txtDescriptionTypeExam" name="txtDescriptionTypeExam" class="form-control" autocomplete="off">
         </div>

@@ -28,6 +28,7 @@
                             <th class="text-center">Nombre completo</th>
                             <th class="text-center">Siglas</th>
                             <th class="text-center">Breve Descripción</th>
+                            <th class="text-center">Se aplica</th>
                             <th class="text-center">Fecha y hora de registro</th>
                             <th class="text-center"></th>
                         </tr>
@@ -52,10 +53,13 @@
                                     <div>{{$value->descriptionTypeExam}}</div>
                                 </td>
                                 <td class="text-center">
+                                    <div>{{$value->numberExecuteYear.($value->numberExecuteYear==1 ? ' vez al año' : ' veces al año')}}</div>
+                                </td>
+                                <td class="text-center">
                                     <div>{{date('d-m-Y', strtotime($value->created_at))}}</div>
                                     <div>{{date('g:i A', strtotime($value->created_at))}}</div>
                                 </td>
-                                <td class="text-center" style="width: 80px;">
+                                <td class="text-center" style="width: 60px;">
                                     <span class="btn btn-info btn-xs glyphicon glyphicon-pencil" data-toggle="tooltip" title="Modificar datos" data-placement="left" onclick="ajaxDialog('divGeneralContainer', 'modal-lg', 'Modificar datos del tipo de examen', {_token: '{{csrf_token()}}', idTypeExam: '{{$value->idTypeExam}}'}, '{{url('tipoexamen/editar')}}', 'POST', null, null, false, true);"></span>
                                     <span class="btn btn-danger btn-xs glyphicon glyphicon-trash" data-toggle="tooltip" title="Eliminar tipo evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').show(); window.location.href='{{url('tipoexamen/eliminar/'.$value->idTypeExam)}}'; });"></span>
                                 </td>
