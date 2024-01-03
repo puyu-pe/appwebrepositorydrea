@@ -22,6 +22,11 @@ class GeneralController extends Controller
         ]);
     }
 
+    public function actionPrincipal()
+    {
+        return view('frontoffice/template');
+    }
+
     public function actionWelcomeDashboard()
     {
         return view('general/panel');

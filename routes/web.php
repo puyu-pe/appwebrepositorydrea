@@ -64,4 +64,5 @@ Route::get('examen/ver/{codeExam}',[ExamController::class,'actionGetExam'])->mid
 
 //Route::match(['get','post'],'cuestionario/registrar',[QuestionController::class,'actionRegister'])->middleware('GenericMiddleware:cuestionario/registrar');
 
+Route::get('principal',[GeneralController::class,'actionPrincipal'])->middleware('GenericMiddleware:principal');
 ?>
