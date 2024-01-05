@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Educate - University, Online Courses, School & Education Template</title>
+        <title>Repositorio de evaluaciones DRE Apurímac</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Place favicon.ico in the root directory -->
@@ -94,176 +94,7 @@
     <header>
         <div class="it-header-transparent">
             <!-- header-area-start -->
-            <div id="header-sticky" class="it-header-2-area it-header-3-style it-header-5-style">
-                <div class="container">
-                <div class="it-header-2-plr">
-                    <div class="it-header-wrap p-relative">
-                        <div class="row align-items-center">
-                            <div class="col-xl-2 col-6">
-                            <div class="it-header-2-logo">
-                                <a href="index.html"><img src="{{asset('assets/frontoffice/img/logo/logo-yellow.png')}}" alt="principal"></a>
-                            </div>
-                            </div>
-                            <div class="col-xl-7 d-none d-xl-block">
-                            <div class="it-header-2-main-menu">
-                                <nav class="it-menu-content">
-                                    <ul>
-                                        <li class="has-dropdown p-static">
-                                        <a href="index.html">home</a>
-                                        <div class="it-submenu submenu has-home-img">
-                                            <div class="row gx-6 row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-5">
-                                                <div class="col home-img">
-                                                    <div class="home-img-thumb mb-15">
-                                                    <img src="{{asset('assets/frontoffice/img/menu/home-1.jpg')}}" alt>
-                                                    <div class="home-img-btn">
-                                                        <a class="it-btn-white-sm" href="index.html">Multi Page</a>
-                                                        <a class="it-btn-white-sm" href="index-one-page.html">One Page</a>
-                                                    </div>
-                                                    </div>
-                                                    <div class="home-img-content text-center">
-                                                    <h4 class="home-img-title">
-                                                        <a href="index.html">Home 01</a>
-                                                    </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="col home-img">
-                                                    <div class="home-img-thumb mb-15">
-                                                    <img src="{{asset('assets/frontoffice/img/menu/home-2.jpg')}}" alt="">
-                                                    <div class="home-img-btn">
-                                                        <a class="it-btn-white-sm" href="index-2.html">Multi Page</a>
-                                                        <a class="it-btn-white-sm" href="index-2-one-page.html">One Page</a>
-                                                    </div>
-                                                    </div>
-                                                    <div class="home-img-content text-center">
-                                                    <h4 class="home-img-title">
-                                                        <a href="index-2.html">Home 02</a>
-                                                    </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="col home-img">
-                                                    <div class="home-img-thumb mb-15">
-                                                    <img src="{{asset('assets/frontoffice/img/menu/home-3.jpg')}}" alt="">
-                                                    <div class="home-img-btn">
-                                                        <a class="it-btn-white-sm" href="index-3.html">Multi Page</a>
-                                                        <a class="it-btn-white-sm" href="index-3-one-page.html">One Page</a>
-                                                    </div>
-                                                    </div>
-                                                    <div class="home-img-content text-center">
-                                                    <h4 class="home-img-title">
-                                                        <a href="index-3.html">Home 03</a>
-                                                    </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="col home-img">
-                                                    <div class="home-img-thumb mb-15">
-                                                    <img src="{{asset('assets/frontoffice/img/menu/home-4.jpg')}}" alt="">
-                                                    <div class="home-img-btn">
-                                                        <a class="it-btn-white-sm" href="index-4.html">Multi Page</a>
-                                                        <a class="it-btn-white-sm" href="index-4-one-page.html">One Page</a>
-                                                    </div>
-                                                    </div>
-                                                    <div class="home-img-content text-center">
-                                                    <h4 class="home-img-title">
-                                                        <a href="index-4.html">Home 04</a>
-                                                    </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="col home-img">
-                                                    <div class="home-img-thumb mb-15">
-                                                    <img src="{{asset('assets/frontoffice/img/menu/home-5.jpg')}}" alt="">
-                                                    <div class="home-img-btn">
-                                                        <a class="it-btn-white-sm" href="index-5.html">Multi Page</a>
-                                                        <a class="it-btn-white-sm" href="index-5-one-page.html">One Page</a>
-                                                    </div>
-                                                    </div>
-                                                    <div class="home-img-content text-center">
-                                                    <h4 class="home-img-title">
-                                                        <a href="index-5.html">Home 05</a>
-                                                    </h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </li>
-                                        <li><a href="about-us.html">about us</a></li>
-                                        <li class="has-dropdown">
-                                        <a href="services-1.html">services</a>
-                                        <ul class="it-submenu submenu">
-                                            <li><a href="services-1.html">services 01</a></li>
-                                            <li><a href="services-2.html">services 02</a></li>
-                                            <li><a href="services-3.html">services 03</a></li>
-                                            <li><a href="service-details.html">services details</a></li>
-                                        </ul>
-                                        </li>
-                                        <li class="has-dropdown">
-                                        <a href="#">pages</a>
-                                        <ul class="it-submenu submenu has-megamenu">
-                                            <li><a href="course-1.html">Course 01</a></li>
-                                            <li><a href="course-2.html">Course 02</a></li>
-                                            <li><a href="course-details.html">Course Details</a></li>
-                                            <li><a href="teacher.html">Teacher</a></li>
-                                            <li><a href="teacher-details.html">Teacher Details</a></li>
-                                            <li><a href="price.html">Price</a></li>
-                                            <li><a href="event.html">Event</a></li>
-                                            <li><a href="event-details.html">Event Details</a></li>
-                                            <li><a href="cart.html">Cart</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="testimonial.html">Testimonial</a></li>
-                                            <li><a href="Instructor-registration.html">Instructor Registration</a></li>
-                                            <li><a href="student-registration-1.html">Student Registration 01</a></li>
-                                            <li><a href="student-registration-2.html">Student Registration 02</a></li>
-                                            <li><a href="faq.html">Faq</a></li>
-                                            <li><a href="signin.html">Sign IN</a></li>
-                                            <li><a href="signup.html">Sign UP</a></li>
-                                            <li><a href="404.html">Error</a></li>
-                                        </ul>
-                                        </li>
-                                        <li class="has-dropdown">
-                                        <a href="blog-1.html">blog</a>
-                                        <ul class="it-submenu submenu">
-                                            <li><a href="blog-1.html">Blog 01</a></li>
-                                            <li><a href="blog-2.html">BLog 02</a></li>
-                                            <li><a href="blog-sidebar.html">Blog Sidebar</a></li>
-                                            <li><a href="blog-details.html">Blog details</a></li>
-                                        </ul>
-                                        </li>
-                                        <li><a href="contact.html">contact</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            </div>
-                            <div class="col-xl-3 col-6">
-                            <div class="it-header-2-right d-flex align-items-center justify-content-end">
-                                <div class="it-header-2-icon">
-                                    <a href="cart.html">
-                                        <i class="fa-regular fa-cart-shopping"></i>
-                                    </a>
-                                </div>
-                                <div class="it-header-2-button d-none d-md-block">
-                                    <a class="it-btn-white" href="contact.html">
-                                        <span>
-                                        Contact Us
-                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                                stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="it-header-2-bar d-xl-none">
-                                    <button class="it-menu-bar"><i class="fa-solid fa-bars"></i></button>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
+            @include('frontoffice/partial/menu')
             <!-- header-area-end -->
         </div>
     </header>
@@ -290,9 +121,9 @@
                 <div class="col-xl-6 col-lg-7">
                     <div class="it-hero-3-title-wrap it-hero-3-ptb">
                         <div class="it-hero-3-title-box">
-                            <h1 class="it-hero-3-title">an online Education Platform For Global <span>Learners</span></h1>
-                            <p>We are experienced in educationl platform and skilled strategies <br>
-                            for the success of our online learning.</p>
+                            <h1 class="it-hero-3-title">Bienvenido al repositorio web de <span>Evaluaciones</span></h1>
+                            <p>Un sitio que se encargar de gestionar <br>
+                            las evaluaciones que las DRE a nivel nacional realizan.</p>
                         </div>
                         <div class="it-hero-3-btn-box d-flex align-items-center">
                             <a class="it-btn-white" href="course-details.html">
@@ -1207,108 +1038,10 @@
         </main>
         <footer>
             <!-- footer-area-start -->
-            <div class="it-footer-area it-footer-bg black-bg pt-120 pb-70" data-background="{{asset('assets/frontoffice/img/footer/bg-1-1.jpg')}}">
-                <div class="container">
-                    <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 mb-50">
-                        <div class="it-footer-widget footer-col-1">
-                            <div class="it-footer-logo pb-25">
-                                <a href="index-html"><img src="{{asset('assets/frontoffice/img/logo/logo-yellow.png')}}" alt=""></a>
-                            </div>
-                            <div class="it-footer-text pb-5">
-                                <p>Interdum velit laoreet id donec ultrices <br> tincidunt arcu. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu.</p>
-                            </div>
-                            <div class="it-footer-social">
-                                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                                <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
-                                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-50">
-                        <div class="it-footer-widget footer-col-2">
-                            <h4 class="it-footer-title">our services:</h4>
-                            <div class="it-footer-list">
-                                <ul>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>Web development</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>UI/UX Design</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>Management</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>Digital Marketing</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>Blog News</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 mb-50">
-                        <div class="it-footer-widget footer-col-3">
-                            <h4 class="it-footer-title">quick links:</h4>
-                            <div class="it-footer-list">
-                                <ul>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>templates</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>blog and article</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>integrations</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>webinars</a></li>
-                                <li><a href="#"><i class="fa-regular fa-angle-right"></i>privacy & policy</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-50">
-                        <div class="it-footer-widget footer-col-4">
-                            <h4 class="it-footer-title">Gallery</h4>
-                            <div class="it-footer-gallery-box">
-                                <div class="row gx-5">
-                                <div class="col-md-4 col-4">
-                                    <div class="it-footer-thumb mb-10">
-                                        <img src="{{asset('assets/frontoffice/img/footer/thumb-1-1.png')}}" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4">
-                                    <div class="it-footer-thumb mb-10">
-                                        <img src="{{asset('assets/frontoffice/img/footer/thumb-1-2.png')}}" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4 mb-10">
-                                    <div class="it-footer-thumb">
-                                        <img src="{{asset('assets/frontoffice/img/footer/thumb-1-3.png')}}" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4">
-                                    <div class="it-footer-thumb">
-                                        <img src="{{asset('assets/frontoffice/img/footer/thumb-1-4.png')}}" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4">
-                                    <div class="it-footer-thumb">
-                                        <img src="{{asset('assets/frontoffice/img/footer/thumb-1-5.png')}}" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4">
-                                    <div class="it-footer-thumb">
-                                        <img src="{{asset('assets/frontoffice/img/footer/thumb-1-6.png')}}" alt="">
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+                @include('frontoffice/partial/footer')
             <!-- footer-area-end -->
             <!-- copy-right area start -->
-            <div class="it-copyright-area it-copyright-height">
-                <div class="container">
-                    <div class="row">
-                    <div class="col-12 wow itfadeUp" data-wow-duration=".9s" data-wow-delay=".3s">
-                        <div class="it-copyright-text text-center">
-                            <p>Copyright © 2023  <a href="#">Educate </a> || All Rights Reserved</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+                @include('frontoffice/partial/copy')
             <!-- copy-right area end -->
         </footer>
         <!-- JS here -->
