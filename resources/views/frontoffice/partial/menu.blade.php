@@ -29,7 +29,7 @@
                                     </ul>
                                 </li>
                             @endif
-                            <li id="mContact" class="{{Session::get('menu')=='mContact' ? 'active' : ''}}"><a href="contact.html">Contáctanos</a></li>
+                            <li id="mContact" class="{{Session::get('menu')=='mContact' ? 'active' : ''}}"><a href="{{url('general/contacto')}}">Contáctanos</a></li>
                         </ul>
                     </nav>
                 </div>

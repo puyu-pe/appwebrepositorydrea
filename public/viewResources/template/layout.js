@@ -16,8 +16,6 @@
 
  });
 
- $('[data-toggle="tooltip"]').tooltip();
-
  function openCloseMenu()
   {
     localStorage.setItem('collapseMenuAppBox', !$('body').hasClass('sidebar-collapse') ? 'close': 'open');

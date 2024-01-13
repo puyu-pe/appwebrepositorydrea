@@ -1,4 +1,4 @@
-@extends('template.layout')
+@extends('frontoffice.layout')
 @section('title', 'Formulario de contacto')
 @section('generalBody')
 <div class="nav-tabs-custom">

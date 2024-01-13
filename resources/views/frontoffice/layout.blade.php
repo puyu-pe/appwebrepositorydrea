@@ -22,10 +22,42 @@
         <link rel="stylesheet" href="{{asset('assets/frontoffice/css/magnific-popup.css')}}">
         <link rel="stylesheet" href="{{asset('assets/frontoffice/css/spacing.css')}}">
         <link rel="stylesheet" href="{{asset('assets/frontoffice/css/main.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.css')}}">
+        <link rel="stylesheet" href="{{asset('css/layout.css')}}">
         <link rel="stylesheet" href="{{asset('css/cssPagination.css')}}">
         <link rel="stylesheet" href="{{asset('css/cssExamType.css')}}">
+
+        <script src="{{asset('assets/frontoffice/js/jquery.js')}}"></script>
     </head>
     <body>
+        <script>
+            $(function()
+            {
+              @if(Session::has('globalMessage'))
+                @if(Session::get('type')=='error' || Session::get('type')=='exception')
+                  @foreach(Session::get('globalMessage') as $value)
+                    @if(trim($value)!='')
+                      new PNotify(
+                        {
+                          title : 'No se pudo proceder',
+                          text : '{{$value}}',
+                          type : 'error'
+                        });
+                    @endif
+                  @endforeach
+                @else
+                    swal(
+                      {
+                        title: '{{Session::get('type')=='success' ? 'Correcto' : 'Alerta'}}',
+                        text: '{!!Session::get('globalMessage')[0]!!}',
+                        icon: '{{Session::get('type')}}',
+                        timer: '{{Session::get('type')=='success' ? '3000': '8000'}}',
+                        html: true
+                      });
+                @endif
+            @endif
+            });
+          </script>
         <!-- preloader -->
         <div id="preloader">
             <div class="preloader">
@@ -112,7 +144,6 @@
             <!-- copy-right area end -->
         </footer>
         <!-- JS here -->
-        <script src="{{asset('assets/frontoffice/js/jquery.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/waypoints.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/bootstrap.bundle.min.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/slick.min.js')}}"></script>
@@ -126,5 +157,11 @@
         <script src="{{asset('assets/frontoffice/js/imagesloaded-pkgd.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/ajax-form.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/main.js')}}"></script>
+        <script src="{{asset('assets/backoffice/plugins/sweetalert/sweetalert.min.js')}}"></script>
+        <script src="{{asset('js/codideepHelpers.js')}}"></script>
+        <script src="{{asset('assets/backoffice/plugins/formvalidation/formValidation.min.js')}}"></script>
+        <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
+        <script src="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.js')}}"></script>
+        <script src="{{asset('viewResources/template/layout.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
     </body>
 </html>
