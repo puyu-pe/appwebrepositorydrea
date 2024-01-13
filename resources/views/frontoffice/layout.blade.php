@@ -1,0 +1,130 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Repositorio de evaluaciones DRE Apurímac</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Place favicon.ico in the root directory -->
+        <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/frontoffice/img/logo/favicon.png')}}">
+
+        <!-- CSS here -->
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/animate.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/custom-animation.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/slick.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/nice-select.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/flaticon_xoft.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/swiper-bundle.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/meanmenu.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/font-awesome-pro.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/magnific-popup.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/spacing.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/frontoffice/css/main.css')}}">
+        <link rel="stylesheet" href="{{asset('css/cssPagination.css')}}">
+        <link rel="stylesheet" href="{{asset('css/cssExamType.css')}}">
+    </head>
+    <body>
+        <!-- preloader -->
+        <div id="preloader">
+            <div class="preloader">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+         <!-- preloader end  -->
+        <!-- back-to-top-start  -->
+        <button class="scroll-top scroll-to-target" data-target="html">
+            <i class="far fa-angle-double-up"></i>
+        </button>
+        <!-- back-to-top-end  -->
+
+        <!-- it-offcanvus-area-start -->
+        <div class="it-offcanvas-area">
+            <div class="itoffcanvas">
+                <div class="it-offcanva-bottom-shape d-none d-xxl-block">
+                </div>
+                <div class="itoffcanvas__close-btn">
+                    <button class="close-btn"><i class="fal fa-times"></i></button>
+                </div>
+                <div class="itoffcanvas__logo">
+                    <a href="index.html">
+                    <img src="{{asset('assets/frontoffice/img/logo/logo-white.png')}}" alt="">
+                    </a>
+                </div>
+                <div class="itoffcanvas__text">
+                    <p>Suspendisse interdum consectetur libero id. Fermentum leo vel orci porta non. Euismod viverra nibh
+                    cras pulvinar suspen.</p>
+                </div>
+                <div class="it-menu-mobile"></div>
+                <div class="itoffcanvas__info">
+                    <h3 class="offcanva-title">Get In Touch</h3>
+                    <div class="it-info-wrapper mb-20 d-flex align-items-center">
+                    <div class="itoffcanvas__info-icon">
+                        <a href="#"><i class="fal fa-envelope"></i></a>
+                    </div>
+                    <div class="itoffcanvas__info-address">
+                        <span>Email</span>
+                        <a href="maito:hello@yourmail.com">hello@yourmail.com</a>
+                    </div>
+                    </div>
+                    <div class="it-info-wrapper mb-20 d-flex align-items-center">
+                    <div class="itoffcanvas__info-icon">
+                        <a href="#"><i class="fal fa-phone-alt"></i></a>
+                    </div>
+                    <div class="itoffcanvas__info-address">
+                        <span>Phone</span>
+                        <a href="tel:(00)45611227890">(00) 456 1122 7890</a>
+                    </div>
+                    </div>
+                    <div class="it-info-wrapper mb-20 d-flex align-items-center">
+                    <div class="itoffcanvas__info-icon">
+                        <a href="#"><i class="fas fa-map-marker-alt"></i></a>
+                    </div>
+                    <div class="itoffcanvas__info-address">
+                        <span>Location</span>
+                        <a href="htits://www.google.com/maps/@37.4801311,22.8928877,3z" target="_blank">Riverside 255,
+                            San Francisco, USA </a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body-overlay"></div>
+        <!-- it-offcanvus-area-end -->
+        <header>
+            <div class="it-header-transparent">
+                <!-- header-area-start -->
+                @include('frontoffice/partial/menu')
+                <!-- header-area-end -->
+            </div>
+        </header>
+        <main>
+            @yield('generalBody')
+        </main>
+        <footer>
+            <!-- footer-area-start -->
+                @include('frontoffice/partial/footer')
+            <!-- footer-area-end -->
+            <!-- copy-right area start -->
+                @include('frontoffice/partial/copy')
+            <!-- copy-right area end -->
+        </footer>
+        <!-- JS here -->
+        <script src="{{asset('assets/frontoffice/js/jquery.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/waypoints.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/slick.min.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/magnific-popup.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/purecounter.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/wow.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/countdown.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/nice-select.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/swiper-bundle.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/isotope-pkgd.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/imagesloaded-pkgd.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/ajax-form.js')}}"></script>
+        <script src="{{asset('assets/frontoffice/js/main.js')}}"></script>
+    </body>
+</html>
