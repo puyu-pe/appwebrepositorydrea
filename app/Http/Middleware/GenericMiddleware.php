@@ -13,6 +13,7 @@ class GenericMiddleware
         $urlAccess=false;
         $allowUrl=
         [
+            ['Público', 'principal', 'mTemplate', null],
             ['Público', '/', 'mTemplate', null],
             ['Administrador', 'sistema/generarbackup', 'mSetting', 'mBackupSystem'],
             ['Administrador', 'sistema/descargar', 'mSetting', 'mDownloadExam'],
