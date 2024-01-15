@@ -54,5 +54,5 @@
         </div>
     </div>
 </div>
-<script src="{{asset('viewResources/subject/getall.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/subject/getall.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
 @endsection

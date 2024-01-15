@@ -22,4 +22,4 @@
         </div>
     </div>
 </form>
-<script src="{{asset('viewResources/grade/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/grade/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>

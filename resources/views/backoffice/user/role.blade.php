@@ -20,4 +20,4 @@
         </div>
     </div>
 </form>
-<script src="{{asset('viewResources/user/role.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/user/role.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>

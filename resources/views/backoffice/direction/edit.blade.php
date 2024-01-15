@@ -34,4 +34,4 @@
         </div>
     </div>
 </form>
-<script src="{{asset('viewResources/direction/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/direction/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>

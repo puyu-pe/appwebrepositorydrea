@@ -77,4 +77,4 @@
         </div>
     </div>
 </form>
-<script src="{{asset('viewResources/exam/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/exam/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>

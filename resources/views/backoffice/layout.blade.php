@@ -201,6 +201,6 @@
       <script src="{{asset('assets/backoffice/plugins/formvalidation/formValidation.min.js')}}"></script>
       <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
       <script src="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.js')}}"></script>
-      <script src="{{asset('viewResources/template/layout.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+      <script src="{{asset('assets/backoffice/viewResources/template/layout.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
   </body>
 </html>

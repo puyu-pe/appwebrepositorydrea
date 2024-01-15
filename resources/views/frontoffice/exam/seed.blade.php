@@ -54,5 +54,4 @@
         </div>
     </div>
 </div>
-<script src="{{asset('viewResources/exam/seed.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
 @endsection

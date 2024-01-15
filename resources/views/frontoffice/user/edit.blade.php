@@ -122,5 +122,5 @@
         </div>
     </div>
 </div>
-<script src="{{asset('viewResources/user/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/frontoffice/viewResources/user/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
 @endsection

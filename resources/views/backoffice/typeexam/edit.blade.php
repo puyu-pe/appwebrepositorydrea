@@ -33,4 +33,4 @@
         </div>
     </div>
 </form>
-<script src="{{asset('viewResources/typeexam/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/typeexam/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>

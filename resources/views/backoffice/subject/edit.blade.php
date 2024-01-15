@@ -15,4 +15,4 @@
         </div>
     </div>
 </form>
-<script src="{{asset('viewResources/subject/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/subject/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>

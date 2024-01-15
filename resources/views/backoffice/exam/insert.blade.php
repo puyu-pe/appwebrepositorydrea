@@ -131,5 +131,5 @@
         </div>
     </div>
 </div>
-<script src="{{asset('viewResources/exam/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/backoffice/viewResources/exam/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
 @endsection

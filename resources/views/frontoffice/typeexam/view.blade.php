@@ -68,5 +68,5 @@
     </div>
  </section>
  <!-- cart-area-end -->
-<script src="{{asset('viewResources/typeexam/view.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/frontoffice/viewResources/typeexam/view.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
 @endsection

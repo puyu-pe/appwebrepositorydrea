@@ -113,6 +113,6 @@
         <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
         <script src="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.js')}}"></script>
         <script src="{{asset('assets/backoffice/plugins/sweetalert/sweetalert.min.js')}}"></script>
-        <script src="{{asset('viewResources/user/register.js')}}?x={{env('CACHE_LAST_UPDATE')}}"></script>
+        <script src="{{asset('assets/backoffice/viewResources/user/register.js')}}?x={{env('CACHE_LAST_UPDATE')}}"></script>
     </body>
 </html>
