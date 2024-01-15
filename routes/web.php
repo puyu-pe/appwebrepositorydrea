@@ -8,7 +8,6 @@ use App\Http\Controllers\BackOffice\SubjectController as BackSubjectController;
 use App\Http\Controllers\BackOffice\ContactController as BackContactController;
 use App\Http\Controllers\BackOffice\TypeExamController as BackTypeExamController;
 use App\Http\Controllers\BackOffice\ExamController as BackExamController;
-use App\Http\Controllers\QuestionController;
 
 use App\Http\Controllers\Frontoffice\GeneralController as FrontGeneralOffice;
 use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
