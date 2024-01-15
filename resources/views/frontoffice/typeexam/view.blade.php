@@ -1,7 +1,7 @@
 @extends('frontoffice.layout')
 @section('generalBody')
  <!-- breadcrumb-area-start -->
- <div class="it-breadcrumb-area it-breadcrumb-bg" data-background="{{asset('assets/frontoffice/assets/img/breadcrumb/breadcrumb.jpg')}}">
+ <div class="it-breadcrumb-area it-breadcrumb-bg" data-background="{{asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg')}}">
     <div class="container">
        <div class="row ">
           <div class="col-md-12">
