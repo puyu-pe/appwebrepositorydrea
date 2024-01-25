@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\BackOffice;
+namespace App\Http\Controllers\Backoffice;
 
 use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;

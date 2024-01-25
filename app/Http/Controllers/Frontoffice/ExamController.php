@@ -15,7 +15,6 @@ use App\Models\TSubject;
 use App\Models\TTypeExam;
 use App\Models\TUserExam;
 use App\Validation\ExamValidation;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExamController extends Controller
 {

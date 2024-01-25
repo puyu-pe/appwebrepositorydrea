@@ -7,7 +7,6 @@ use App\Validation\UserValidation;
 
 use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager;
-use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\TUser;

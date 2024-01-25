@@ -98,4 +98,3 @@ class GeneralController extends Controller
         }
     }
 }
-?>

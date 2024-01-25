@@ -56,4 +56,3 @@ class ContactController extends Controller
         return view('frontoffice/contact/insert');
     }
 }
-?>
