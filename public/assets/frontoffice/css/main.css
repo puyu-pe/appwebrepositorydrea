@@ -19,11 +19,11 @@
 	07. choose css start
 	08. class css start
 	09. contact css start
-	10. course css start 
+	10. course css start
 	11. cta css start
-	12. error css start 
+	12. error css start
 	13. event css start
-	14. faq css start 
+	14. faq css start
 	15. feature css start
 	16. footer css start
 	17. funfact css start
@@ -81,7 +81,7 @@
 }
 
 /*---------------------------------
-	typography css start 
+	typography css start
 ---------------------------------*/
 body {
   font-family: var(--it-ff-body);
@@ -335,7 +335,7 @@ input[type=color] {
 }
 
 /*---------------------------------
-    common classes css start 
+    common classes css start
 ---------------------------------*/
 .w-img img {
   width: 100%;
@@ -2638,7 +2638,7 @@ input[type=color] {
   transition: 0.3s;
   padding: 21px 0;
   display: inline-block;
-  text-transform: capitalize;
+  /*text-transform: capitalize;*/
   font-family: var(--it-ff-heading);
   color: var(--it-common-black);
 }

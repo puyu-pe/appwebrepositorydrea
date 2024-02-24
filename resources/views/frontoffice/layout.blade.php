@@ -81,24 +81,23 @@
                     <button class="close-btn"><i class="fal fa-times"></i></button>
                 </div>
                 <div class="itoffcanvas__logo">
-                    <a href="index.html">
-                    <img src="{{asset('assets/frontoffice/img/logo/logo-white.png')}}" alt="">
+                    <a href="{{url('/')}}">
+                    <img src="{{asset('img/logo.png')}}" alt="">
                     </a>
                 </div>
                 <div class="itoffcanvas__text">
-                    <p>Suspendisse interdum consectetur libero id. Fermentum leo vel orci porta non. Euismod viverra nibh
-                    cras pulvinar suspen.</p>
+                    <p>Plataforma web que gestiona las evaluaciones de las DRE a nivel nacional</p>
                 </div>
                 <div class="it-menu-mobile"></div>
                 <div class="itoffcanvas__info">
-                    <h3 class="offcanva-title">Get In Touch</h3>
+                    <h3 class="offcanva-title">Ponte en contacto</h3>
                     <div class="it-info-wrapper mb-20 d-flex align-items-center">
                     <div class="itoffcanvas__info-icon">
                         <a href="#"><i class="fal fa-envelope"></i></a>
                     </div>
                     <div class="itoffcanvas__info-address">
-                        <span>Email</span>
-                        <a href="maito:hello@yourmail.com">hello@yourmail.com</a>
+                        <span>Correo : </span>
+                        <a href="maito:informatica.dre@dreapurimac.gob.pe">informatica.dre@dreapurimac.gob.pe</a>
                     </div>
                     </div>
                     <div class="it-info-wrapper mb-20 d-flex align-items-center">
@@ -106,8 +105,8 @@
                         <a href="#"><i class="fal fa-phone-alt"></i></a>
                     </div>
                     <div class="itoffcanvas__info-address">
-                        <span>Phone</span>
-                        <a href="tel:(00)45611227890">(00) 456 1122 7890</a>
+                        <span>Teléfono Ñ </span>
+                        <a href="tel:(00)45611227890">(083) - 321066</a>
                     </div>
                     </div>
                     <div class="it-info-wrapper mb-20 d-flex align-items-center">
@@ -115,9 +114,9 @@
                         <a href="#"><i class="fas fa-map-marker-alt"></i></a>
                     </div>
                     <div class="itoffcanvas__info-address">
-                        <span>Location</span>
-                        <a href="htits://www.google.com/maps/@37.4801311,22.8928877,3z" target="_blank">Riverside 255,
-                            San Francisco, USA </a>
+                        <span>Dirección : </span>
+                        <a href="htits://www.google.com/maps/@37.4801311,22.8928877,3z" target="_blank">Av. Pachacutec
+                            N° 300  Abancay</a>
                     </div>
                     </div>
                 </div>
