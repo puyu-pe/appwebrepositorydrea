@@ -130,59 +130,62 @@
                     </div>
                     <div class="col-xl-6 col-lg-6">
                         <div class="it-about-3-title-box">
-                <span class="it-section-subtitle-4">
-                    <img src="{{asset('assets/frontoffice/img/category/title.svg')}}" alt="">
-                    Sobre nosotros
-                </span>
-                            <h2 class="it-section-title-3 pb-30">Bienvenido al repositorio de evaluaciones <span>DREA</span>
-                            </h2>
-                            <p>En la DREA, nos comprometemos a proporcionar las evaluaciones y recursos educativos útiles
+                            <span class="it-section-subtitle-4">
+                                <img src="{{asset('assets/frontoffice/img/category/title.svg')}}" alt="">
+                                Sobre nosotros
+                            </span>
+                            <h2 class="it-section-title-3 pb-30">Bienvenido al repositorio de evaluaciones <span>DREA</span></h2>
+                            <p>
+                                En la DREA, nos comprometemos a proporcionar las evaluaciones y recursos educativos útiles
                                 y accesibles para estudiantes y docentes para que los estudiantes puedan practicar y
-                                prepararse de manera efectiva para futuras evaluaciones.</p>
-                        </div>
-                        <div class="it-about-3-mv-box">
-                            <div class="row">
-                                <div class="col-xl-12">
-                                    <div class="it-about-4-list-wrap d-flex align-items-start">
-                                        <div class="it-about-4-list-icon">
-                                            <span><i class="flaticon-share"></i></span>
-                                        </div>
-                                        <div class="it-about-3-mv-item">
-                                            <span class="it-about-3-mv-title">Accesibilidad</span>
-                                            <p> Nos esforzamos por garantizar que nuestros recursos sean accesibles para
-                                                todos, sin importar su ubicación geográfica o momento</p>
+                                prepararse de manera efectiva para futuras evaluaciones.
+                            </p>
+                            <div class="it-about-3-mv-box">
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="it-about-4-list-wrap d-flex align-items-start">
+                                            <div class="it-about-4-list-icon">
+                                                <span><i class="flaticon-share"></i></span>
+                                            </div>
+                                            <div class="it-about-3-mv-item">
+                                                <span class="it-about-3-mv-title">Accesibilidad</span>
+                                                <p> Nos esforzamos por garantizar que nuestros recursos sean accesibles
+                                                    para
+                                                    todos, sin importar su ubicación geográfica o momento</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="it-about-4-list-wrap d-flex align-items-start">
-                                        <div class="it-about-4-list-icon">
-                                            <span><i class="flaticon-study"></i></span>
-                                        </div>
-                                        <div class="it-about-3-mv-item">
-                                            <span class="it-about-3-mv-title">Apoyo</span>
-                                            <p>Estamos para apoyar a los estudiantes y docentes en su viaje educativo,
-                                                brindando recursos y orientación en linea</p>
+                                    <div class="col-xl-12">
+                                        <div class="it-about-4-list-wrap d-flex align-items-start">
+                                            <div class="it-about-4-list-icon">
+                                                <span><i class="flaticon-study"></i></span>
+                                            </div>
+                                            <div class="it-about-3-mv-item">
+                                                <span class="it-about-3-mv-title">Apoyo</span>
+                                                <p>Estamos para apoyar a los estudiantes y docentes en su viaje
+                                                    educativo,
+                                                    brindando recursos y orientación en linea</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="it-about-3-btn-box p-relative">
-                            <a class="it-btn-blue" href="contact.html">
-                    <span>
-                    Conocer mas
-                    <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    </span>
-                            </a>
-                            <div class="it-about-3-left-shape-3 d-none d-xl-block">
-                                <img src="{{asset('assets/frontoffice/img/about/about-3-shap-3.png')}}" alt="">
+                            <div class="it-about-3-btn-box p-relative">
+                                <a class="it-btn-blue" href="contact.html">
+                                    <span>
+                                    Conocer mas
+                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                </a>
+                                <div class="it-about-3-left-shape-3 d-none d-xl-block">
+                                    <img src="{{asset('assets/frontoffice/img/about/about-3-shap-3.png')}}" alt="">
+                                </div>
                             </div>
                         </div>
                     </div>
