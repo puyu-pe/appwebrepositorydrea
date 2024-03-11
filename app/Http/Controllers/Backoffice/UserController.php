@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
+use App\Models\TResetPassword;
 use App\Models\TRole;
 use App\Validation\UserValidation;
 
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use App\Models\TUser;
 use App\Models\TUserRole;
@@ -68,48 +70,45 @@ class UserController extends Controller
         return view('backoffice/user/login');
     }
 
-    public function actionRecuperate(Request $request, Encrypter $encrypter, SessionManager $sessionManager)
+    public function actionRecuperate(Request $request)
     {
         if($_POST)
         {
             try
             {
-                $this->_so->mo->listMessage=(new UserValidation())->validationLogin($request);
+                $this->_so->mo->listMessage=(new UserValidation())->validationRecuperate($request);
 
                 if($this->_so->mo->existsMessage())
                 {
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage,'usuario/acceder');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage,'usuario/recuperar');
                 }
 
                 $tUser=TUser::whereRaw('email=?',[$request->input('txtEmail')])->first();
 
-                if(($tUser==null || ($tUser!=null && $encrypter->decrypt($tUser->password)!=$request->input('passPassword'))))
+                if(!$tUser)
                 {
-                    return PlatformHelper::redirectError(['Usuario o Contraseña Incorrecto'],'usuario/acceder');
+                    return PlatformHelper::redirectError(['Correo electrónico no encontrado.'],'usuario/recuperar');
                 }
 
-                if($tUser->state=='Deshabilitado')
-                {
-                    return PlatformHelper::redirectError(['No tiene Acceso al Sistema'],'usuario/acceder');
-                }
+                $token = Str::random(100);
 
-                $sessionManager->put('idUser',$tUser->idUser);
-                $sessionManager->put('email',$tUser->email);
-                $sessionManager->put('firstName',$tUser->firstName);
-                $sessionManager->put('surName',$tUser->surName);
-                $sessionManager->put('numberDni',$tUser->numberDni);
-                $sessionManager->put('avatarExtension', $tUser->avatarExtension);
-                $sessionManager->put('updated_at',$tUser->updated_at);
-                $sessionManager->put('mainRole',$tUser->roleUser);
+                $tResetPassword = new TResetPassword();
 
-                return PlatformHelper::redirectCorrect(['Bienvenido al sistema, '.$tUser->firstName.' '.$tUser->surName.'.'],'/');
+                $tResetPassword->idResetPassword = uniqid();
+                $tResetPassword->idUser = $tUser->idUser;
+                $tResetPassword->token = hash('sha256', $token);
+                $tResetPassword->isRecuperate = 1;
+
+                $tResetPassword->save();
+
+                return PlatformHelper::redirectCorrect(['Se le envio el link de recuperación al correo mencionado.'],'usuario/acceder');
             }
             catch(\Exception $e)
             {
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__,$e,'usuario/acceder');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__,$e,'usuario/recuperar');
             }
         }
-        return view('user/recuperate');
+        return view('backoffice/user/recuperate');
     }
 
     public function actionLogout(SessionManager $sessionManager)
@@ -377,6 +376,53 @@ class UserController extends Controller
             'tRole' => $tRole,
             'tUser' => $tUser,
             'tUserRole' => $tUserRole
+        ]);
+    }
+
+    public function actionReset($token, Request $request, Encrypter $encrypter)
+    {
+        if($_POST && $request->has('hdIdUser'))
+        {
+            DB::beginTransaction();
+
+            $this->_so->mo->listMessage=(new UserValidation())->validationReset($request);
+
+            if($this->_so->mo->existsMessage())
+            {
+                DB::rollBack();
+
+                return PlatformHelper::redirectError($this->_so->mo->listMessage, 'usuario/resetear/'.$token);
+            }
+
+            $tUser = TUser::find($request->input('hdIdUser'));
+
+            $tUser->password = $encrypter->encrypt(trim($request->input('passPasswordUser')));
+
+            $tUser->save();
+
+            $tResetPassword = TResetPassword::where('idUser', $tUser->idUser)->delete();
+
+            DB::commit();
+
+            return PlatformHelper::redirectCorrect(['Contraseña modificada correctamente.'], 'usuario/acceder');
+
+        }
+
+        if(!$token){
+            return PlatformHelper::redirectError(['No se pudó resetear la contraseña.'], 'usuario/acceder');
+        }
+
+        $tResetPassword = TResetPassword::where('token', $token)->first();
+        $tUser = TUser::find($tResetPassword->idUser);
+
+        if(!$tUser){
+            return PlatformHelper::redirectError(['Usuario no encontrado.'], 'usuario/acceder');
+        }
+
+        return view('backoffice/user/reset',
+        [
+            'token' => $token,
+            'tUser' => $tUser
         ]);
     }
 }

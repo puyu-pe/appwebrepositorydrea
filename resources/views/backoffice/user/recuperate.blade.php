@@ -57,6 +57,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="txtEmail" name="txtEmail" onkeyup="onKeyUpPassPassword(event);" placeholder="Correo electrónico" autocomplete="off">
                             <div class="input-group-btn">
+                                {{csrf_field()}}
                                 <button type="button" class="btn" onclick="sendFrmRecuperate();"><i class="fa fa-arrow-right text-muted"></i></button>
                             </div>
                         </div>

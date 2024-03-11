@@ -138,5 +138,58 @@ class UserValidation
 
         return $this->globalMessage;
     }
+
+    public function validationRecuperate($request)
+    {
+        $validator=Validator::make(
+        [
+            'email' => $request->input('txtEmail')
+        ],
+        [
+            'email' => ['required','regex:/^([a-zA-Z0-9\.\-_]+\@[a-zA-Z0-9\-_]+\.[a-zA-Z]+(\.[a-zA-Z]+)?)?$/']
+        ],
+        [
+            'email.required' => 'El campo "email" es requerido',
+            'email.regex' => 'El campo "email" no cumple con el formato correspondiente'
+        ]);
+
+        if($validator->fails())
+        {
+            $errors=$validator->errors()->all();
+
+            foreach ($errors as $value)
+            {
+                $this->globalMessage[]=$value;
+            }
+        }
+
+        return $this->globalMessage;
+    }
+
+    public function validationReset($request)
+    {
+        $validator=Validator::make(
+        [
+            'password' => trim($request->input('passPasswordUser'))
+        ],
+        [
+            'password' => ['required']
+        ],
+        [
+            'password.required' => 'El campo "password" es requerido.'
+        ]);
+
+        if($validator->fails())
+        {
+            $errors=$validator->errors()->all();
+
+            foreach ($errors as $value)
+            {
+                $this->globalMessage[]=$value;
+            }
+        }
+
+        return $this->globalMessage;
+    }
 }
 ?>

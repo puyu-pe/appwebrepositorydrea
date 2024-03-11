@@ -36,6 +36,7 @@ Route::get('usuario/estado/{idUser}',[BackUserController::class,'actionChangeSta
 Route::post('usuario/rol',[BackUserController::class, 'actionChangeRole'])->middleware('GenericMiddleware:usuario/rol');
 Route::get('usuario/eliminar/{idUser}',[BackUserController::class, 'actionDelete'])->middleware('GenericMiddleware:usuario/eliminar');
 Route::match(['get','post'],'usuario/recuperar',[BackUserController::class,'actionRecuperate'])->middleware('GenericMiddleware:usuario/recuperar');
+Route::match(['get','post'],'usuario/resetear/{token}',[BackUserController::class,'actionReset'])->middleware('GenericMiddleware:usuario/resetear');
 
 Route::get('tipoexamen/mostrar/{currentPage}',[BackTypeExamController::class,'actionGetAll'])->middleware('GenericMiddleware:tipoexamen/mostrar');
 Route::match(['get', 'post'], 'tipoexamen/insertar',[BackTypeExamController::class,'actionInsert'])->middleware('GenericMiddleware:tipoexamen/insertar');
