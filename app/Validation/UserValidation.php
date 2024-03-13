@@ -170,12 +170,15 @@ class UserValidation
     {
         $validator=Validator::make(
         [
+            'idUser' => $request->input('hdIdUser'),
             'password' => trim($request->input('passPasswordUser'))
         ],
         [
+            'idUser' => ['required'],
             'password' => ['required']
         ],
         [
+            'idUser.required' => 'El campo "idUser" es requerido.',
             'password.required' => 'El campo "password" es requerido.'
         ]);
 

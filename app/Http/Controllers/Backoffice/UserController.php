@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 
 use App\Models\TUser;
 use App\Models\TUserRole;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class UserController extends Controller
 {
@@ -90,6 +92,11 @@ class UserController extends Controller
                     return PlatformHelper::redirectError(['Correo electrónico no encontrado.'],'usuario/recuperar');
                 }
 
+                $tResetPasswordExists = TResetPassword::where('idUser', $tUser->idUser)->exists();
+
+                if ($tResetPasswordExists)
+                    return PlatformHelper::redirectError(['Ya se solicitó un link para recuperar la contraseña del correo en cuestión.'],'usuario/recuperar');
+
                 $token = Str::random(100);
 
                 $tResetPassword = new TResetPassword();
@@ -101,6 +108,8 @@ class UserController extends Controller
 
                 $tResetPassword->save();
 
+                $this->sendLinkReset($tUser->email, $tResetPassword->idResetPassword);
+
                 return PlatformHelper::redirectCorrect(['Se le envio el link de recuperación al correo mencionado.'],'usuario/acceder');
             }
             catch(\Exception $e)
@@ -109,6 +118,31 @@ class UserController extends Controller
             }
         }
         return view('backoffice/user/recuperate');
+    }
+
+    private function sendLinkReset($email, $idResetPassword)
+    {
+        try
+        {
+            $tResetPassword = TResetPassword::find($idResetPassword);
+
+            if (!$tResetPassword) {
+                return PlatformHelper::redirectError(['No se encontró el token de restablecimiento de contraseña.'], 'usuario/recuperar');
+            }
+
+            $linkReset = URL::signedRoute('usuario.resetear', ['token' => $tResetPassword->token]);
+            $messageBody = 'Haga clic en el siguiente enlace para restablecer su contraseña: ' . $linkReset;
+
+            Mail::send('email.other.generalMessage', ['messageBody' => $messageBody], function($x) use($email) {
+                $x->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
+                  ->to($email)
+                  ->subject('Restablecer Contraseña');
+            });
+        }
+        catch(\Exception $e)
+        {
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__,$e,'usuario/recuperar');
+        }
     }
 
     public function actionLogout(SessionManager $sessionManager)
@@ -206,59 +240,67 @@ class UserController extends Controller
 
     public function actionEdit(Request $request, SessionManager $sessionManager)
     {
-        if($request->has('hdIdUser'))
+        try
         {
-            DB::beginTransaction();
+            if($request->has('hdIdUser'))
+            {
+                DB::beginTransaction();
 
-                $this->_so->mo->listMessage=(new UserValidation())->validationEdit($request);
+                    $this->_so->mo->listMessage=(new UserValidation())->validationEdit($request);
 
-                if($this->_so->mo->existsMessage())
-                {
-                    DB::rollBack();
-
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'usuario/modificar');
-                }
-
-                $tUser=TUser::find($request->input('hdIdUser'));
-
-                $tUser->firstName=trim($request->input('txtFirstNameUser'));
-                $tUser->surName=trim($request->input('txtSurNameUser'));
-                $tUser->numberDni=$request->input('txtDniUser');
-
-                $tUser->save();
-
-                if($request->hasFile('fileAvatarExtension'))
-                {
-                    $tUser=TUser::find($request->input('hdIdUser'));
-
-                    if($tUser->avatarExtension!='')
+                    if($this->_so->mo->existsMessage())
                     {
-                        $direcciónLink=public_path('img/logo/user/'.$tUser->idUser.'.'.$tUser->avatarExtension);
+                        DB::rollBack();
 
-                        unlink($direcciónLink);
+                        return PlatformHelper::redirectError($this->_so->mo->listMessage, 'usuario/modificar');
                     }
 
-                    $tUser->avatarExtension=strtolower($request->file('fileAvatarExtension')->getClientOriginalExtension());
-                    $tUser->updated_at=date('Y-m-d H:i:s');
+                    $tUser=TUser::find($request->input('hdIdUser'));
+
+                    $tUser->firstName=trim($request->input('txtFirstNameUser'));
+                    $tUser->surName=trim($request->input('txtSurNameUser'));
+                    $tUser->numberDni=$request->input('txtDniUser');
 
                     $tUser->save();
 
-                    $request->file('fileAvatarExtension')->move(public_path('/img/logo/user/'), $tUser->idUser.'.'.$tUser->avatarExtension);
-                }
+                    if($request->hasFile('fileAvatarExtension'))
+                    {
+                        $tUser=TUser::find($request->input('hdIdUser'));
 
-                DB::commit();
+                        if($tUser->avatarExtension!='')
+                        {
+                            $direcciónLink=public_path('img/logo/user/'.$tUser->idUser.'.'.$tUser->avatarExtension);
 
-                $sessionManager->put('firstName',$tUser->firstName);
-                $sessionManager->put('surName',$tUser->surName);
-                $sessionManager->put('numberDni',$tUser->numberDni);
-                $sessionManager->put('avatarExtension', $tUser->avatarExtension);
-                $sessionManager->put('updated_at',$tUser->updated_at);
+                            unlink($direcciónLink);
+                        }
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], '/');
+                        $tUser->avatarExtension=strtolower($request->file('fileAvatarExtension')->getClientOriginalExtension());
+                        $tUser->updated_at=date('Y-m-d H:i:s');
 
+                        $tUser->save();
+
+                        $request->file('fileAvatarExtension')->move(public_path('/img/logo/user/'), $tUser->idUser.'.'.$tUser->avatarExtension);
+                    }
+
+                    DB::commit();
+
+                    $sessionManager->put('firstName',$tUser->firstName);
+                    $sessionManager->put('surName',$tUser->surName);
+                    $sessionManager->put('numberDni',$tUser->numberDni);
+                    $sessionManager->put('avatarExtension', $tUser->avatarExtension);
+                    $sessionManager->put('updated_at',$tUser->updated_at);
+
+                    return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], '/');
+            }
+
+            return view('user/edit');
         }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
 
-        return view('user/edit');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/modificar');
+        }
     }
 
     public function actionChangeStatus($idUser)
@@ -381,48 +423,58 @@ class UserController extends Controller
 
     public function actionReset($token, Request $request, Encrypter $encrypter)
     {
-        if($_POST && $request->has('hdIdUser'))
+        try
         {
-            DB::beginTransaction();
-
-            $this->_so->mo->listMessage=(new UserValidation())->validationReset($request);
-
-            if($this->_so->mo->existsMessage())
+            if($_POST && $request->has('hdIdUser'))
             {
-                DB::rollBack();
+                DB::beginTransaction();
 
-                return PlatformHelper::redirectError($this->_so->mo->listMessage, 'usuario/resetear/'.$token);
+                $this->_so->mo->listMessage=(new UserValidation())->validationReset($request);
+
+                if($this->_so->mo->existsMessage())
+                {
+                    DB::rollBack();
+
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'usuario/resetear/'.$token);
+                }
+
+                $tUser = TUser::find($request->input('hdIdUser'));
+
+                if (!$tUser)
+                    return PlatformHelper::redirectError(['No se encontró los datos del usuario.'],'usuario/resetear/'.$token);
+
+                $tUser->password = $encrypter->encrypt(trim($request->input('passPasswordUser')));
+
+                $tUser->save();
+
+                $tResetPassword = TResetPassword::where('idUser', $tUser->idUser)->delete();
+
+                DB::commit();
+
+                return PlatformHelper::redirectCorrect(['Contraseña modificada correctamente.'], 'usuario/acceder');
             }
 
-            $tUser = TUser::find($request->input('hdIdUser'));
+            $tResetPassword = TResetPassword::where('token', $token)->first();
 
-            $tUser->password = $encrypter->encrypt(trim($request->input('passPasswordUser')));
+            if(!$tResetPassword)
+                return PlatformHelper::redirectError(['No se encontró el link o ya venció el tiempo de acceso para cambio de contraseña.'], 'usuario/acceder');
 
-            $tUser->save();
+            $tUser = TUser::find($tResetPassword->idUser);
 
-            $tResetPassword = TResetPassword::where('idUser', $tUser->idUser)->delete();
+            if(!$tUser)
+                return PlatformHelper::redirectError(['Usuario no encontrado.'], 'usuario/acceder');
 
-            DB::commit();
-
-            return PlatformHelper::redirectCorrect(['Contraseña modificada correctamente.'], 'usuario/acceder');
-
+            return view('backoffice/user/reset',
+            [
+                'token' => $token,
+                'tUser' => $tUser
+            ]);
         }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
 
-        if(!$token){
-            return PlatformHelper::redirectError(['No se pudó resetear la contraseña.'], 'usuario/acceder');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/mostrar/1');
         }
-
-        $tResetPassword = TResetPassword::where('token', $token)->first();
-        $tUser = TUser::find($tResetPassword->idUser);
-
-        if(!$tUser){
-            return PlatformHelper::redirectError(['Usuario no encontrado.'], 'usuario/acceder');
-        }
-
-        return view('backoffice/user/reset',
-        [
-            'token' => $token,
-            'tUser' => $tUser
-        ]);
     }
 }
