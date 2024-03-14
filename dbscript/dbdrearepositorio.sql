@@ -45,6 +45,18 @@ foreign key(idRole) references trole(idRole) on delete cascade on update cascade
 primary key(idUserRole)
 ) engine=innodb;
 
+-- tabla para resetear contraseñas
+create table tresetpassword(
+idResetPassword char(13) not null,
+idUser char(13) not null,
+token text not null,
+isRecuperate tinyint not null,
+created_at datetime not null,
+updated_at datetime not null,
+foreign key(idUser) references tuser(idUser) on delete cascade on update cascade,
+primary key(idResetPassword)
+)engine=innodb;
+
 create table ttypeexam
 (
 idTypeExam char(13) not null,
