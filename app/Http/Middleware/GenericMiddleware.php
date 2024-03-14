@@ -13,6 +13,7 @@ class GenericMiddleware
         $urlAccess=false;
         $allowUrl=
         [
+            ['Público', 'principal', 'mTemplate', null],
             ['Público', '/', 'mTemplate', null],
             ['Administrador', 'sistema/generarbackup', 'mSetting', 'mBackupSystem'],
             ['Administrador', 'sistema/descargar', 'mSetting', 'mDownloadExam'],
@@ -30,6 +31,7 @@ class GenericMiddleware
             ['Administrador', 'usuario/rol', null , null],
             ['Administrador', 'usuario/eliminar', null , null],
             ['Público', 'usuario/recuperar', null, null],
+            ['Público', 'usuario/resetear', null, null],
 
             ['Administrador,Supervisor', 'tipoexamen/mostrar', 'mPrincipal', 'mGetAllTypeExam'],
             ['Administrador,Supervisor', 'tipoexamen/insertar', null, null],
@@ -100,4 +102,3 @@ class GenericMiddleware
         return $next($request);
     }
 }
-?>
