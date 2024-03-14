@@ -113,8 +113,7 @@ class UserController extends Controller
 
                 $tResetPassword->save();
 
-                $linkReset = url('usuario/resetear/'. $tResetPassword->token);
-                Mail::to($tUser->email)->send(new Notification($linkReset));
+                $this->sendLinkReset($tUser->email, $tResetPassword->idResetPassword);
 
                 DB::commit();
 
@@ -140,18 +139,14 @@ class UserController extends Controller
                 return PlatformHelper::redirectError(['No se encontró el token de restablecimiento de contraseña.'], 'usuario/recuperar');
             }
 
-            $linkReset = URL::signedRoute('usuario.resetear', ['token' => $tResetPassword->token]);
-            //$messageBody = 'Haga clic en el siguiente enlace para restablecer su contraseña: ' . $linkReset;
+            $linkReset = url('usuario/resetear/'. $tResetPassword->token);
 
-            /*Mail::send('email.other.generalMessage', ['messageBody' => $messageBody], function($x) use($email) {
-                $x->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-                  ->to($email)
-                  ->subject('Restablecer Contraseña');
-            });*/
-            Mail::to('example-reset@repositorioedreapurimac.com')->send(new Notification($linkReset));
+            Mail::to($email)->send(new Notification($linkReset));
         }
         catch(\Exception $e)
         {
+            DB::rollBack();
+
             return PlatformHelper::catchException(__CLASS__, __FUNCTION__,$e,'usuario/recuperar');
         }
     }
