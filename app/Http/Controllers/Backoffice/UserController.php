@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
+use App\Mail\Notification;
 use App\Models\TResetPassword;
 use App\Models\TRole;
 use App\Validation\UserValidation;
@@ -78,10 +79,14 @@ class UserController extends Controller
         {
             try
             {
+                DB::beginTransaction();
+
                 $this->_so->mo->listMessage=(new UserValidation())->validationRecuperate($request);
 
                 if($this->_so->mo->existsMessage())
                 {
+                    DB::rollBack();
+
                     return PlatformHelper::redirectError($this->_so->mo->listMessage,'usuario/recuperar');
                 }
 
@@ -108,12 +113,17 @@ class UserController extends Controller
 
                 $tResetPassword->save();
 
-                $this->sendLinkReset($tUser->email, $tResetPassword->idResetPassword);
+                $linkReset = url('usuario/resetear/'. $tResetPassword->token);
+                Mail::to($tUser->email)->send(new Notification($linkReset));
+
+                DB::commit();
 
                 return PlatformHelper::redirectCorrect(['Se le envio el link de recuperación al correo mencionado.'],'usuario/acceder');
             }
             catch(\Exception $e)
             {
+                DB::rollBack();
+
                 return PlatformHelper::catchException(__CLASS__, __FUNCTION__,$e,'usuario/recuperar');
             }
         }
@@ -131,13 +141,14 @@ class UserController extends Controller
             }
 
             $linkReset = URL::signedRoute('usuario.resetear', ['token' => $tResetPassword->token]);
-            $messageBody = 'Haga clic en el siguiente enlace para restablecer su contraseña: ' . $linkReset;
+            //$messageBody = 'Haga clic en el siguiente enlace para restablecer su contraseña: ' . $linkReset;
 
-            Mail::send('email.other.generalMessage', ['messageBody' => $messageBody], function($x) use($email) {
+            /*Mail::send('email.other.generalMessage', ['messageBody' => $messageBody], function($x) use($email) {
                 $x->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
                   ->to($email)
                   ->subject('Restablecer Contraseña');
-            });
+            });*/
+            Mail::to('example-reset@repositorioedreapurimac.com')->send(new Notification($linkReset));
         }
         catch(\Exception $e)
         {
