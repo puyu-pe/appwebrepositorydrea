@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\BackOffice\GeneralController as BackGeneralOffice;
-use App\Http\Controllers\BackOffice\UserController as BackUserController;
-use App\Http\Controllers\BackOffice\DirectionController as BackDirectionController;
-use App\Http\Controllers\BackOffice\GradeController as BackGradeController;
-use App\Http\Controllers\BackOffice\SubjectController as BackSubjectController;
-use App\Http\Controllers\BackOffice\ContactController as BackContactController;
-use App\Http\Controllers\BackOffice\TypeExamController as BackTypeExamController;
-use App\Http\Controllers\BackOffice\ExamController as BackExamController;
+use App\Http\Controllers\Backoffice\GeneralController as BackGeneralOffice;
+use App\Http\Controllers\Backoffice\UserController as BackUserController;
+use App\Http\Controllers\Backoffice\DirectionController as BackDirectionController;
+use App\Http\Controllers\Backoffice\GradeController as BackGradeController;
+use App\Http\Controllers\Backoffice\SubjectController as BackSubjectController;
+use App\Http\Controllers\Backoffice\ContactController as BackContactController;
+use App\Http\Controllers\Backoffice\TypeExamController as BackTypeExamController;
+use App\Http\Controllers\Backoffice\ExamController as BackExamController;
 
 use App\Http\Controllers\Frontoffice\GeneralController as FrontGeneralOffice;
 use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
