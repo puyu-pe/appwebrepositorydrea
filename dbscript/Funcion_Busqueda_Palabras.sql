@@ -64,7 +64,7 @@ begin
         if(bandera>lengthFromText) then
             set iterar=0;
         end if;
-    end while;
+    end while;a
     set porcentajeCoincidencia=floor((coincidencia*100)/cantidadPalabras);
     if(porcentajeCoincidencia>=precisionBusqueda) then
         return 1;
@@ -75,4 +75,3 @@ $$
 
 
 
-    

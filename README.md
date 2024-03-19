@@ -1,3 +1,12 @@
+## Empezar
+
+crear base de datos
+
+```bash
+ docker run --name mysql5 -e MYSQL_ROOT_PASSWORD=12345678 -p 3306:3306 -d mysql:5.7.23
+```
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
