@@ -11,6 +11,11 @@ class TExam extends Model
     public $incrementing=false;
     public $timestamps=true;
 
+    public const STATUS = [
+        'PUBLIC' => 'Publico',
+        'HIDDEN' => 'Oculto',
+    ];
+
     public function tTypeExam()
     {
         return $this->belongsTo('App\Models\TTypeExam', 'idTypeExam');

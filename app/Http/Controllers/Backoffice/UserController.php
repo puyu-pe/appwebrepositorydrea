@@ -17,7 +17,6 @@ use Illuminate\Support\Str;
 use App\Models\TUser;
 use App\Models\TUserRole;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 
 class UserController extends Controller
 {

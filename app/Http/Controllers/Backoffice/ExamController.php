@@ -11,11 +11,14 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\TExam;
 use App\Models\TGrade;
+use App\Models\TRole;
 use App\Models\TSubject;
 use App\Models\TTypeExam;
 use App\Models\TUserExam;
 use App\Validation\ExamValidation;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
+use function PHPUnit\Framework\throwException;
 
 class ExamController extends Controller
 {
@@ -253,18 +256,91 @@ class ExamController extends Controller
 
     public function actionViewExam($idExam)
     {
-        $tExam=TExam::find($idExam);
+        try
+        {
+            $tExam=TExam::find($idExam);
 
-        $directoryFiles= storage_path('/app/file/exam/'.$tExam->idExam.'.'.$tExam->extensionExam);
+            if (($tExam && $tExam->stateExam != TExam::STATUS['PUBLIC']) &&
+            !stristr(session('roleUser'), TRole::ROLE['ADMIN']) && !stristr(session('roleUser'), TRole::ROLE['SUPERVISOR']))
+            {
+                $message = 'El archivo de esta evaluación no está disponible por el momento.';
 
-        $response=new BinaryFileResponse($directoryFiles);
+                return view('frontoffice/exam/error',
+                [
+                    'message' => $message
+                ]);
+            }
 
-        BinaryFileResponse::trustXSendfileTypeHeader();
+            $directoryFiles= storage_path('/app/file/exam/'.$tExam->idExam.'.'.$tExam->extensionExam);
 
-        return $response;
+            $response=new BinaryFileResponse($directoryFiles);
+
+            BinaryFileResponse::trustXSendfileTypeHeader();
+
+            return $response;
+        }
+        catch(\Exception $e)
+        {
+            $message = 'No se encontró el documento pdf de la evaluación mencionada, consulte al administrador del sistema.';
+            return view('frontoffice/exam/error',
+            [
+                'message' => $message
+            ]);
+        }
     }
 
-    public function convertArray($data)
+    public function actionDelete($idExam)
+    {
+        try
+        {
+            $tExam=TExam::find($idExam);
+
+            $directoryFiles= storage_path('app/file/exam/'.$tExam->idExam.'.'.$tExam->extensionExam);
+
+            if($tExam->extensionExam!='' && file_exists($directoryFiles)==true)
+            {
+                unlink($directoryFiles);
+            }
+
+            DB::delete('delete from texam where idExam = ?', [$idExam]);
+
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/mostrar/1');
+        }
+    }
+
+    public function actionChangeState($idExam)
+    {
+        try
+        {
+            DB::beginTransaction();
+
+            $tExam=TExam::find($idExam);
+
+            $valueStatus=$tExam->stateExam;
+
+            $tExam->stateExam=$valueStatus=='Publico' ? 'Oculto' : 'Publico';
+
+            $tExam->save();
+
+            DB::commit();
+
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/mostrar/1');
+        }
+    }
+
+    private function convertArray($data)
     {
         $tExamData = array(
             'idExam' => $data->idExam,

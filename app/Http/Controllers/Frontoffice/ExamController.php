@@ -128,7 +128,7 @@ class ExamController extends Controller
         ]);
     }
 
-    public function convertArray($data)
+    private function convertArray($data)
     {
         $tExamData = array(
             'idExam' => $data->idExam,
