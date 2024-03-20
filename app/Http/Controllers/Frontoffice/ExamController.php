@@ -8,6 +8,7 @@ use App\Models\TDirection;
 use App\Models\TDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Helper\ExamHelper;
 
 use App\Models\TExam;
 use App\Models\TGrade;
@@ -157,6 +158,7 @@ class ExamController extends Controller
         try
         {
             $tExam=TExam::with(['tSubject', 'tGrade', 'tTypeExam'])->whereRaw('codeExam=?', [$codeExam])->first();
+            ExamHelper::incrementViewCounter($tExam);        
 
             return view('frontoffice/exam/seed',
             [
