@@ -1,69 +1,87 @@
 @extends('frontoffice.layout')
 @section('generalBody')
-<div class="it-breadcrumb-area it-breadcrumb-bg" data-background="{{asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg')}}">
-    <div class="container">
-        <div class="row ">
-            <div class="col-md-12">
-                <div class="it-breadcrumb-content z-index-3 text-center">
-                    <div class="it-breadcrumb-title-box">
-                        <h3 class="it-breadcrumb-title">{{$tExam->ttypeexam->nameTypeExam}}</h3>
+    <div class="it-breadcrumb-area it-breadcrumb-bg"
+        data-background="{{ asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg') }}">
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-12">
+                    <div class="it-breadcrumb-content z-index-3 text-center">
+                        <div class="it-breadcrumb-title-box">
+                            <h3 class="it-breadcrumb-title">{{ $tExam->ttypeexam->nameTypeExam }}</h3>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="nav-tabs-custom">
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab_1-1">
+
+    <div class="it-course-details-area pt-120 pb-100">
+        <div class="container">
             <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
-                    <div class="row">
-                        <table class="tblDates">
-                            <tbody>
-                                <tr>
-                                    <td><p style="font-weight: bold;">Nombre de la evaluación</p></td>
-                                    <td><p>:</p></td>
-                                    <td><p style="font-weight: bold;">{{$tExam->nameExam}}</p></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px;"><p style="font-weight: bold;">Fecha de publicación</p></td>
-                                    <td style="width: 80px;"><p>:</p></td>
-                                    <td><p style="font-weight: bold;">{{date('d-m-Y',strtotime($tExam->created_at))}}</p></td>
-                                </tr>
-                                <tr>
-                                    <td><p style="font-weight: bold;">Descripción</p></td>
-                                    <td><p>:</p></td>
-                                    <td><p style="font-weight: bold;">{{$tExam->descriptionExam}}</p></td>
-                                </tr>
-                                <tr>
-                                    <td><p style="font-weight: bold;">N° de páginas</p></td>
-                                    <td><p>:</p></td>
-                                    <td><p>{{$tExam->totalPageExam}}</p></td>
-                                </tr>
-                                <tr>
-                                    <td><p style="font-weight: bold;">Año que se aplicó</p></td>
-                                    <td><p>:</p></td>
-                                    <td><p>{{$tExam->yearExam}}</p></td>
-                                </tr>
-                                <tr>
-                                    <td><p style="font-weight: bold;">Palabras clave de búsqueda</p></td>
-                                    <td><p>:</p></td>
-                                    <td><p>{{str_replace("__7SEPARATOR7__", "; ", $tExam->keywordExam)}}</p></td>
-                                </tr>
-                                <tr>
-                                    <td><p style="font-weight: bold;">Opción</p></td>
-                                    <td><p>:</p></td>
-                                    <td><p><a href="{{url('examen/verarchivo/'.$tExam->idExam)}}?x={{$tExam->updated_at}}" target="_blank">Ver pdf de evaluación</a></p></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="col-xl-9 col-lg-8">
+                    <div class="it-course-details-wrap">
+                        <div class="it-evn-details-thumb mb-35">
+                            <img src="{{ asset('assets/frontoffice/img/course/details.jpg') }}" alt="">
+                        </div>
+                        <div class="it-evn-details-rate mb-15">
+                            <span>
+                                <i class="fa-sharp fa-solid fa-star"></i>
+                                <i class="fa-sharp fa-solid fa-star"></i>
+                                <i class="fa-sharp fa-solid fa-star"></i>
+                                <i class="fa-sharp fa-solid fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                (4.7)
+                            </span>
+                        </div>
+                        <h4 class="it-evn-details-title mb-0 pb-5">{{ $tExam->nameExam }}</h4>
+                        <div class="postbox__meta">
+                            <span><i class="fa-light fa-file-invoice"></i>{{ $tExam->totalPageExam }} páginas</span>
+                            <span><i class="fa-light fa-calendar"></i>{{ $tExam->created_at->format('d-m-Y') }} - F.
+                                publicación</span>
+                        </div>
+                        <div class="it-course-details-nav pb-60">
+                            <nav>
+                                <div class="nav nav-tab" role="tablist">
+                                    @foreach (explode('__7SEPARATOR7__', $tExam->keywordExam) as $index => $keywordExam)
+                                        <button type="button">{{ $keywordExam }}</button>
+                                    @endforeach
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="it-course-details-content">
+                            <div class="it-evn-details-text mb-40">
+                                <h6 class="it-evn-details-title-sm pb-5">Descripción de la evaluación.</h6>
+                                <p>{{ $tExam->descriptionExam }}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3"></div>
+                <div class="col-xl-3 col-lg-4">
+                    <div class="it-evn-sidebar-box it-course-sidebar-box">
+                        <div class="it-evn-sidebar-list mb-20">
+                            <ul>
+                                <li><span>Nro descargas: </span> <span>12</span></li>
+                                <li><span>Año de evaluación: </span> <span>{{ $tExam->yearExam }}</span></li>
+                            </ul>
+                        </div>
+                        <a class="it-btn w-100 text-center"
+                            href="{{ url('examen/verarchivo/' . $tExam->idExam) }}?x={{ $tExam->updated_at }}"
+                            target="_blank">
+                            <span>
+                                Descargar
+                                <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
+                                        stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
