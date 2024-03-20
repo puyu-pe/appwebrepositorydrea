@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontoffice;
 use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;
 use App\Models\TTypeExam;
+use App\Models\TExam;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ZipArchive;
@@ -14,12 +15,17 @@ class GeneralController extends Controller
 {
     public function actionWelcome()
     {
-        $tTypeExam=TTypeExam::all();
+        $tTypeExam = TTypeExam::all();
+        $topExams = TExam::with(['tTypeExam', 'tUser', 'tDirection'])->orderBy('view_counter', 'desc')->take(3)->get();
 
-        return view('frontoffice/general/welcome',
-        [
-            'tTypeExam' => $tTypeExam
-        ]);
+
+        return view(
+            'frontoffice/general/welcome',
+            [
+                'tTypeExam' => $tTypeExam,
+                'topExams' => $topExams
+            ]
+        );
     }
 
     public function actionPrincipal()

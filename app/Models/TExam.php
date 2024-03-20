@@ -36,9 +36,9 @@ class TExam extends Model
         return $this->hasMany('App\Models\TAnswer', 'idExam');
     }
 
-    public function tUserExam()
+    public function tUser()
     {
-        return $this->hasMany('App\Models\TUserExam', 'idExam');
+        return $this->belongsTo('App\Models\TUser', 'idUser');
     }
 
     public function tDirection()
