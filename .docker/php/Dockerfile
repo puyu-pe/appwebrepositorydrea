@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommen
 RUN printf "\n" | pecl install imagick
 RUN docker-php-ext-enable imagick
 
+RUN sed -i 's/rights="none" pattern="PDF"/rights="read | write" pattern="PDF"/g' /etc/ImageMagick-6/policy.xml
+
 # Install packages
 RUN apt-get update && apt-get install -y \
     gnupg \
@@ -24,6 +26,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxslt1-dev \
     acl \
+    nano \
+    ghostscript \
     default-mysql-client
 
 # Install wkhtmltopdf
@@ -36,8 +40,6 @@ RUN adduser -u ${UID} --disabled-password --gecos "" appuser \
     && echo "StrictHostKeyChecking no" >> /home/appuser/.ssh/config \
     && echo "export COLUMNS=300" >> /home/appuser/.bashrc \
     && echo "alias sf='php bin/console'" >> /home/appuser/.bashrc
-
-RUN #docker-php-ext-configure gd --with-jpeg --with-freetype
 
 # Install PHP extenions
 RUN docker-php-ext-install \
