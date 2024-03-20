@@ -11,14 +11,14 @@ class TUser extends Model
     public $incrementing=false;
     public $timestamps=true;
 
-    public function tUserExam()
-    {
-        return $this->hasMany('App\Models\TUserExam', 'idUser');
-    }
-
     public function tUserRole()
     {
         return $this->hasMany('App\Models\TUserRole', 'idUser');
+    }
+
+    public function tExam()
+    {
+        return $this->hasMany('App\Models\TExam', 'idUser');
     }
 
     public function tResetPassword()
