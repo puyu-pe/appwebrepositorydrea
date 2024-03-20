@@ -6,6 +6,7 @@ use App\Helper\PlatformHelper;
 use App\Models\TAnswer;
 use App\Models\TDirection;
 use App\Models\TDocument;
+use App\Models\TRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Helper\ExamHelper;
@@ -158,7 +159,27 @@ class ExamController extends Controller
         try
         {
             $tExam=TExam::with(['tSubject', 'tGrade', 'tTypeExam'])->whereRaw('codeExam=?', [$codeExam])->first();
-            ExamHelper::incrementViewCounter($tExam);        
+
+            if (!$tExam){
+                $message = 'No se encontró la página de la evaluación';
+
+                return view('frontoffice/exam/error',
+                [
+                    'message' => $message
+                ]);
+            }
+
+            if($tExam && $tExam->stateExam != TExam::STATUS['PUBLIC'] &&
+            !stristr(session('roleUser'), TRole::ROLE['ADMIN']) && !stristr(session('roleUser'), TRole::ROLE['SUPERVISOR'])){
+                $message = 'La página de la evaluación aún no se encuentra público.';
+
+                return view('frontoffice/exam/error',
+                [
+                    'message' => $message
+                ]);
+            }
+
+            ExamHelper::incrementViewCounter($tExam);
 
             return view('frontoffice/exam/seed',
             [
