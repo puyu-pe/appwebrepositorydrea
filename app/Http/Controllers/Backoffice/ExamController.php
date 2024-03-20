@@ -18,6 +18,7 @@ use App\Models\TTypeExam;
 use App\Models\TUserExam;
 use App\Validation\ExamValidation;
 use Imagick;
+use Spatie\PdfToImage\Pdf;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 use function PHPUnit\Framework\throwException;
@@ -100,19 +101,6 @@ class ExamController extends Controller
                 $tDocument->save();
                 $filename = $tExam->idExam . '.' . $tExam->extensionExam;
                 $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $filename);
-
-                $pdfPath = storage_path('app/file/exam/' . $filename);
-
-// Create an Imagick object for the first page of the PDF
-                $imagick = new Imagick($pdfPath . '[0]'); // [0] specifies the first page
-
-// Set the output format to JPEG
-                $imagick->setImageFormat('jpg');
-
-// Save the image to a file
-                $imagePath = storage_path('app/' . $tExam->idExam . '.jpg');
-                $imagick->writeImage($imagePath);
-                dd($imagePath);
 
                 if ($request->has('txtValueResponseExam')) {
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
