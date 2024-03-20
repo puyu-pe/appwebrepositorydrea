@@ -24,20 +24,14 @@
                             <img src="{{ asset('assets/frontoffice/img/course/details.jpg') }}" alt="">
                         </div>
                         <div class="it-evn-details-rate mb-15">
-                            <span>
-                                <i class="fa-sharp fa-solid fa-star"></i>
-                                <i class="fa-sharp fa-solid fa-star"></i>
-                                <i class="fa-sharp fa-solid fa-star"></i>
-                                <i class="fa-sharp fa-solid fa-star"></i>
-                                <i class="fa-regular fa-star"></i>
-                                (4.7)
-                            </span>
+                            @include('frontoffice._partials.exam_rating', [$rating->count, $rating->avg])
                         </div>
                         <h4 class="it-evn-details-title mb-0 pb-5">{{ $tExam->nameExam }}</h4>
                         <div class="postbox__meta">
                             <span><i class="fa-light fa-file-invoice"></i>{{ $tExam->totalPageExam }} páginas</span>
                             <span><i class="fa-light fa-calendar"></i>{{ $tExam->created_at->format('d-m-Y') }} - F.
                                 publicación</span>
+                            <span><i class="fa-light fa-star"></i>{{ $rating->count }} calificaciónes</span>
                         </div>
                         <div class="it-course-details-nav pb-60">
                             <nav>
@@ -61,6 +55,7 @@
                     <div class="it-evn-sidebar-box it-course-sidebar-box">
                         <div class="it-evn-sidebar-list mb-20">
                             <ul>
+                                <li><span>Nro visitas: </span> <span>{{ $tExam->view_counter }}</span></li>
                                 <li><span>Nro descargas: </span> <span>12</span></li>
                                 <li><span>Año de evaluación: </span> <span>{{ $tExam->yearExam }}</span></li>
                             </ul>
