@@ -17,8 +17,8 @@ use App\Models\TSubject;
 use App\Models\TTypeExam;
 use App\Models\TUserExam;
 use App\Validation\ExamValidation;
+use Illuminate\Support\Facades\Storage;
 use Imagick;
-use Spatie\PdfToImage\Pdf;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 use function PHPUnit\Framework\throwException;
@@ -101,6 +101,15 @@ class ExamController extends Controller
                 $tDocument->save();
                 $filename = $tExam->idExam . '.' . $tExam->extensionExam;
                 $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $filename);
+
+                $pdfPath = storage_path('app/file/exam/' . $filename);
+                $imagick = new Imagick($pdfPath . '[0]');
+                $imagick->scaleImage(250, 0);
+                $imagick->setResolution(72, 72);
+
+                $imagick->setImageFormat('jpg');
+                $imageData = $imagick->getImageBlob();
+                Storage::disk('exam-img')->put($tExam->idExam . '.jpg', $imageData);
 
                 if ($request->has('txtValueResponseExam')) {
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
