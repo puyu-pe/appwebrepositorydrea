@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxslt1-dev \
     acl \
+    nano \
     default-mysql-client
 
 # Install wkhtmltopdf

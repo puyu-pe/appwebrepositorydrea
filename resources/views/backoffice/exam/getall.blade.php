@@ -73,11 +73,9 @@
                                     @else
                                         <span class="btn btn-warning btn-xs glyphicon glyphicon-list" data-toggle="tooltip" title="Modificar respuestas" data-placement="left" onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Modificar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('cuestinario/editar')}}', 'POST', null, null, false, true);"></span>
                                     @endif
-                                    @if ($value->stateExam== 'Publico')
-                                        <span class="btn btn-default btn-xs glyphicon glyphicon-eye-close" data-toggle="tooltip" title="Ocultar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
-                                        <span class="btn btn-default btn-xs glyphicon glyphicon-save-file" data-toggle="tooltip" title="Ver pagina generada" data-placement="left" onclick="window.open('{{url('examen/ver/'.$value->codeExam)}}', '_blank');"></span>
-                                    @else
-                                        <span class="btn btn-default btn-xs glyphicon glyphicon-eye-open" data-toggle="tooltip" title="Mostrar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
+                                    <span class="btn btn-default btn-xs glyphicon glyphicon-eye-{{$value->stateExam == 'Publico' ? 'close' : 'open'}}" data-toggle="tooltip" title="{{$value->stateExam== 'Publico' ? 'Ocultar evaluacion' : 'Publicar evaluación'}}" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
+                                    <span class="btn btn-{{$value->stateExam == 'Publico' ? 'default' : 'warning'}} btn-xs glyphicon glyphicon-save-file" data-toggle="tooltip" title="{{$value->stateExam == 'Publico' ? 'Ver página de evaluación' : 'Vista previa de la evaluación'}}" data-placement="left" onclick="window.open('{{url('examen/ver/'.$value->codeExam)}}', '_blank');"></span>
+                                    @if ($value->stateExam != 'Publico')
                                         <span class="btn btn-danger btn-xs glyphicon glyphicon-trash" data-toggle="tooltip" title="Eliminar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').show(); window.location.href='{{url('examen/eliminar/'.$value->idExam)}}'; });"></span>
                                     @endif
                                 </td>

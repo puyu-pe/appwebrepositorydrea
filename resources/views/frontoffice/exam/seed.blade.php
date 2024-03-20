@@ -1,6 +1,18 @@
 @extends('frontoffice.layout')
-@section('title', $tExam->ttypeexam->nameTypeExam)
 @section('generalBody')
+<div class="it-breadcrumb-area it-breadcrumb-bg" data-background="{{asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg')}}">
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="it-breadcrumb-content z-index-3 text-center">
+                    <div class="it-breadcrumb-title-box">
+                        <h3 class="it-breadcrumb-title">{{$tExam->ttypeexam->nameTypeExam}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="nav-tabs-custom">
     <div class="tab-content">
         <div class="tab-pane active" id="tab_1-1">
@@ -16,7 +28,7 @@
                                     <td><p style="font-weight: bold;">{{$tExam->nameExam}}</p></td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 200px;"><p style="font-weight: bold;">Fecha de publiación</p></td>
+                                    <td style="width: 200px;"><p style="font-weight: bold;">Fecha de publicación</p></td>
                                     <td style="width: 80px;"><p>:</p></td>
                                     <td><p style="font-weight: bold;">{{date('d-m-Y',strtotime($tExam->created_at))}}</p></td>
                                 </tr>

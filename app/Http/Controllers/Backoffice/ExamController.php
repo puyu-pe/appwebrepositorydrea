@@ -18,6 +18,7 @@ use App\Models\TTypeExam;
 use App\Models\TUserExam;
 use App\Validation\ExamValidation;
 use Imagick;
+use Spatie\PdfToImage\Pdf;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 use function PHPUnit\Framework\throwException;
@@ -100,19 +101,6 @@ class ExamController extends Controller
                 $tDocument->save();
                 $filename = $tExam->idExam . '.' . $tExam->extensionExam;
                 $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $filename);
-
-                $pdfPath = storage_path('app/file/exam/' . $filename);
-
-// Create an Imagick object for the first page of the PDF
-                $imagick = new Imagick($pdfPath . '[0]'); // [0] specifies the first page
-
-// Set the output format to JPEG
-                $imagick->setImageFormat('jpg');
-
-// Save the image to a file
-                $imagePath = storage_path('app/' . $tExam->idExam . '.jpg');
-                $imagick->writeImage($imagePath);
-                dd($imagePath);
 
                 if ($request->has('txtValueResponseExam')) {
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
@@ -260,6 +248,15 @@ class ExamController extends Controller
         {
             $tExam=TExam::find($idExam);
 
+            if (!$tExam){
+                $message = 'No se encontró el archivo perteneciente a la evaluación';
+
+                return view('frontoffice/exam/error',
+                [
+                    'message' => $message
+                ]);
+            }
+
             if (($tExam && $tExam->stateExam != TExam::STATUS['PUBLIC']) &&
             !stristr(session('roleUser'), TRole::ROLE['ADMIN']) && !stristr(session('roleUser'), TRole::ROLE['SUPERVISOR']))
             {
@@ -294,6 +291,10 @@ class ExamController extends Controller
         try
         {
             $tExam=TExam::find($idExam);
+
+            if ($tExam && $tExam->stateExam == TExam::STATUS['PUBLIC']){
+                return PlatformHelper::redirectError(['No puede eliminar una evaluación que está publicada.'], 'examen/mostrar/1');
+            }
 
             $directoryFiles= storage_path('app/file/exam/'.$tExam->idExam.'.'.$tExam->extensionExam);
 
