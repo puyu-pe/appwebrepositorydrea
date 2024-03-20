@@ -21,8 +21,6 @@ use Illuminate\Support\Facades\Storage;
 use Imagick;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-use function PHPUnit\Framework\throwException;
-
 class ExamController extends Controller
 {
     public function actionGetAll(Request $request, $currentPage)
