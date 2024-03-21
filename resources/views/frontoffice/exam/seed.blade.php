@@ -28,7 +28,6 @@
                                  alt="Vista previa"
                                  style="width: 250px; box-shadow: #0A0909  0px 0px 10px; border-radius: 10px; border: 2px solid #0A0909"
                             >
-{{--                            <img src="{{ asset('assets/frontoffice/img/course/details.jpg') }}" alt="">--}}
                         </div>
                         @include('frontoffice._partials.exam_rating', [
                             'idExam' => $tExam->idExam,
