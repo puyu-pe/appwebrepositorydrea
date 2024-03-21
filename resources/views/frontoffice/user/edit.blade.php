@@ -118,18 +118,6 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="it-evn-details-text">
-                                <h6 class="it-evn-details-title-sm pb-5">What Will I Learn From This Course?</h6>
-                                <p>Himenaeos. Vestibulum sollicitudin varius mauris non dignissim. Sed quis iaculis
-                                    est. Nulla quam neque,
-                                    interdum vitae fermentum lacinia, interdum eu magna. Mauris non posuere tellus.
-                                    Donec quis euismod
-                                    tellus. Nam vel lacus eu nisl bibendum accumsan vitae vitae nibh. Nam nec eros id
-                                    magna hendrerit sagittis
-                                    Nullam sed mi non odio feugiat volutpat sit amet nec elit. Maecenas id hendrerit
-                                    ipsum
-                                </p>
-                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
