@@ -25,8 +25,14 @@
             <div class="it-course-details-nav pb-60">
                 <nav>
                     <div class="nav nav-tab" id="nav-tab" role="tablist">
-                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Datos generales</button>
-                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Datos de usuario</button>
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                                aria-selected="true">Datos generales
+                        </button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                                type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Datos de
+                            usuario
+                        </button>
                     </div>
                 </nav>
             </div>
@@ -96,8 +102,10 @@
                                                         <div class="col-md-12">
                                                             <div class="checkout-form-list">
                                                                 <label>Rol(es)*<span class="required">*</span></label>
-                                                                <input type="text" placeholder="Roles" id="txtCreasted_at"
-                                                                       name="txtCreated_at" value="{{Session::get('roleUser')}}"
+                                                                <input type="text" placeholder="Roles"
+                                                                       id="txtCreasted_at"
+                                                                       name="txtCreated_at"
+                                                                       value="{{Session::get('roleUser')}}"
                                                                        class="form-control pull-right" readonly>
                                                             </div>
                                                         </div>
@@ -107,7 +115,8 @@
                                                                 {{csrf_field()}}
                                                                 <input type="hidden" id="hdIdUser" name="hdIdUser"
                                                                        value="{{Session::get('idUser')}}">
-                                                                <input type="button" class="it-btn" value="Guardar Cambios"
+                                                                <input type="button" class="it-btn"
+                                                                       value="Guardar Cambios"
                                                                        onclick="sendFrmEditUserProfile();">
                                                             </div>
                                                         </div>
@@ -136,7 +145,8 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="checkout-form-list">
-                                                                <label>Correo Electrónico <span class="required">*</span></label>
+                                                                <label>Correo Electrónico <span
+                                                                        class="required">*</span></label>
                                                                 <input id="txtEmailUser" name="txtEmailUser"
                                                                        value="{{Session::get('email')}}">
                                                             </div>
@@ -144,7 +154,8 @@
                                                         <div class="col-md-6">
                                                             <div class="checkout-form-list">
                                                                 <label>Nueva Contraseña <span class="required">*</span></label>
-                                                                <input type="password" id="passPasswordUser" name="passPasswordUser"
+                                                                <input type="password" id="passPasswordUser"
+                                                                       name="passPasswordUser"
                                                                        class="form-control pull-right">
                                                             </div>
                                                         </div>
