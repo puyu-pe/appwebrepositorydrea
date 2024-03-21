@@ -52,6 +52,10 @@
                                 </td>
                                 <td class="text-center">
                                     <div>{{$value->nameExam}}</div>
+                                    <div><small style="font-weight: bold;">{{$value->register_answer == 0 ? 'No permite respuestas' : 'Permite respuestas'}}</small></div>
+                                    @if($value->register_answer != 0)
+                                        <div><small style="font-weight: bold;">{{$value->number_question == 1 ? 'Máximo 1 respuesta' : 'Máximo '.$value->number_question. ' respuestas'}}</small></div>
+                                    @endif
                                 </td>
                                 <td class="text-center">
                                     <div>{{$value->totalPageExam==1 ? $value->totalPageExam.' páginas' : $value->totalPageExam.' páginas'}}</div>
