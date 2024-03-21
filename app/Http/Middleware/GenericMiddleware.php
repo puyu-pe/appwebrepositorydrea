@@ -27,6 +27,7 @@ class GenericMiddleware
             ['Público', 'usuario/salir', null , null],
             ['Administrador', 'usuario/estado', null , null],
             ['Administrador,Supervisor,Registrador,Normal', 'usuario/editar', null, null],
+            ['Administrador,Supervisor,Registrador,Normal', 'usuario/cambiar', null, null],
             ['Administrador', 'usuario/mostrar', 'mUser' , 'mGetAllUser'],
             ['Administrador', 'usuario/rol', null , null],
             ['Administrador', 'usuario/eliminar', null , null],

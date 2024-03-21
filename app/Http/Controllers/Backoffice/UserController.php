@@ -284,6 +284,40 @@ class UserController extends Controller
         }
     }
 
+    public function actionChange(Request $request, SessionManager $sessionManager, Encrypter $encrypter)
+    {
+        if($request->has('hdIdUserValue'))
+        {
+            DB::beginTransaction();
+            $this->_so->mo->listMessage=(new UserValidation())->validationChange($request);
+            if($this->_so->mo->existsMessage())
+            {
+                DB::rollBack();
+                return PlatformHelper::redirectError($this->_so->mo->listMessage, 'usuario/modificar');
+            }
+            $tUser=TUser::find($request->input('hdIdUserValue'));
+            $email=$tUser->email;
+            if($email!=trim($request->input('txtEmailUser')))
+            {
+                $tUser=TUser::whereRaw('email=?', [trim($request->input('txtEmailUser'))])->exists();
+                if($tUser==true)
+                {
+                    return PlatformHelper::redirectError(['Correo Existente, ingrese otro.'], 'usuario/modificar');
+                }
+            }
+            $tUser=TUser::find($request->input('hdIdUserValue'));
+            $tUser->email=trim($request->input('txtEmailUser'));
+            if($request->input('passPasswordUser')!='')
+            {
+                $tUser->password=$encrypter->encrypt(trim($request->input('passPasswordUser')));
+            }
+            $tUser->save();
+            DB::commit();
+            $sessionManager->flush();
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/editar');
+        }
+    }
+
     public function actionChangeStatus($idUser)
     {
         try {
