@@ -132,6 +132,10 @@
             </div>
         </header>
         <main>
+            <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+                <div id="notificationContainer" class="position-fixed bottom-0 right-0 p-3" style="z-index: 999; right: 0; top: 0;"></div>
+            </div>
+
             @yield('generalBody')
         </main>
         <footer>
@@ -162,5 +166,6 @@
         <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
         <script src="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.js')}}"></script>
         <script src="{{asset('assets/frontoffice/viewResources/template/layout.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+        <script src="{{asset('assets/frontoffice/viewResources/template/toasts.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
     </body>
 </html>

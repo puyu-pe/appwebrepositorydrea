@@ -4,9 +4,9 @@
             <i data-value="{{ $i }}"
                 class="{{ $i <= floor($ratingAvg) ? 'fa-sharp fa-solid' : 'fa-regular' }} fa-star rate-start"></i>
         @endfor
-
+    </span>
+    <span class="avgContainer ml-3">
         ({{ $ratingAvg }})
-
     </span>
 </div>
 

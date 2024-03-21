@@ -176,7 +176,7 @@ class ExamController extends Controller
             }
 
             ExamHelper::incrementViewCounter($tExam);
-            $rating = ExamHelper::getRatingData($codeExam);
+            $rating = ExamHelper::getRatingData($tExam->idExam);
 
             return view('frontoffice/exam/seed',
             [
