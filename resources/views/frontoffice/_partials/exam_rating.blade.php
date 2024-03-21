@@ -1,10 +1,13 @@
-<span>
-    @for ($i = 0; $i < floor($rating->avg); $i++)
-        <i class="fa-sharp fa-solid fa-star"></i>
-    @endfor
+<div class="it-evn-details-rate mb-15 rate-start-container" data-id-exam="{{ $idExam }}">
+    <span>
+        @for ($i = 1; $i <= 5; $i++)
+            <i data-value="{{ $i }}"
+                class="{{ $i <= floor($ratingAvg) ? 'fa-sharp fa-solid' : 'fa-regular' }} fa-star rate-start"></i>
+        @endfor
 
-    @for ($i = 0; $i < 5 - floor($rating->avg); $i++)
-        <i class="fa-regular fa-star"></i>
-    @endfor
-    ({{ $rating->avg }})
-</span>
+        ({{ $ratingAvg }})
+
+    </span>
+</div>
+
+<script src="{{ asset('assets/frontoffice/viewResources/exam/rate.js?x=' . env('CACHE_LAST_UPDATE')) }}"></script>

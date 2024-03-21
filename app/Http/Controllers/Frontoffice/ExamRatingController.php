@@ -18,16 +18,17 @@ class ExamRatingController extends Controller
 		try {
 			DB::beginTransaction();
 
-			$data = $request->all();
+			$idExam = $request->input('idExam');
+			$rating = $request->input('rating');
 
-			TExam::where(['idExam' => $data['idExam']])->firstOr(function () {
+			TExam::where(['idExam' => $idExam])->firstOr(function () {
 				throw new ModelNotFoundException('Error al intentar registrar la calificación. Examen no encontrado o no disponible.');
 			});
 
 			$tExamRating = new TExamRating([
-				'idExam' => $data['idExam'],
+				'idExam' => $idExam,
 				'idUser' => session('idUser'),
-				'rating' => $data['rating']
+				'rating' => $rating
 			]);
 
 			DB::commit();

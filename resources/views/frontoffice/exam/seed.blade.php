@@ -1,5 +1,7 @@
 @extends('frontoffice.layout')
 @section('generalBody')
+    {{ csrf_field() }}
+
     <div class="it-breadcrumb-area it-breadcrumb-bg"
         data-background="{{ asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg') }}">
         <div class="container">
@@ -23,9 +25,10 @@
                         <div class="it-evn-details-thumb mb-35">
                             <img src="{{ asset('assets/frontoffice/img/course/details.jpg') }}" alt="">
                         </div>
-                        <div class="it-evn-details-rate mb-15">
-                            @include('frontoffice._partials.exam_rating', [$rating->count, $rating->avg])
-                        </div>
+                        @include('frontoffice._partials.exam_rating', [
+                            'idExam' => $tExam->idExam,
+                            'ratingAvg' => $rating->avg,
+                        ])
                         <h4 class="it-evn-details-title mb-0 pb-5">{{ $tExam->nameExam }}</h4>
                         <div class="postbox__meta">
                             <span><i class="fa-light fa-file-invoice"></i>{{ $tExam->totalPageExam }} páginas</span>
