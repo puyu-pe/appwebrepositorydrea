@@ -39,17 +39,17 @@ class ExamRatingController extends Controller
 				'data' => [
 					'tExamRating' => $tExamRating
 				],
-				'message' => null
+				'message' => 'Evaluación calificada de exitosamente.'
 			];
 
 			DB::commit();
 
 			return response()->json($response, 200);
-		} catch (\Throwable $th) {
+		} catch (ModelNotFoundException $th) {
 			DB::rollBack();
 
 			$response = [
-				'success' => true,
+				'success' => false,
 				'data' => [
 					'tExamRating' => null
 				],

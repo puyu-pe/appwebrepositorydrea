@@ -78,27 +78,24 @@ ratingStars._insertRating = async (element, value) => {
 	}
 
 	try {
-		const promise = new Promise(function (resolve, reject) {
-			fetch(`${window.location.origin}/examen/calificar`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-CSRF-TOKEN': token
-				},
-				body: JSON.stringify(data)
-			}).then(response => {
-				if (!response.ok) { throw new Error('Error en la petición'); }
-				return response.json();
-			}).then(data => {
-				resolve(data);
-			}).catch(error => {
-				reject(error);
-			});
+		const response = await fetch(`${window.location.origin}/examen/calificar`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRF-TOKEN': token
+			},
+			body: JSON.stringify(data)
 		});
 
-		const response = await promise;
-		debugger
+		if (!response.ok) {
+			const errorMessage = (JSON.parse(await response.text())).message;
+			throw new Error(errorMessage);
+		}
+
+		const responseData = await response.json();
+		showToast('success', responseData.message);
 	} catch (error) {
-		debugger
+		showToast('error', error.message);
 	}
+
 }
