@@ -16,7 +16,7 @@ class AddColumnIdUserToTexamTable extends Migration
 		Schema::table('texam', function (Blueprint $table) {
 			$table->char('idUser', 13)
 				->after('idDirection')
-				->nullable(false);
+				->nullable(true);
 
 			$table->foreign('idUser')->references('idUser')->on('tuser');
 		});
