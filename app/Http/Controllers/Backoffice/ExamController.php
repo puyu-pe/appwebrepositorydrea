@@ -76,14 +76,15 @@ class ExamController extends Controller
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
                 $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
+                $tExam->number_question = 0;
                 $tExam->stateExam = 'Publico';
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
                 $tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
-                $tExam->statusAnwser = 0;
+                $tExam->register_answer = 0;
 
                 $tExam->save();
 
-                $tUserExam = new TUserExam();
+                /*$tUserExam = new TUserExam();
 
                 $tUserExam->idUserExam = uniqid();
                 $tUserExam->idUser = session('idUser');
@@ -92,11 +93,12 @@ class ExamController extends Controller
                 $tUserExam->dataExam = $this->convertArray($tExam);
                 $tUserExam->dateUserExam = date('Y-m-d');
 
-                $tUserExam->save();
+                $tUserExam->save();*/
 
                 $tDocument->number_document = $tDocument->number_document + 1;
 
                 $tDocument->save();
+
                 $filename = $tExam->idExam . '.' . $tExam->extensionExam;
                 $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $filename);
 
@@ -120,11 +122,6 @@ class ExamController extends Controller
 
                         $tAnswer->save();
                     }
-
-                    $tExam = TExam::find($tExam->idExam);
-                    $tExam->statusAnwser = 1;
-
-                    $tExam->save();
                 }
 
                 DB::commit();
@@ -133,7 +130,7 @@ class ExamController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/insertar');
+                return PlatformHelper::redirectError([$e->getMessage()], 'examen/insertar');
             }
         }
 
@@ -188,7 +185,7 @@ class ExamController extends Controller
 
                 $tExam->save();
 
-                $tUserExam = new TUserExam();
+                /*$tUserExam = new TUserExam();
 
                 $tUserExam->idUserExam = uniqid();
                 $tUserExam->idUser = session('idUser');
@@ -197,7 +194,7 @@ class ExamController extends Controller
                 $tUserExam->dataExam = $this->convertArray($tExam);
                 $tUserExam->dateUserExam = date('Y-m-d');
 
-                $tUserExam->save();
+                $tUserExam->save();*/
 
                 if ($request->hasFile('fileExamExtension')) {
                     $tExam = TExam::find($tExam->idExam);
@@ -224,7 +221,7 @@ class ExamController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/mostrar/1');
+                return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
             }
         }
 
@@ -318,7 +315,7 @@ class ExamController extends Controller
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/mostrar/1');
+            return PlatformHelper::redirectCorrect([$e->getMessage()], 'examen/mostrar/1');
         }
     }
 
@@ -330,9 +327,9 @@ class ExamController extends Controller
 
             $tExam=TExam::find($idExam);
 
-            $valueStatus=$tExam->stateExam;
+            $valueStatus = $tExam->stateExam;
 
-            $tExam->stateExam=$valueStatus=='Publico' ? 'Oculto' : 'Publico';
+            $tExam->stateExam = $valueStatus == TExam::STATUS['PUBLIC'] ? TExam::STATUS['HIDDEN'] : TExam::STATUS['PUBLIC'];
 
             $tExam->save();
 
@@ -344,7 +341,7 @@ class ExamController extends Controller
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
         }
     }
 
@@ -364,7 +361,7 @@ class ExamController extends Controller
             'stateExam' => $data->stateExam,
             'keywordExam' => $data->keywordExam,
             'extensionExam' => $data->extensionExam,
-            'statusAnwser' => $data->statusAnwser,
+            'register_answer' => $data->register_answer,
             'created_at' => $data->created_at,
             'updated_at' => $data->updated_at,
         );
