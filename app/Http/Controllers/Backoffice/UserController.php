@@ -314,10 +314,10 @@ class UserController extends Controller
             $tUser->save();
             DB::commit();
             $sessionManager->flush();
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/acceder');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/editar');
         }
     }
-    
+
     public function actionChangeStatus($idUser)
     {
         try {
