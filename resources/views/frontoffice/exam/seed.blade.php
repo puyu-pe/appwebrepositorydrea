@@ -34,7 +34,7 @@
                             <span><i class="fa-light fa-file-invoice"></i>{{ $tExam->totalPageExam }} páginas</span>
                             <span><i class="fa-light fa-calendar"></i>{{ $tExam->created_at->format('d-m-Y') }} - F.
                                 publicación</span>
-                            <span><i class="fa-light fa-star"></i>{{ $rating->count }} calificaciónes</span>
+                            <span><i class="fa-light fa-star"></i><div class="spanRatingCount">{{ $rating->count }} calificaciónes</div></span>
                         </div>
                         <div class="it-course-details-nav pb-60">
                             <nav>
