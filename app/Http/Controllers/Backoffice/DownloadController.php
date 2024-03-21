@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use App\Models\TExam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
 class DownloadController extends Controller
@@ -26,9 +27,11 @@ class DownloadController extends Controller
             }
             $zip->close();
 
-            $downloadUrl = url('download/zipfile/' . $zipFileName);
+//            Storage::disk('zip')->put($zipFileName, file_get_contents($zipPath));
 
-            return response()->json(['downloadUrl' => $downloadUrl]);
+            return response()->json(['downloadUrl' => url("/download/zipfile/$zipFileName") ]);
+
+//             return response()->download($rutaCompletaArchivo, $zipFileName);
         } else {
             return response()->json(['error' => 'No se pudo crear el archivo'], 500);
         }
