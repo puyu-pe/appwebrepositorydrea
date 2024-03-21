@@ -43,6 +43,7 @@ Route::match(['get', 'post'], 'tipoexamen/insertar',[BackTypeExamController::cla
 Route::post('tipoexamen/editar',[BackTypeExamController::class,'actionEdit'])->middleware('GenericMiddleware:tipoexamen/editar');
 Route::get('tipoexamen/eliminar/{idTypeExam}',[BackTypeExamController::class,'actionDelete'])->middleware('GenericMiddleware:tipoexamen/eliminar');
 Route::get('tipoexamen/{acronymTypeExam}/{currentPage}',[FrontTypeExamController::class,'actionViewTypeExam'])->middleware('GenericMiddleware:tipoexamen/acroninmo');
+Route::post('tipoexamen/descargar', [FrontTypeExamController::class, 'actionDownloadFiles'])->name('download.selected');
 
 Route::get('curso/mostrar/{currentPage}',[BackSubjectController::class,'actionGetAll'])->middleware('GenericMiddleware:curso/mostrar');
 Route::match(['get', 'post'], 'curso/insertar',[BackSubjectController::class,'actionInsert'])->middleware('GenericMiddleware:curso/insertar');
