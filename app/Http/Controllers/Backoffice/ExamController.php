@@ -111,13 +111,13 @@ class ExamController extends Controller
                 $imageData = $imagick->getImageBlob();
                 Storage::disk('exam-img')->put($tExam->idExam . '.jpg', $imageData);
 
-                if ($request->has('txtValueResponseExam')) {
+                if ($request->has('txtValueResponseExam') && $request->has('numberValueExam')) {
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
                         $tAnswer = new TAnswer();
 
                         $tAnswer->idAnswer = uniqid();
                         $tAnswer->idExam = $tExam->idExam;
-                        $tAnswer->numberAnswer = $number + 1;
+                        $tAnswer->numberAnswer =  $request->input('numberValueExam')[$number];
                         $tAnswer->descriptionAnswer = $valueResponse;
 
                         $tAnswer->save();
