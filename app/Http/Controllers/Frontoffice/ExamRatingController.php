@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Helper\ExamHelper;
 
 class ExamRatingController extends Controller
 {
@@ -21,25 +22,37 @@ class ExamRatingController extends Controller
 			$idExam = $request->input('idExam');
 			$rating = $request->input('rating');
 
-			TExam::where(['idExam' => $idExam])->firstOr(function () {
+			$tExam = TExam::where(['idExam' => $idExam])->firstOr(function () {
 				throw new ModelNotFoundException('Error al intentar registrar la calificación. Examen no encontrado o no disponible.');
 			});
 
-			$tExamRating = new TExamRating();
+			$tExamRating = TExamRating::where(['idUser' => session('idUser'), 'idExam' => $idExam])->first();
 
-			$tExamRating->idExamRating = uniqid();
-			$tExamRating->idExam = $idExam;
-			$tExamRating->idUser = session('idUser');
-			$tExamRating->rating = $rating;
+			if (!$tExamRating) {
+				$tExamRating = new TExamRating();
+				$tExamRating->idExamRating = uniqid();
+				$tExamRating->idExam = $idExam;
+				$tExamRating->idUser = session('idUser');
+				$tExamRating->rating = $rating;
+				$tExamRating->save();
 
-			$tExamRating->save();
+				$message = 'Evaluación calificada de exitosamente.';
+			} else {
+				$tExamRating->rating = $rating;
+				$tExamRating->update();
+
+				$message = 'Calificación actualizada de exitosamente.';
+			}
+
+			$rating = ExamHelper::getRatingData($tExam->idExam);
 
 			$response = [
 				'success' => true,
 				'data' => [
-					'tExamRating' => $tExamRating
+					'tExamRating' => $tExamRating,
+					'rating' => $rating
 				],
-				'message' => 'Evaluación calificada de exitosamente.'
+				'message' => $message
 			];
 
 			DB::commit();

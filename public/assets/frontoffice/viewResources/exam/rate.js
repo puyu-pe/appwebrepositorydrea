@@ -1,4 +1,5 @@
 ratingStars = {};
+ratingStars.qualified = false;
 
 document.addEventListener('DOMContentLoaded', () => {
 	ratingStars._initElements();
@@ -7,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ratingStars._initElements = () => {
 	ratingStars.elements = document.querySelectorAll('.rate-start');
-	ratingStars._getDefaultClases();
 }
 
 ratingStars._initEvents = () => {
@@ -32,6 +32,8 @@ ratingStars._getDefaultClases = () => {
 	(ratingStars.elements).forEach(star => {
 		(ratingStars.defaultClasses).push(star.classList.value);
 	});
+
+	ratingStars.qualified = false;
 }
 
 ratingStars._getStarStates = (value) => {
@@ -50,6 +52,7 @@ ratingStars._getStarStates = (value) => {
 }
 
 ratingStars._setMouseOverStatusStar = (value) => {
+	ratingStars._getDefaultClases();
 	const [selectedItems, unselectedItems] = ratingStars._getStarStates(value);
 
 	selectedItems.forEach(selectedItem => {
@@ -62,10 +65,12 @@ ratingStars._setMouseOverStatusStar = (value) => {
 }
 
 ratingStars._setMouseOutStatusStar = () => {
-	(ratingStars.elements).forEach((star, index) => {
-		const defaultClass = (ratingStars.defaultClasses)[index];
-		star.classList.value = defaultClass;
-	});
+	if (!ratingStars.qualified) {
+		(ratingStars.elements).forEach((star, index) => {
+			const defaultClass = (ratingStars.defaultClasses)[index];
+			star.classList.value = defaultClass;
+		});
+	}
 }
 
 ratingStars._insertRating = async (element, value) => {
@@ -93,9 +98,35 @@ ratingStars._insertRating = async (element, value) => {
 		}
 
 		const responseData = await response.json();
+		const rating = responseData.data.rating;
+
+		ratingStars._updateRating(rating.avg, rating.count);
 		showToast('success', responseData.message);
+		ratingStars.qualified = true;
 	} catch (error) {
 		showToast('error', error.message);
 	}
 
+}
+
+ratingStars._updateRating = (avg, count) => {
+	(ratingStars.elements).forEach((star, index) => {
+		const value = star.dataset.value;
+
+		if (value <= parseFloat(avg)) {
+			star.classList.value = "fa-sharp fa-solid fa-star rate-start";
+		} else {
+			star.classList.value = "fa-regular fa-star rate-start";
+		}
+	});
+
+	const avgContainer = document.querySelector('.avgContainer');
+	avgContainer.textContent = '';
+	avgContainer.appendChild(document.createTextNode(`(${avg})`));
+
+	const spanRatingCount = document.querySelector('.spanRatingCount');
+	if (spanRatingCount) {
+		spanRatingCount.textContent = '';
+		spanRatingCount.appendChild(document.createTextNode(`${count} calificaciónes`));
+	}
 }
