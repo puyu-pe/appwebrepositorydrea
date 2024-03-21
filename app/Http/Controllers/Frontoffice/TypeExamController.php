@@ -32,25 +32,4 @@ class TypeExamController extends Controller
             ]);
     }
 
-    public function actionDownloadFiles(Request $request)
-    {
-        $ids = $request->input('ids', []);
-
-        $files = TExam::findMany($ids);
-
-        $zip = new ZipArchive;
-        $zipFileName = 'descarga_' . time() . '.zip';
-        $zipPath = storage_path('app/public/zip/ ' . $zipFileName);
-
-        if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
-            foreach ($files as $file) {
-                $zip->addFile(storage_path('app/file/exam/' . $file->idExam . '.' . $file->extensionExam));
-            }
-            $zip->close();
-
-            return response()->json(['downloadUrl' => asset('public/zip/' . $zipFileName)]);
-        } else {
-            return response()->json(['error' => 'No se pudo crear el archivo'], 500);
-        }
-    }
 }
