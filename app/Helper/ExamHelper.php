@@ -29,7 +29,7 @@ class ExamHelper
     public static function getRatingData(string $idExam)
     {
         try {
-            $examRatings = TExamRating::where(['idExamRating' => $idExam])->get();
+            $examRatings = TExamRating::where(['idExam' => $idExam])->get();
 
             $count = count($examRatings);
             $avg = 0;

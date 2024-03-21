@@ -8,3 +8,6 @@ alias composer="U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_PHP} composer
 
 # PHP
 alias php="U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_PHP} php";
+
+# ARTISAN
+alias art="U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_PHP} php /var/www/html/artisan";

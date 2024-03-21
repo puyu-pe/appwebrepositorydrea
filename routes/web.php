@@ -16,6 +16,8 @@ use App\Http\Controllers\Frontoffice\TypeExamController as FrontTypeExamControll
 use App\Http\Controllers\Frontoffice\ExamController as FrontExamController;
 use App\Http\Controllers\Frontoffice\ExamRatingController as FrontExamRatingController;
 
+use App\Http\Controllers\Backoffice\DownloadController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[FrontGeneralOffice::class, 'actionWelcome'])->middleware('GenericMiddleware:/');
@@ -68,4 +70,7 @@ Route::get('examen/eliminar/{idSubject}',[BackExamController::class,'actionDelet
 Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
 Route::get('examen/estado/{idUser}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])->middleware('GenericMiddleware:examen/ver');
+
+Route::post('download/zipexam', [DownloadController::class, 'packZipFile'])->name('download.selected');
+Route::any('download/zipfile/{filename}', [DownloadController::class, 'downloadZipFile'])->name('download.zip');
 Route::post('examen/calificar',[FrontExamRatingController::class,'actionInsert'])->middleware('GenericMiddleware:examen/calificar');
