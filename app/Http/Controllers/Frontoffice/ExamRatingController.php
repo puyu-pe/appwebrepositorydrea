@@ -25,13 +25,14 @@ class ExamRatingController extends Controller
 				throw new ModelNotFoundException('Error al intentar registrar la calificación. Examen no encontrado o no disponible.');
 			});
 
-			$tExamRating = new TExamRating([
-				'idExam' => $idExam,
-				'idUser' => session('idUser'),
-				'rating' => $rating
-			]);
+			$tExamRating = new TExamRating();
 
-			DB::commit();
+			$tExamRating->idExamRating = uniqid();
+			$tExamRating->idExam = $idExam;
+			$tExamRating->idUser = session('idUser');
+			$tExamRating->rating = $rating;
+
+			$tExamRating->save();
 
 			$response = [
 				'success' => true,
@@ -40,6 +41,8 @@ class ExamRatingController extends Controller
 				],
 				'message' => null
 			];
+
+			DB::commit();
 
 			return response()->json($response, 200);
 		} catch (\Throwable $th) {
@@ -53,7 +56,7 @@ class ExamRatingController extends Controller
 				'message' => $th->getMessage()
 			];
 
-			return response()->json($data, 500);
+			return response()->json($response, 500);
 		}
 	}
 }

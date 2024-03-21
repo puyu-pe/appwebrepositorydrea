@@ -87,7 +87,6 @@ ratingStars._insertRating = async (element, value) => {
 				},
 				body: JSON.stringify(data)
 			}).then(response => {
-				debugger
 				if (!response.ok) { throw new Error('Error en la petición'); }
 				return response.json();
 			}).then(data => {
