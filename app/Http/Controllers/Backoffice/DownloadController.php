@@ -17,7 +17,7 @@ class DownloadController extends Controller
         $files = TExam::findMany($ids);
 
         $zip = new ZipArchive;
-        $zipFileName = 'descarga_' . time() . '.zip';
+        $zipFileName = 'descarga_' . time() . rand(1, 10) . '.zip';
         $zipPath = storage_path('app/public/zip/ ' . $zipFileName);
 
         if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
@@ -27,11 +27,10 @@ class DownloadController extends Controller
             }
             $zip->close();
 
-//            Storage::disk('zip')->put($zipFileName, file_get_contents($zipPath));
+            Storage::disk('zip')->put($zipFileName, file_get_contents($zipPath));
+            unlink($zipPath);
 
-            return response()->json(['downloadUrl' => url("/download/zipfile/$zipFileName") ]);
-
-//             return response()->download($rutaCompletaArchivo, $zipFileName);
+            return response()->json(['downloadUrl' => url("/download/zipfile/$zipFileName")]);
         } else {
             return response()->json(['error' => 'No se pudo crear el archivo'], 500);
         }
@@ -44,7 +43,7 @@ class DownloadController extends Controller
         if (file_exists($filePath)) {
             return response()->download($filePath)->deleteFileAfterSend(true);
         } else {
-            return response()->json(['error' => 'File not found :'. $filePath ], 404);
+            return response()->json(['error' => 'Archivo no encontrado: ' . $filename], 404);
         }
     }
 }
