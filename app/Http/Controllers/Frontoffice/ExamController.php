@@ -68,7 +68,7 @@ class ExamController extends Controller
 
                 $tExam->save();
 
-                /*$tUserExam = new TUserExam();
+                $tUserExam = new TUserExam();
 
                 $tUserExam->idUserExam = uniqid();
                 $tUserExam->idUser = session('idUser');
@@ -77,7 +77,7 @@ class ExamController extends Controller
                 $tUserExam->dataExam = $this->convertArray($tExam);
                 $tUserExam->dateUserExam = date('Y-m-d');
 
-                $tUserExam->save();*/
+                $tUserExam->save();
 
                 $tDocument->number_document = $tDocument->number_document+1;
 

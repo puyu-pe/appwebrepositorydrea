@@ -101,10 +101,10 @@ ratingStars._insertRating = async (element, value) => {
 		const rating = responseData.data.rating;
 
 		ratingStars._updateRating(rating.avg, rating.count);
-		showToast('success', responseData.message);
+		successNote('Exito', responseData.message);
 		ratingStars.qualified = true;
 	} catch (error) {
-		showToast('error', error.message);
+		errorNote('Error', error.message);
 	}
 
 }
