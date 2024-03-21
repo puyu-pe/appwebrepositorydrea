@@ -103,6 +103,16 @@ $('#frmEditExam').formValidation(objectValidate(
                 }
             }
         },
+        selectRegisterAnswer:
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
         "selectKeywordExam[]":
         {
             validators:
@@ -140,6 +150,31 @@ $('#frmEditExam').formValidation(objectValidate(
             placeholder: 'Agregar datos...'
         }));
 
+
+    function showButtonResponse(value)
+    {
+        if (value === '1'){
+            $('#txtResponseExamPermit').prop('readonly', false);
+            $('#txtResponseExamPermit').val('');
+        }else{
+            $('#txtResponseExamPermit').prop('readonly', true);
+            $('#txtResponseExamPermit').val('');
+        }
+    }
+
+    function validRegister()
+    {
+        let status = false;
+        let status_register_answer = $('#selectRegisterAnswer').val();
+        let value_number_response = $('#txtResponseExamPermit').val();
+
+        if(status_register_answer === '1' && value_number_response === ''){
+            errorNote('Error', 'Ingrese la cantidad de preguntas para la evaluación.');
+            status = true;
+        }
+        return status;
+    }
+
     function sendFrmEditExam()
     {
         var isValid=null;
@@ -153,6 +188,10 @@ $('#frmEditExam').formValidation(objectValidate(
         {
             incorrectNote();
 
+            return;
+        }
+
+        if(validRegister()){
             return;
         }
 

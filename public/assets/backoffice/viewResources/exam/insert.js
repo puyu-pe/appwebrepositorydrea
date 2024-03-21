@@ -3,9 +3,28 @@
 
 $(function()
 {
-    $('#frmInsertExam').formValidation(objectValidate(
-    {
+    $('#frmInsertExam').formValidation(objectValidate({
         txtDescriptionExam:
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
+        selectTypeExam:
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
+        selectDirectionExam:
         {
             validators:
             {
@@ -40,17 +59,22 @@ $(function()
                 }
             }
         },
-        selectTypeExam:
+        txtTotalPageExam:
         {
             validators:
             {
+                regexp:
+                {
+                    message: '<b style="color: red;">Ingrese un valor válido.</b>',
+                    regexp: /^[0-9]{1,3}$/
+                },
                 notEmpty:
                 {
                     message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
                 }
             }
         },
-        selectDirectionExam:
+        selectGrade:
         {
             validators:
             {
@@ -70,7 +94,17 @@ $(function()
                 }
             }
         },
-        selectGrade:
+        "selectKeywordExam[]":
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
+        selectRegisterAnswer:
         {
             validators:
             {
@@ -94,8 +128,12 @@ $(function()
                     message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
                 }
             }
-        },
-        txtTotalPageExam:
+        }
+    }));
+
+    $('#dvExamResponse').formValidation(objectValidate(
+    {
+        numberResponse:
         {
             validators:
             {
@@ -106,24 +144,10 @@ $(function()
                 },
                 notEmpty:
                 {
-                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                    message: '<b style="color: red;">Este campo es requerido.</b>'
                 }
             }
         },
-        "selectKeywordExam[]":
-        {
-            validators:
-            {
-                notEmpty:
-                {
-                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
-                }
-            }
-        }
-    }));
-
-    $('#dvExamResponse').formValidation(objectValidate(
-    {
         txtDescriptionResponse:
         {
             validators:
@@ -176,12 +200,24 @@ function addElementConcept()
         return;
     }
 
-    var rowNumber=$('#tblResponseExam > tbody > tr').length+1;
+    if (confirmExam($('#numberResponse').val())){
+        return false;
+    }
 
-    var htmlTemp=`<tr>
-        <td class="text-center tblNumber">Pregunta `+rowNumber+`</td>
+    if (validateTotalResponse()){
+        return false;
+    }
+
+    var rowNumber=$('#tblResponseExam > tbody > tr').length+1;
+    let number_question = parseInt($('#numberResponse').val());
+
+    var htmlTemp=
+    `<tr>
+        <td class="text-center tblNumber">
+            <input type="number" id="numberValueExam`+rowNumber+`" name="numberValueExam[]" min="1" value="`+number_question+`" class="form-control" form="frmInsertExam" readonly>
+        </td>
         <td>
-            <input type="text" id="txtValueResponseExam`+rowNumber+`" name="txtValueResponseExam[]" value="`+$('#txtDescriptionResponse').val()+`" class="form-control" readonly>
+            <input type="text" id="txtValueResponseExam`+rowNumber+`" name="txtValueResponseExam[]" value="`+$('#txtDescriptionResponse').val()+`" class="form-control" form="frmInsertExam">
         </td>
         <td class="text-center">
             <span class="btn btn-default btn-sm glyphicon glyphicon-remove" data-toggle="tooltip" title="Quitar" data-placement="left" onclick="removeTableRowResponse(this);"></span>
@@ -190,6 +226,7 @@ function addElementConcept()
 
     $('#tblResponseExam > tbody').append(htmlTemp);
 
+    $('#numberResponse').val(number_question + 1);
     $('#txtDescriptionResponse').val('');
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -201,31 +238,81 @@ function removeTableRowResponse(component)
 
     $('#tblResponseExam > tbody > tr').each((index, element) =>
     {
-        $($(element).find('> .tblNumber')[0]).text('Pregunta '+(index+1));
+        $($(element).find('> td > input[name="numberValueExam[]"]')[0]).attr('id', 'numberValueExam'+(index+1));
         $($(element).find('> td > input[name="txtValueResponseExam[]"]')[0]).attr('id', 'txtValueResponseExam'+(index+1));
     });
 }
 
-function confirmExam()
+function confirmExam(number)
 {
-    var rowNumber=$('#tblResponseExam > tbody > tr').length;
-
-    var result=false;
-
-    if(rowNumber<1)
+    let status = false;
+    $('#tblResponseExam > tbody > tr').each((index, element) =>
     {
-      $('#dvExamExits').show();
+        let number_exists = $($(element).find('> td > input[name="numberValueExam[]"]')[0]).val();
 
-      result=true;
+        if (number === number_exists){
+            errorNote('Error', 'Ingrese un n° de pregunta que no esté en los registros');
+            status = true;
+        }
+    });
+
+    return status;
+}
+
+function validateTotalResponse()
+{
+    let status = false;
+    let total = parseInt($('#txtResponseExamPermit').val());
+    let rowNumber=$('#tblResponseExam > tbody > tr').length+1;
+
+    if (rowNumber>total){
+        errorNote('Error', 'Solo se permite ingresar un total de ' + total + (total> 1 ? ' respuestas' : ' respuesta'));
+        status = true;
     }
-    else
+    return status;
+}
+
+function showButtonResponse(value)
+{
+    if (value === '1'){
+        $('#txtResponseExamPermit').prop('readonly', false);
+        $('#txtResponseExamPermit').val('');
+        $('#btnModalResponse').show();
+    }else{
+        resetQuestion();
+        $('#txtResponseExamPermit').prop('readonly', true);
+        $('#txtResponseExamPermit').val('');
+        $('#btnModalResponse').hide();
+    }
+}
+
+function resetQuestion(){
+    $('table#tblResponseExam tbody').empty();
+    $('#numberResponse').val(1);
+    $('#txtDescriptionResponse').val('');
+}
+
+function openModal(){
+    if ($('#txtResponseExamPermit').val() !== '')
     {
-      $('#dvExamExits').hide();
-
-      result=false;
+        $('#txtResponseExamPermit').prop('readonly', true);
+        $('#modalAccess').modal('show');
+    }else {
+        warningNote('Advertencia', 'Ingrese la cantidad de preguntas de la evaluación');
     }
+}
 
-    return result;
+function validRegister()
+{
+    let status = false;
+    let status_register_answer = $('#selectRegisterAnswer').val();
+    let value_number_response = $('#txtResponseExamPermit').val();
+
+    if(status_register_answer === '1' && value_number_response === ''){
+        errorNote('Error', 'Ingrese la cantidad de preguntas para la evaluación.');
+        status = true;
+    }
+    return status;
 }
 
 function sendInsertExam()
@@ -241,6 +328,10 @@ function sendInsertExam()
     {
         incorrectNote();
 
+        return;
+    }
+
+    if(validRegister()){
         return;
     }
 
