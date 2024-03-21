@@ -77,6 +77,10 @@ ratingStars._insertRating = async (element, value) => {
 	const token = document.querySelector('input[name="_token"]').value;
 	const starContainer = element.closest('.rate-start-container');
 
+	if (starContainer.dataset.logging == 0) {
+		return false;
+	}
+
 	const data = {
 		idExam: starContainer.dataset.idExam,
 		rating: value
