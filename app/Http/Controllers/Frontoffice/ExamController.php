@@ -60,14 +60,15 @@ class ExamController extends Controller
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
                 $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
-                $tExam->stateExam = 'Oculto';
+                $tExam->number_question = 0;
+                $tExam->stateExam = TExam::STATUS['HIDDEN'];
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
                 $tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
-                $tExam->statusAnwser = 0;
+                $tExam->register_answer = 0;
 
                 $tExam->save();
 
-                $tUserExam = new TUserExam();
+                /*$tUserExam = new TUserExam();
 
                 $tUserExam->idUserExam = uniqid();
                 $tUserExam->idUser = session('idUser');
@@ -76,7 +77,7 @@ class ExamController extends Controller
                 $tUserExam->dataExam = $this->convertArray($tExam);
                 $tUserExam->dateUserExam = date('Y-m-d');
 
-                $tUserExam->save();
+                $tUserExam->save();*/
 
                 $tDocument->number_document = $tDocument->number_document+1;
 
@@ -97,11 +98,6 @@ class ExamController extends Controller
 
                         $tAnswer->save();
                     }
-
-                    $tExam = TExam::find($tExam->idExam);
-                    $tExam->statusAnwser = 1;
-
-                    $tExam->save();
                 }
 
                 DB::commit();
@@ -112,7 +108,7 @@ class ExamController extends Controller
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'examen/registrar');
+                return PlatformHelper::redirectError([$e->getMessage()], 'examen/registrar');
             }
         }
 
@@ -146,7 +142,7 @@ class ExamController extends Controller
             'stateExam' => $data->stateExam,
             'keywordExam' => $data->keywordExam,
             'extensionExam' => $data->extensionExam,
-            'statusAnwser' => $data->statusAnwser,
+            'register_answer' => $data->register_answer,
             'created_at' => $data->created_at,
             'updated_at' => $data->updated_at,
         );
@@ -192,7 +188,7 @@ class ExamController extends Controller
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/');
+            return PlatformHelper::redirectError([$e->getMessage()], '/');
         }
     }
 }
