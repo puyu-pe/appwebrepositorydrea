@@ -16,9 +16,9 @@ class TUser extends Model
         return $this->hasMany('App\Models\TUserRole', 'idUser');
     }
 
-    public function tExam()
+    public function tUserExam()
     {
-        return $this->hasMany('App\Models\TExam', 'idUser');
+        return $this->hasMany('App\Models\TUserExam', 'idUser');
     }
 
     public function tResetPassword()

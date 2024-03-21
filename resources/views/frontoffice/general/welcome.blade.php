@@ -312,7 +312,7 @@
                                         <img src="{{ asset('assets/frontoffice/img/course/avata-1.png') }}"
                                             alt="">
                                         <span>Subido por
-                                            <i>{{ $topExam->tUser !== null ? $topExam->tUser->firstName : 'NO USER' }}</i> -
+                                            <i>{{ $topExam->tUserExam[0]->tUser->firstName }}</i> -
                                             <i>{{ $topExam->tDirection !== null ? $topExam->tDirection->nameRegion : 'N.R' }}</i></span>
                                     </div>
                                     <div class="it-course-price-box d-flex justify-content-between">
