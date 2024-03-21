@@ -63,7 +63,7 @@ class UserController extends Controller
                 $sessionManager->put('avatarExtension', $tUser->avatarExtension);
                 $sessionManager->put('updated_at',$tUser->updated_at);
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], '/');
+                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], '/usuario/editar');
 
         }
 
