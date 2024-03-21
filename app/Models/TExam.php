@@ -16,6 +16,11 @@ class TExam extends Model
         'HIDDEN' => 'Oculto',
     ];
 
+    public const REGISTER_RESPONSE = [
+        'YES' => '1',
+        'NO' => '0',
+    ];
+
     public function tTypeExam()
     {
         return $this->belongsTo('App\Models\TTypeExam', 'idTypeExam');

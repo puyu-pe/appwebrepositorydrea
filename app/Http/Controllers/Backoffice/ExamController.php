@@ -70,17 +70,18 @@ class ExamController extends Controller
                 $tExam->idGrade = $request->input('selectGrade');
                 $tExam->idSubject = $request->input('selectSubject');
                 $tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
+                $tExam->idUser = session('idUser');
                 $tExam->codeExam = $tDocument->number_document + 1;
                 $tExam->nameExam = $tNumberExam . 'Evaluación ' . strtoupper($tTypeExam->acronymTypeExam) . $tSiteExam . ' ' . $tSubject->nameSubject . ' ' . $tGrade->numberGrade . '° ' . $tGrade->nameGrade;
                 $tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
                 $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
-                $tExam->number_question = 0;
+                $tExam->number_question = $request->input('selectRegisterAnswer') == TExam::REGISTER_RESPONSE['NO'] ? 0 : $request->input('txtResponseExamPermit');
                 $tExam->stateExam = 'Publico';
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
                 $tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
-                $tExam->register_answer = 0;
+                $tExam->register_answer = $request->input('selectRegisterAnswer');
 
                 $tExam->save();
 
@@ -117,6 +118,7 @@ class ExamController extends Controller
 
                         $tAnswer->idAnswer = uniqid();
                         $tAnswer->idExam = $tExam->idExam;
+                        $tAnswer->idUser = session('idUser');
                         $tAnswer->numberAnswer =  $request->input('numberValueExam')[$number];
                         $tAnswer->descriptionAnswer = $valueResponse;
 
@@ -181,7 +183,9 @@ class ExamController extends Controller
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
                 $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
+                $tExam->number_question = $request->input('selectRegisterAnswer') == TExam::REGISTER_RESPONSE['NO'] ? 0 : $request->input('txtResponseExamPermit');
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
+                $tExam->register_answer = $request->input('selectRegisterAnswer');
 
                 $tExam->save();
 

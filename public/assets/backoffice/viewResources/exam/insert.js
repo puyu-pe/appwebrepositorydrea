@@ -3,9 +3,28 @@
 
 $(function()
 {
-    $('#frmInsertExam').formValidation(objectValidate(
-    {
+    $('#frmInsertExam').formValidation(objectValidate({
         txtDescriptionExam:
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
+        selectTypeExam:
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
+        selectDirectionExam:
         {
             validators:
             {
@@ -40,30 +59,15 @@ $(function()
                 }
             }
         },
-        selectTypeExam:
+        txtTotalPageExam:
         {
             validators:
             {
-                notEmpty:
+                regexp:
                 {
-                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
-                }
-            }
-        },
-        selectDirectionExam:
-        {
-            validators:
-            {
-                notEmpty:
-                {
-                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
-                }
-            }
-        },
-        selectSubject:
-        {
-            validators:
-            {
+                    message: '<b style="color: red;">Ingrese un valor válido.</b>',
+                    regexp: /^[0-9]{1,3}$/
+                },
                 notEmpty:
                 {
                     message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
@@ -80,30 +84,10 @@ $(function()
                 }
             }
         },
-        fileExamExtension:
+        selectSubject:
         {
             validators:
             {
-                file:
-                {
-                    message: '<b style="color: red;">Solo se permite formato "pdf".</b>',
-                    extension: 'pdf'
-                },
-                notEmpty:
-                {
-                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
-                }
-            }
-        },
-        txtTotalPageExam:
-        {
-            validators:
-            {
-                regexp:
-                {
-                    message: '<b style="color: red;">Ingrese un valor válido.</b>',
-                    regexp: /^[0-9]{1,3}$/
-                },
                 notEmpty:
                 {
                     message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
@@ -124,6 +108,21 @@ $(function()
         {
             validators:
             {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
+        },
+        fileExamExtension:
+        {
+            validators:
+            {
+                file:
+                {
+                    message: '<b style="color: red;">Solo se permite formato "pdf".</b>',
+                    extension: 'pdf'
+                },
                 notEmpty:
                 {
                     message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
@@ -215,10 +214,10 @@ function addElementConcept()
     var htmlTemp=
     `<tr>
         <td class="text-center tblNumber">
-            <input type="number" id="numberValueExam`+rowNumber+`" name="numberValueExam[]" min="1" value="`+number_question+`" class="form-control" readonly>
+            <input type="number" id="numberValueExam`+rowNumber+`" name="numberValueExam[]" min="1" value="`+number_question+`" class="form-control" form="frmInsertExam" readonly>
         </td>
         <td>
-            <input type="text" id="txtValueResponseExam`+rowNumber+`" name="txtValueResponseExam[]" value="`+$('#txtDescriptionResponse').val()+`" class="form-control">
+            <input type="text" id="txtValueResponseExam`+rowNumber+`" name="txtValueResponseExam[]" value="`+$('#txtDescriptionResponse').val()+`" class="form-control" form="frmInsertExam">
         </td>
         <td class="text-center">
             <span class="btn btn-default btn-sm glyphicon glyphicon-remove" data-toggle="tooltip" title="Quitar" data-placement="left" onclick="removeTableRowResponse(this);"></span>
@@ -333,7 +332,7 @@ function sendInsertExam()
     }
 
     if(validRegister()){
-        return false;
+        return;
     }
 
     confirmDialogSend('frmInsertExam');
