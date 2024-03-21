@@ -62,6 +62,7 @@ class GenericMiddleware
             ['Administrador', 'examen/eliminar', null, null],
             ['Público', 'examen/verarchivo', null, null],
             ['Público', 'examen/ver', null, null],
+            ['Público', 'examen/calificar', null, null],
 
             ['Administrador,Registrador', 'cuestionario/registrar', null, null],
 

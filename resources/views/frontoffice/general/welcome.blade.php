@@ -311,7 +311,8 @@
                                     <div class="it-course-author pb-15">
                                         <img src="{{ asset('assets/frontoffice/img/course/avata-1.png') }}"
                                             alt="">
-                                        <span>Subido por <i>{{ $topExam->tUser->firstName }}</i> -
+                                        <span>Subido por
+                                            <i>{{ $topExam->tUser !== null ? $topExam->tUser->firstName : 'NO USER' }}</i> -
                                             <i>{{ $topExam->tDirection !== null ? $topExam->tDirection->nameRegion : 'N.R' }}</i></span>
                                     </div>
                                     <div class="it-course-price-box d-flex justify-content-between">
@@ -322,117 +323,6 @@
                             </div>
                         </div>
                     @endforeach
-                    {{-- <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
-                        <div class="it-course-item">
-                            <div class="it-course-thumb mb-20 p-relative">
-                                <a href="course-details.html"><img
-                                        src="{{ asset('assets/frontoffice/img/course/course-1-1.jpg') }}"
-                                        alt=""></a>
-                                <div class="it-course-thumb-text">
-                                    <span>ERA</span>
-                                </div>
-                            </div>
-                            <div class="it-course-content">
-                                <div class="it-course-rating mb-10">
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-regular fa-star"></i>
-                                    <span>(4.7)</span>
-                                </div>
-                                <h4 class="it-course-title pb-5"><a href="course-details.html">Evaluación ERA Callao
-                                        Matemática 6° Primaria</a></h4>
-                                <div class="it-course-info pb-15 mb-25 d-flex justify-content-between">
-                                    <span><i class="fa-light fa-file-invoice"></i>Paginas 10</span>
-                                    <span><i class="fa-sharp fa-regular fa-calendar"></i>2022</span>
-                                    <span><i class="fa-light fa-user"></i>Respuestas 5</span>
-                                </div>
-                                <div class="it-course-author pb-15">
-                                    <img src="{{ asset('assets/frontoffice/img/course/avata-1.png') }}" alt="">
-                                    <span>Subido por <i>DRE</i> - <i>Apurimác</i></span>
-                                </div>
-                                <div class="it-course-price-box d-flex justify-content-between">
-                                    <span><i>121</i></span>
-                                    <a href="cart.html"><i class="fa-light fa-eye"></i>Cantidad de vistas</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
-                        <div class="it-course-item">
-                            <div class="it-course-thumb mb-20 p-relative">
-                                <a href="course-details.html"><img
-                                        src="{{ asset('assets/frontoffice/img/course/course-1-2.jpg') }}"
-                                        alt=""></a>
-                                <div class="it-course-thumb-text">
-                                    <span>ECE</span>
-                                </div>
-                            </div>
-                            <div class="it-course-content">
-                                <div class="it-course-rating mb-10">
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-regular fa-star"></i>
-                                    <i class="fa-sharp fa-regular fa-star"></i>
-                                    <span>(3.8)</span>
-                                </div>
-                                <h4 class="it-course-title pb-5"><a href="course-details.html">Evaluación ECE Matemática
-                                        5° Primaria</a></h4>
-                                <div class="it-course-info pb-15 mb-25 d-flex justify-content-between">
-                                    <span><i class="fa-light fa-file-invoice"></i>Paginas 13</span>
-                                    <span><i class="fa-sharp fa-regular fa-calendar"></i>2020</span>
-                                    <span><i class="fa-light fa-user"></i>Respuestas 2</span>
-                                </div>
-                                <div class="it-course-author pb-15">
-                                    <img src="{{ asset('assets/frontoffice/img/course/avata-1.png') }}" alt="">
-                                    <span>Subido por <i>DRE</i> - <i>Apurimác</i></span>
-                                </div>
-                                <div class="it-course-price-box d-flex justify-content-between">
-                                    <span><i>551</i></span>
-                                    <a href="cart.html"><i class="fa-light fa-eye"></i>Cantidad de vistas</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
-                        <div class="it-course-item">
-                            <div class="it-course-thumb mb-20 p-relative">
-                                <a href="course-details.html"><img
-                                        src="{{ asset('assets/frontoffice/img/course/course-1-3.jpg') }}"
-                                        alt=""></a>
-                                <div class="it-course-thumb-text">
-                                    <span>ERA</span>
-                                </div>
-                            </div>
-                            <div class="it-course-content">
-                                <div class="it-course-rating mb-10">
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-regular fa-star"></i>
-                                    <i class="fa-sharp fa-regular fa-star"></i>
-                                    <i class="fa-sharp fa-regular fa-star"></i>
-                                    <span>(2.9)</span>
-                                </div>
-                                <h4 class="it-course-title pb-5"><a href="course-details.html">2° Evaluación ERA Apurímac
-                                        Comunicación 1° Primaria</a></h4>
-                                <div class="it-course-info pb-15 mb-25 d-flex justify-content-between">
-                                    <span><i class="fa-light fa-file-invoice"></i>Paginas 2¿5</span>
-                                    <span><i class="fa-sharp fa-regular fa-calendar"></i>2021</span>
-                                    <span><i class="fa-light fa-user"></i>Respuestas 15</span>
-                                </div>
-                                <div class="it-course-author pb-15">
-                                    <img src="{{ asset('assets/frontoffice/img/course/avata-1.png') }}" alt="">
-                                    <span>Subido por <i>DRE</i> - <i>Apurimác</i></span>
-                                </div>
-                                <div class="it-course-price-box d-flex justify-content-between">
-                                    <span><i>854</i></span>
-                                    <a href="cart.html"><i class="fa-light fa-eye"></i>Cantidad de vistas</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
         </div>
