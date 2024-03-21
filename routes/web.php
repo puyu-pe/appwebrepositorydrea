@@ -14,6 +14,7 @@ use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
 use App\Http\Controllers\Frontoffice\ContactController as FrontContactController;
 use App\Http\Controllers\Frontoffice\TypeExamController as FrontTypeExamController;
 use App\Http\Controllers\Frontoffice\ExamController as FrontExamController;
+use App\Http\Controllers\Frontoffice\ExamRatingController as FrontExamRatingController;
 
 use App\Http\Controllers\Backoffice\DownloadController;
 
@@ -72,3 +73,4 @@ Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])
 
 Route::post('download/zipexam', [DownloadController::class, 'packZipFile'])->name('download.selected');
 Route::any('download/zipfile/{filename}', [DownloadController::class, 'downloadZipFile'])->name('download.zip');
+Route::post('examen/calificar',[FrontExamRatingController::class,'actionInsert'])->middleware('GenericMiddleware:examen/calificar');

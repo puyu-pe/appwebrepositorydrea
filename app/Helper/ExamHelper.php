@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use Exception;
+use App\Models\TExamRating;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,29 @@ class ExamHelper
 
             DB::rollBack();
             return false;
+        }
+    }
+
+    public static function getRatingData(string $idExam)
+    {
+        try {
+            $examRatings = TExamRating::where(['idExamRating' => $idExam])->get();
+
+            $count = count($examRatings);
+            $avg = 0;
+
+            if ($count > 0) {
+                $avg = $examRatings->avg('rating');
+            }
+
+            $data = (object) [
+                'count' => $count,
+                'avg' => number_format($avg, 1, '.', '')
+            ];
+
+            return $data;
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }
