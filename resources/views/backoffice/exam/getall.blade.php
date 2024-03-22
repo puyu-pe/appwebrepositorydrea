@@ -40,7 +40,7 @@
                         @foreach($listTExam as $value)
                             <tr>
                                 <td class="text-center" style="width: 80px;">
-                                    <a class="btn btn-xs btn-danger" target="_black"
+                                    <a class="btn btn-xs btn-danger" target="_blank"
                                        href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver
                                         examen</a>
                                 </td>
