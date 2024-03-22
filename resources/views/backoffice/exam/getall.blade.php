@@ -5,7 +5,7 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab_1-1">
                 <div id="divSearch" class="row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-search"></i>
@@ -16,7 +16,15 @@
                                    autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-2">
+                        <input type="hidden" id="downloadUrl" value="{{ route('download.selected') }}">
+                        <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
+                        <button id="downloadBtn" style="display:none;" class="btn btn-primary btn-success">
+                            <i class="fa fa-download"></i>
+                            Descargar archivos
+                        </button>
+                    </div>
+                    <div class="form-group col-md-5">
                         {!!ViewHelper::renderPagination('examen/mostrar', $quantityPage, $currentPage, $searchParameter)!!}
                     </div>
                 </div>
@@ -24,7 +32,7 @@
                     <table id="tableExam" class="table table-bordered">
                         <thead>
                         <tr>
-                            <th class="text-center"><i class="fa fa-download"></i></th>
+                            <th class="text-center"><i class="fa fa-download text-success"></i></th>
                             <th class="text-center">Documento</th>
                             <th class="text-center">Código</th>
                             <th class="text-center">Año</th>
@@ -40,7 +48,11 @@
                         <tbody>
                         @foreach($listTExam as $value)
                             <tr>
-                                <td></td>
+                                <td>
+                                    <input type="checkbox" id="result[]" name="result[]"
+                                           value="{{$value->idExam}}"
+                                           style="width: 30px; height: 30px;">
+                                </td>
                                 <td class="text-center" style="width: 80px;">
                                     <a class="btn btn-xs btn-danger" target="_blank"
                                        href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver
