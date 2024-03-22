@@ -60,7 +60,7 @@ class ContactController extends Controller
 
                 Mail::to($tContact->emailContact)->send(new ReplyContact($tContact->completeNameContact, $tContact->messageContact, $tContact->replyContact));
 
-                DB::commit();
+                DB::commit()
 
                 return PlatformHelper::redirectCorrect(['Cambios guardado correctamente.'], 'contacto/mostrar/1');
             } catch (\Exception $e) {
