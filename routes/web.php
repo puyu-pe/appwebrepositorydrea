@@ -8,6 +8,7 @@ use App\Http\Controllers\Backoffice\SubjectController as BackSubjectController;
 use App\Http\Controllers\Backoffice\ContactController as BackContactController;
 use App\Http\Controllers\Backoffice\TypeExamController as BackTypeExamController;
 use App\Http\Controllers\Backoffice\ExamController as BackExamController;
+use App\Http\Controllers\Backoffice\AnswerController as BackAnswerController;
 
 use App\Http\Controllers\Frontoffice\GeneralController as FrontGeneralOffice;
 use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
@@ -65,8 +66,7 @@ Route::get('direccion/eliminar/{idSubject}',[BackDirectionController::class,'act
 
 Route::get('examen/mostrar/{currentPage}',[BackExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/mostrar');
 Route::match(['get', 'post'], 'examen/insertar',[BackExamController::class,'actionInsert'])->middleware('GenericMiddleware:examen/insertar');
-Route::match(['get', 'post'], 'examen/registrar',[FrontExamController::class,'actionRegister'])->middleware('GenericMiddleware:examen/registrar');
-Route::post('examen/editar',[BackExamController::class,''])->middleware('GenericMiddleware:examen/editar');
+Route::post('examen/editar',[BackExamController::class,'actionEdit'])->middleware('GenericMiddleware:examen/editar');
 Route::get('examen/eliminar/{idSubject}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
 Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
 Route::get('examen/estado/{idUser}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
@@ -75,3 +75,5 @@ Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])
 Route::post('download/zipexam', [DownloadController::class, 'packZipFile'])->name('download.selected');
 Route::any('download/zipfile/{filename}', [DownloadController::class, 'downloadZipFile'])->name('download.zip');
 Route::post('examen/calificar',[FrontExamRatingController::class,'actionInsert'])->middleware('GenericMiddleware:examen/calificar');
+
+Route::post('respuesta/insertar',[BackAnswerController::class,'actionInsert'])->middleware('GenericMiddleware:respuesta/insertar');

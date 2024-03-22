@@ -315,6 +315,24 @@ function validRegister()
     return status;
 }
 
+function validateNotEmptyResponse(){
+    let status = false;
+    $('#tblResponseExam > tbody > tr').each((index, element) =>
+    {
+        let number_response = $($(element).find('> td > input[name="numberValueExam[]"]')[0]).val();
+        let value_description = $($(element).find('> td > input[name="txtValueResponseExam[]"]')[0]).val();
+
+        if (number_response === '' || value_description === ''){
+            status = true;
+        }
+    });
+
+    if (status)
+        errorNote('No se pudo proceder', 'No pueden estar las respuestas en vacio');
+
+    return status;
+}
+
 function sendInsertExam()
 {
     var isValid=null;
@@ -332,6 +350,10 @@ function sendInsertExam()
     }
 
     if(validRegister()){
+        return;
+    }
+
+    if (validateNotEmptyResponse()){
         return;
     }
 
