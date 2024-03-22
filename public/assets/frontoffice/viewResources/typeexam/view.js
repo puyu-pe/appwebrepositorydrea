@@ -51,7 +51,7 @@ function _getUrlSearch(url) {
 	const grade = slcGrades.value;
 	const subject = slcSubjects.value;
 	const year = slcYears.value;
-	return `${window.location.origin}/tipoexamen/${typeExam}/1?searchParameter=${searchParameter}&slcGrades=${grade}&slcSubjects=${subject}&slcYears=${year}`;
+	return `${window.location.origin}/tipoexamen/${typeExam}/1?searchParameter=${searchParameter}&grade=${grade}&subject=${subject}&year=${year}`;
 }
 
 function _initElements() {

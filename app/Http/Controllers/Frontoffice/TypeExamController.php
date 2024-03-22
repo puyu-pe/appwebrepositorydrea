@@ -19,9 +19,9 @@ class TypeExamController extends Controller
 	public function actionViewTypeExam(Request $request, $acronymTypeExam, $currentPage)
 	{
 		$searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
-		$slcGrades = $request->has('slcGrades') ? $request->input('slcGrades') : 'all';
-		$slcSubjects = $request->has('slcSubjects') ? $request->input('slcSubjects') : 'all';
-		$slcYears = $request->has('slcYears') ? $request->input('slcYears') : 'all';
+		$grade = $request->has('grade') ? $request->input('grade') : 'all';
+		$subject = $request->has('subject') ? $request->input('subject') : 'all';
+		$year = $request->has('year') ? $request->input('year') : 'all';
 
 		$tTypeExam = TTypeExam::whereRaw('acronymTypeExam=?', [$acronymTypeExam])->first();
 
@@ -36,9 +36,9 @@ class TypeExamController extends Controller
 				?, 77) = 1
 				AND idTypeExam=?
 				AND stateExam = "Publico"' .
-					($slcGrades != 'all' ? 'AND idGrade="' . $slcGrades . '"' : '') .
-					($slcSubjects != 'all' ? 'AND idSubject="' . $slcSubjects . '"' : '') .
-					($slcYears != 'all' ? 'AND yearExam="' . $slcYears . '"' : ''),
+					($grade != 'all' ? 'AND idGrade="' . $grade . '"' : '') .
+					($subject != 'all' ? 'AND idSubject="' . $subject . '"' : '') .
+					($year != 'all' ? 'AND yearExam="' . $year . '"' : ''),
 				[
 					$searchParameter,
 					$tTypeExam->idTypeExam
@@ -54,9 +54,9 @@ class TypeExamController extends Controller
 
 		$filtersData = (object) [
 			'searchParameter' => $searchParameter,
-			'slcGrades' => $slcGrades,
-			'slcSubjects' => $slcSubjects,
-			'slcYears' => $slcYears
+			'grade' => $grade,
+			'subject' => $subject,
+			'year' => $year
 		];
 
 		return view(

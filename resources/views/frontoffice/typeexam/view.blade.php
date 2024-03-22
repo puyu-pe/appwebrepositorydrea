@@ -47,7 +47,7 @@
                                     <option value="all">Todos los grados</option>
                                     @foreach ($selectFilters['grades'] as $grade)
                                         <option value="{{ $grade->idGrade }}"
-                                            {{ $filtersData->slcGrades == $grade->idGrade ? 'selected' : '' }}>
+                                            {{ $filtersData->grade == $grade->idGrade ? 'selected' : '' }}>
                                             {{ $grade->nameGrade . ' - ' . $grade->numberGrade }}</option>
                                     @endforeach
                                 </select>
@@ -60,7 +60,7 @@
                                     <option value="all">Todos los cursos</option>
                                     @foreach ($selectFilters['subjects'] as $grade)
                                         <option value="{{ $grade->idSubject }}"
-                                            {{ $filtersData->slcSubjects == $grade->idSubject ? 'selected' : '' }}>
+                                            {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
                                             {{ $grade->nameSubject }}</option>
                                     @endforeach
                                 </select>
@@ -73,7 +73,7 @@
                                     <option value="all">Todos los años</option>
                                     @foreach ($selectFilters['years'] as $year)
                                         <option value="{{ $year->yearExam }}"
-                                            {{ $filtersData->slcYears == $year->yearExam ? 'selected' : '' }}>
+                                            {{ $filtersData->year == $year->yearExam ? 'selected' : '' }}>
                                             {{ $year->yearExam }}</option>
                                     @endforeach
                                 </select>
@@ -124,11 +124,11 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    {!! ViewHelper::renderPagination(
+                    {!! ViewHelper::renderPaginationFrontExams(
                         'tipoexamen/' . $tTypeExam->acronymTypeExam,
                         $quantityPage,
                         $currentPage,
-                        $filtersData->searchParameter,
+                        $filtersData,
                     ) !!}
                 </div>
             </div>
