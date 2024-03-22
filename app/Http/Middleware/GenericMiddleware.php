@@ -17,7 +17,7 @@ class GenericMiddleware
             ['Público', '/', 'mTemplate', null],
             ['Administrador', 'sistema/generarbackup', 'mSetting', 'mBackupSystem'],
             ['Administrador', 'sistema/descargar', 'mSetting', 'mDownloadExam'],
-            ['Administrador,Supervisor', 'panel', 'mDashboard', null],
+            ['Administrador,Supervisor,Registrador', 'panel', 'mDashboard', null],
 
             ['Público', 'general/contacto', 'mContact', null],
             ['Administrador,Supervisor', 'contacto/mostrar', 'mPrincipal', 'mGetAllContact'],
@@ -55,8 +55,8 @@ class GenericMiddleware
             ['Administrador,Supervisor', 'direccion/editar', null, null],
             ['Administrador', 'direccion/eliminar', null, null],
 
-            ['Administrador,Supervisor', 'examen/mostrar', 'mPrincipal', 'mGetAllExam'],
-            ['Administrador,Supervisor', 'examen/insertar', 'mPrincipal', 'mInsertExam'],
+            ['Administrador,Supervisor,Registrador', 'examen/mostrar', 'mPrincipal', 'mGetAllExam'],
+            ['Administrador,Supervisor,Registrador', 'examen/insertar', 'mPrincipal', 'mInsertExam'],
             ['Administrador,Registrador', 'examen/registrar', 'mModuleExam', 'mRegisterExam'],
             ['Administrador,Supervisor', 'examen/editar', null, null],
             ['Administrador,Supervisor', 'examen/estado', null, null],
@@ -65,9 +65,7 @@ class GenericMiddleware
             ['Público', 'examen/ver', null, null],
             ['Público', 'examen/calificar', null, null],
 
-            ['Administrador,Registrador', 'cuestionario/registrar', null, null],
-
-            ['Administrador,Supervisor,Registrador,Normal', 'respuesta/insertar', null, null],
+            ['Administrador,Supervisor,Registrador', 'respuesta/insertar', null, null],
         ];
 
         $myMainRole=Session::get('mainRole', '');

@@ -27,8 +27,14 @@ class ExamController extends Controller
     {
         $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
 
-        $paginate = PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam), ?, 77)=1', [$searchParameter])
-            ->orderby('created_at', 'desc'), 7, $currentPage);
+        $status = stristr(session('roleUser'), TRole::ROLE['REGISTER']);
+        $paginate = !$status ? PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])
+            ->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam, stateExam, number_question, numberEvaluation), ?, 77)=1', [$searchParameter])
+            ->orderby('created_at', 'desc'), 7, $currentPage) :
+            PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])
+                ->whereRaw('register_answer = ? AND stateExam = ?', [TExam::REGISTER_RESPONSE['YES'], TExam::STATUS['PUBLIC']])
+                ->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam, stateExam, number_question, numberEvaluation), ?, 77)=1', [$searchParameter])
+                ->orderby('created_at', 'desc'), 7, $currentPage);
 
         return view('backoffice/exam/getall',
             [
