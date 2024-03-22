@@ -53,8 +53,11 @@
                                     <div>{{date('g:i A', strtotime($value->created_at))}}</div>
                                 </td>
                                 <td class="text-center">
-                                    <span
-                                        class="label label-{{$value->statusContact == 0 ? 'warning' : 'success'}}">{{$value->statusContact == 0 ? 'Sin Responder' : 'Respondido'}}</span>
+                                    <span class="label label-{{$value->statusContact == 0 ? 'warning' : 'success'}}" data-toggle="tooltip"
+                                          title="Modificar datos" data-placement="left"
+                                          onclick="ajaxDialog('divGeneralContainer', 'modal-lg', 'Responder consulta', {_token: '{{csrf_token()}}', idContact: '{{$value->idContact}}'}, '{{url('contacto/responder')}}', 'POST', null, null, false, true);">
+                                        {{$value->statusContact == 0 ? 'Sin Responder' : 'Respondido'}}
+                                    </span>
                                 </td>
                                 <td class="text-center" style="width: 60px;">
                                     @if ($value->statusContact == 1)

@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Frontoffice;
 use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;
 use App\Mail\ConfirmReception;
-use App\Mail\ResetPassword;
 use App\Models\TContact;
 use App\Validation\ContactValidation;
-
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class ContactController extends Controller
 {
@@ -47,11 +45,11 @@ class ContactController extends Controller
 
                 Mail::to($tContact->emailContact)->send(new ConfirmReception($tContact->completeNameContact));
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'general/contacto');
+                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], URL::previous());
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'general/contacto');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), URL::previous());
             }
         }
 
