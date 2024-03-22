@@ -67,6 +67,7 @@ class GenericMiddleware
 
             ['Administrador,Registrador', 'cuestionario/registrar', null, null],
 
+            ['Administrador,Supervisor,Registrador,Normal', 'respuesta/insertar', null, null],
         ];
 
         $myMainRole=Session::get('mainRole', '');

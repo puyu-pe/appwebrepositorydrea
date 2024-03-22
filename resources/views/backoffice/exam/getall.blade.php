@@ -85,14 +85,10 @@
                                     <span class="btn btn-info btn-xs glyphicon glyphicon-pencil" data-toggle="tooltip"
                                           title="Modificar datos" data-placement="left"
                                           onclick="ajaxDialog('divGeneralContainer', 'modal-lg', 'Modificar datos de la evaluación', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('examen/editar')}}', 'POST', null, null, false, true);"></span>
-                                    @if ($value->statusAnwser == 0)
+                                    @if ($value->register_answer == 1)
                                         <span class="btn btn-info btn-xs glyphicon glyphicon-list" data-toggle="tooltip"
                                               title="Registrar respuestas" data-placement="left"
-                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Registrar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('cuestinario/registrar')}}', 'POST', null, null, false, true);"></span>
-                                    @else
-                                        <span class="btn btn-warning btn-xs glyphicon glyphicon-list"
-                                              data-toggle="tooltip" title="Modificar respuestas" data-placement="left"
-                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Modificar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('cuestinario/editar')}}', 'POST', null, null, false, true);"></span>
+                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Registrar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('respuesta/insertar')}}', 'POST', null, null, false, true);"></span>
                                     @endif
                                     <span class="btn btn-default btn-xs glyphicon glyphicon-eye-{{$value->stateExam == 'Publico' ? 'close' : 'open'}}" data-toggle="tooltip" title="{{$value->stateExam== 'Publico' ? 'Ocultar evaluacion' : 'Publicar evaluación'}}" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
                                     <span class="btn btn-{{$value->stateExam == 'Publico' ? 'default' : 'warning'}} btn-xs glyphicon glyphicon-save-file" data-toggle="tooltip" title="{{$value->stateExam == 'Publico' ? 'Ver página de evaluación' : 'Vista previa de la evaluación'}}" data-placement="left" onclick="window.open('{{url('examen/ver/'.$value->codeExam)}}', '_blank');"></span>
