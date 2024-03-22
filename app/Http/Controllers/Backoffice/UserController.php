@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
 use App\Mail\Notification;
+use App\Mail\ResetPassword;
 use App\Models\TResetPassword;
 use App\Models\TRole;
 use App\Validation\UserValidation;
@@ -132,7 +133,7 @@ class UserController extends Controller
 
             $linkReset = url('usuario/resetear/' . $tResetPassword->token);
 
-            Mail::to($email)->send(new Notification($linkReset));
+            Mail::to($email)->send(new ResetPassword($linkReset));
         } catch (\Exception $e) {
             DB::rollBack();
 
