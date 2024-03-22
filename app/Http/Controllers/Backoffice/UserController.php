@@ -14,11 +14,13 @@ use Illuminate\Session\SessionManager;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 use App\Models\TUser;
 use App\Models\TUserRole;
 use Illuminate\Support\Facades\Mail;
+use function Symfony\Component\String\s;
 
 class UserController extends Controller
 {
@@ -65,8 +67,11 @@ class UserController extends Controller
             }
         }
 
-        if (session('idUser'))
+        if (session('idUser') && !stristr(Session::get('roleUser'), TRole::ROLE['NORMAL']))
             return Redirect::to('/panel');
+
+        if (session('idUser') && stristr(Session::get('roleUser'), TRole::ROLE['NORMAL']))
+            return Redirect::to('usuario/editar');
 
         return view('backoffice/user/login');
     }

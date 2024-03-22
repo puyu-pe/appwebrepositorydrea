@@ -57,7 +57,6 @@ class GenericMiddleware
 
             ['Administrador,Supervisor,Registrador', 'examen/mostrar', 'mPrincipal', 'mGetAllExam'],
             ['Administrador,Supervisor,Registrador', 'examen/insertar', 'mPrincipal', 'mInsertExam'],
-            ['Administrador,Registrador', 'examen/registrar', 'mModuleExam', 'mRegisterExam'],
             ['Administrador,Supervisor', 'examen/editar', null, null],
             ['Administrador,Supervisor', 'examen/estado', null, null],
             ['Administrador', 'examen/eliminar', null, null],

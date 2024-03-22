@@ -65,7 +65,6 @@ Route::get('direccion/eliminar/{idSubject}',[BackDirectionController::class,'act
 
 Route::get('examen/mostrar/{currentPage}',[BackExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/mostrar');
 Route::match(['get', 'post'], 'examen/insertar',[BackExamController::class,'actionInsert'])->middleware('GenericMiddleware:examen/insertar');
-Route::match(['get', 'post'], 'examen/registrar',[FrontExamController::class,'actionRegister'])->middleware('GenericMiddleware:examen/registrar');
 Route::post('examen/editar',[BackExamController::class,'actionEdit'])->middleware('GenericMiddleware:examen/editar');
 Route::get('examen/eliminar/{idSubject}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
 Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
