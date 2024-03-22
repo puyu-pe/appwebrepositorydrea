@@ -31,11 +31,12 @@
                                 <span>
                                     Buscar Evaluación
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                            stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                              stroke-width="1.5"
+                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                            stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </span>
                             </a>
@@ -72,11 +73,12 @@
                                 Buscar evaluación
                                 <span>
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                            stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                              stroke-width="1.5"
+                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                            stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </span>
                             </a>
@@ -92,7 +94,8 @@
                             <div class="it-category-4-item text-center">
                                 <div class="it-category-4-icon">
                                     <span>
-                                        <img src="{{ asset("assets/frontoffice/img/category/{$value->acronymTypeExam}-img.{$value->extensionImageType}?x={$value->updated_at}") }}"
+                                        <img
+                                            src="{{ asset("assets/frontoffice/img/category/{$value->acronymTypeExam}-img.{$value->extensionImageType}?x={$value->updated_at}") }}"
                                             alt="">
                                     </span>
                                 </div>
@@ -121,7 +124,7 @@
                             class="it-about-4-thumb-wrap d-flex align-items-center justify-content-center justify-content-lg-end">
                             <div class="it-about-4-thumb-double d-flex flex-column">
                                 <img class="mb-20" src="{{ asset('assets/frontoffice/img/about/thumb-4-1.jpg') }}"
-                                    alt="">
+                                     alt="">
                                 <img src="{{ asset('assets/frontoffice/img/about/thumb-4-2.jpg') }}" alt="">
                             </div>
                             <div class="it-about-4-thumb-single">
@@ -139,7 +142,8 @@
                                 <span>DREA</span>
                             </h2>
                             <p>
-                                En la DREA, nos comprometemos a proporcionar las evaluaciones y recursos educativos útiles
+                                En la DREA, nos comprometemos a proporcionar las evaluaciones y recursos educativos
+                                útiles
                                 y accesibles para estudiantes y docentes para que los estudiantes puedan practicar y
                                 prepararse de manera efectiva para futuras evaluaciones.
                             </p>
@@ -178,18 +182,19 @@
                                     <span>
                                         Conocer mas
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                                stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                                stroke-linejoin="round" />
+                                                  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
                                             <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
                                         </svg>
                                     </span>
                                 </a>
                                 <div class="it-about-3-left-shape-3 d-none d-xl-block">
                                     <img src="{{ asset('assets/frontoffice/img/about/about-3-shap-3.png') }}"
-                                        alt="">
+                                         alt="">
                                 </div>
                             </div>
                         </div>
@@ -207,7 +212,7 @@
                         <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
                             <div class="it-funfact-4-item">
                                 <h4><span data-purecounter-duration="1" data-purecounter-end="6879"
-                                        class="purecounter">6,879</span>+</h4>
+                                          class="purecounter">6,879</span>+</h4>
                                 <p>Recursos ECE</p>
                             </div>
                         </div>
@@ -216,7 +221,7 @@
                         <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
                             <div class="it-funfact-4-item">
                                 <h4><span data-purecounter-duration="1" data-purecounter-end="1327"
-                                        class="purecounter">1327</span>+</h4>
+                                          class="purecounter">1327</span>+</h4>
                                 <p>Recursos ERA</p>
                             </div>
                         </div>
@@ -225,7 +230,7 @@
                         <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
                             <div class="it-funfact-4-item">
                                 <h4><span data-purecounter-duration="1" data-purecounter-end="1359"
-                                        class="purecounter">1359</span>+</h4>
+                                          class="purecounter">1359</span>+</h4>
                                 <p>Recursos LLECE</p>
                             </div>
                         </div>
@@ -234,7 +239,7 @@
                         <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
                             <div class="it-funfact-4-item">
                                 <h4><span data-purecounter-duration="1" data-purecounter-end="1557"
-                                        class="purecounter">1557</span>+</h4>
+                                          class="purecounter">1557</span>+</h4>
                                 <p>Recursos EM</p>
                             </div>
                         </div>
@@ -264,12 +269,13 @@
                                     <span>
                                         Ver mas evaluaciones
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                                stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                                stroke-linejoin="round" />
+                                                  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
                                             <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
                                         </svg>
                                     </span>
                                 </a>
@@ -310,7 +316,7 @@
                                     </div>
                                     <div class="it-course-author pb-15">
                                         <img src="{{ asset('assets/frontoffice/img/course/avata-1.png') }}"
-                                            alt="">
+                                             alt="">
                                         <span>Subido por
                                             <i>{{ $topExam->tUserExam[0]->tUser->firstName }}</i> -
                                             <i>{{ $topExam->tDirection !== null ? $topExam->tDirection->nameRegion : 'N.R' }}</i></span>
@@ -330,7 +336,7 @@
 
         <!-- video-area-start -->
         <div class="it-video-area it-video-style-4 it-video-bg p-relative fix pt-100 pb-95"
-            data-background="{{ asset('assets/frontoffice/img/video/bg-4-1.jpg') }}">
+             data-background="{{ asset('assets/frontoffice/img/video/bg-4-1.jpg') }}">
             <div class="it-video-shape-1 d-none d-lg-block">
                 <img src="{{ asset('assets/frontoffice/img/video/shape-4-1.png') }}" alt="">
             </div>
@@ -349,21 +355,24 @@
                         <div class="it-video-content">
                             <span>Mantente al dia con el repositorio</span>
                             <h3 class="it-video-title">Suscríbete para Recibir Notificaciones</h3>
-                            <p>¡Mantente al tanto de las últimas evaluaciones subidas y respondidas en nuestro repositorio!
+                            <p>¡Mantente al tanto de las últimas evaluaciones subidas y respondidas en nuestro
+                                repositorio!
                             </p>
-                            <p>Suscríbete a nuestras notificaciones y recibe actualizaciones directamente en tu bandeja de
+                            <p>Suscríbete a nuestras notificaciones y recibe actualizaciones directamente en tu bandeja
+                                de
                                 entrada</p>
                             <div class="it-video-button">
                                 <a class="it-btn-blue" href="contact.html">
                                     <span>
                                         Suscríbirse
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
+                                             xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                                stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                                stroke-linejoin="round" />
+                                                  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
                                             <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
                                         </svg>
                                     </span>
                                 </a>
@@ -387,7 +396,7 @@
 
         <!-- work-area-start -->
         <div class="it-wrok-area it-wrok-bg pt-120 pb-90"
-            data-background="{{ asset('assets/frontoffice/img/work/work-bg.jpg') }}">
+             data-background="{{ asset('assets/frontoffice/img/work/work-bg.jpg') }}">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-6">
@@ -409,7 +418,8 @@
                                 </span>
                             </div>
                             <div class="it-work-content">
-                                <h4 class="it-work-title-sm"><a href="service-details.html">Contenido organizado</a></h4>
+                                <h4 class="it-work-title-sm"><a href="service-details.html">Contenido organizado</a>
+                                </h4>
                                 <p>Acceder de manera organizada, a la amplia gama de evaluaciones, con la posibilidad de
                                     filtrar y buscar según sus necesidades</p>
                             </div>
@@ -423,7 +433,8 @@
                                 </span>
                             </div>
                             <div class="it-work-content">
-                                <h4 class="it-work-title-sm"><a href="service-details.html">Respuestas de Evaluaciones</a>
+                                <h4 class="it-work-title-sm"><a href="service-details.html">Respuestas de
+                                        Evaluaciones</a>
                                 </h4>
                                 <p>Los usuarios pueden registrar sus respuestas a las evaluaciones y hacer públicas las
                                     respuestas para compartir y mejorar</p>
@@ -438,7 +449,8 @@
                                 </span>
                             </div>
                             <div class="it-work-content">
-                                <h4 class="it-work-title-sm"><a href="service-details.html">Interacción y Colaboración</a>
+                                <h4 class="it-work-title-sm"><a href="service-details.html">Interacción y
+                                        Colaboración</a>
                                 </h4>
                                 <p>Comentar las respuestas y compartir estrategias de resolución permitiendo
                                     retroalimentación constructiva</p>
@@ -462,7 +474,7 @@
                         <div class="it-testimonial-3-box z-index p-relative">
                             <div class="it-testimonial-3-shape-1">
                                 <img src="{{ asset('assets/frontoffice/img/testimonial/shape-3-1.png') }}"
-                                    alt="">
+                                     alt="">
                             </div>
                             <div class="it-testimonial-3-wrapper white-bg p-relative">
                                 <div class="it-testimonial-3-quote">
@@ -473,17 +485,21 @@
                                         <div class="swiper-slide">
                                             <div class="it-testimonial-3-item">
                                                 <div class="it-testimonial-3-content">
-                                                    <p>¡Estoy realmente impresionada con el servicio que ofrece este sitio
+                                                    <p>¡Estoy realmente impresionada con el servicio que ofrece este
+                                                        sitio
                                                         web!
-                                                        Como estudiante de secundaria, siempre he luchado con la preparación
+                                                        Como estudiante de secundaria, siempre he luchado con la
+                                                        preparación
                                                         para las evaluaciones,
                                                         pero este repositorio de evaluaciones ha hecho que sea mucho más
                                                         fácil para mí practicar y mejorar.
-                                                        La función de registro de respuestas me ha ayudado a identificar mis
+                                                        La función de registro de respuestas me ha ayudado a identificar
+                                                        mis
                                                         fortalezas y debilidades.</p>
                                                     <div class="it-testimonial-3-author-box d-flex align-items-center">
                                                         <div class="it-testimonial-3-avata">
-                                                            <img src="{{ asset('assets/frontoffice/img/avatar/avatar-3-1.png') }}"
+                                                            <img
+                                                                src="{{ asset('assets/frontoffice/img/avatar/avatar-3-1.png') }}"
                                                                 alt="">
                                                         </div>
                                                         <div class="it-testimonial-3-author-info">
@@ -497,17 +513,21 @@
                                         <div class="swiper-slide">
                                             <div class="it-testimonial-3-item">
                                                 <div class="it-testimonial-3-content">
-                                                    <p>Como docente de matemáticas, siempre estoy buscando maneras de apoyar
+                                                    <p>Como docente de matemáticas, siempre estoy buscando maneras de
+                                                        apoyar
                                                         a mis estudiantes en su preparación
-                                                        para las evaluaciones. Este repositorio de evaluaciones ha sido una
+                                                        para las evaluaciones. Este repositorio de evaluaciones ha sido
+                                                        una
                                                         herramienta invaluable en mi clase.
                                                         La variedad de evaluaciones disponibles y la capacidad de
                                                         personalizar las preferencias de los estudiantes
-                                                        han hecho que sea mucho más fácil para ellos practicar y mejorar sus
+                                                        han hecho que sea mucho más fácil para ellos practicar y mejorar
+                                                        sus
                                                         habilidades.</p>
                                                     <div class="it-testimonial-3-author-box d-flex align-items-center">
                                                         <div class="it-testimonial-3-avata">
-                                                            <img src="{{ asset('assets/frontoffice/img/avatar/avatar-2.png') }}"
+                                                            <img
+                                                                src="{{ asset('assets/frontoffice/img/avatar/avatar-2.png') }}"
                                                                 alt="">
                                                         </div>
                                                         <div class="it-testimonial-3-author-info">
@@ -521,10 +541,12 @@
                                         <div class="swiper-slide">
                                             <div class="it-testimonial-3-item">
                                                 <div class="it-testimonial-3-content">
-                                                    <p>Siempre estoy buscando formas de mejorar mi rendimiento académico.
+                                                    <p>Siempre estoy buscando formas de mejorar mi rendimiento
+                                                        académico.
                                                         Este repositorio de evaluaciones ha sido una verdadera bendición
                                                         para mí. La interfaz fácil de usar
-                                                        y la amplia selección de evaluaciones disponibles han hecho que sea
+                                                        y la amplia selección de evaluaciones disponibles han hecho que
+                                                        sea
                                                         mucho más fácil para mí practicar
                                                         y prepararme para mis exámenes. Además, la posibilidad de
                                                         interactuar con otros estudiantes y ver sus
@@ -532,7 +554,8 @@
                                                         estrategias de resolución</p>
                                                     <div class="it-testimonial-3-author-box d-flex align-items-center">
                                                         <div class="it-testimonial-3-avata">
-                                                            <img src="{{ asset('assets/frontoffice/img/avatar/avatar-1.png') }}"
+                                                            <img
+                                                                src="{{ asset('assets/frontoffice/img/avatar/avatar-1.png') }}"
                                                                 alt="">
                                                         </div>
                                                         <div class="it-testimonial-3-author-info">
@@ -577,11 +600,13 @@
                                     <img src="{{ asset('assets/frontoffice/img/category/title.svg') }}" alt="">
                                     Contact With US
                                 </span>
-                                <h2 class="it-section-title-3">Registra tus datos para generar tu solicitud de inscripción
+                                <h2 class="it-section-title-3">Registra tus datos para generar tu solicitud de
+                                    inscripción
                                 </h2>
                             </div>
                             <div class="it-contact-text pb-15">
-                                <p>La inscripción en la web es sencillo, completa el formulario con tus datos personales y
+                                <p>La inscripción en la web es sencillo, completa el formulario con tus datos personales
+                                    y
                                     de contacto,
                                     indicando si es docente o estudiante, Una vez aprobado serás notificado por correo.
                                     Los usuarios obtienen acceso para registrar respuestas y participar en la comunidad
@@ -591,42 +616,55 @@
                     </div>
                     <div class="col-xl-5 col-lg-5">
                         <div class="it-contact-wrap"
-                            data-background="{{ asset('assets/frontoffice/img/contact/bg-5.jpg') }}">
+                             data-background="{{ asset('assets/frontoffice/img/contact/bg-5.jpg') }}">
                             <h4 class="it-contact-title pb-15">Registrate enviando tus datos</h4>
-                            <form action="#">
+                            <form id="frmContact" action="{{url('general/contacto')}}" method="post">
                                 <div class="row">
                                     <div class="col-12 mb-15">
                                         <div class="it-contact-input-box">
-                                            <input type="text" placeholder="Nombre">
+                                            <input type="text" id="txtFullName" name="txtFullName"
+                                                   placeholder="Nombres*"
+                                                   value="{{Session::has('firstName') && Session::has('surName') ? Session::get('firstName') . ' ' .Session::get('surName') : ''}}"
+                                                   autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-12 mb-15">
                                         <div class="it-contact-input-box">
-                                            <input type="email" placeholder="Correo">
+                                            <input type="text" id="txtEmail" name="txtEmail"
+                                                   placeholder="Correo electrónico*"
+                                                   value="{{Session::has('email') ? Session::get('email') : ''}}"
+                                                   autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="col-12 mb-15">
                                         <div class="it-contact-input-box">
-                                            <input type="text" placeholder="Teléfono">
+                                            <input type="text" id="txtPhone" name="txtPhone"
+                                                   placeholder="Teléfono">
                                         </div>
                                     </div>
                                     <div class="col-12 mb-30">
                                         <div class="it-contact-textarea-box">
-                                            <textarea placeholder="Mensaje"></textarea>
+                                            <textarea id="txtMessage" name="txtMessage"
+                                                      placeholder="Mensaje que desea dejar*" rows="7"
+                                                      onkeyup="lineJumpTextArea(this, true, true, event);"
+                                                      data-fv-field="txtMessage"></textarea>
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" id="txtSubject" name="txtSubject" value="Solicito Inscripción al sistema">
+                                {{csrf_field()}}
                             </form>
-                            <button type="submit" class="it-btn-blue">
-                                <span>
+                            <input type="button" class="it-btn-blue" value="Enviar datos"
+                                   onclick="sendFrmContact();">
+                            <span>
                                     Enviar datos
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                         xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                            stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                            stroke-linejoin="round" />
+                                              stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
                                         <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                            stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </span>
                             </button>
@@ -635,5 +673,8 @@
                 </div>
             </div>
         </div>
+
+        <script
+            src="{{asset('assets/frontoffice/viewResources/contact/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
         <!-- contact-area-end -->
-    @endsection
+@endsection

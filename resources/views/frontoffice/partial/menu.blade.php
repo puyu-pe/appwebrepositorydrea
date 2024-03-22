@@ -26,21 +26,8 @@
                                             @endforeach
                                         </ul>
                                     </li>
-                                    @if (stristr(Session::get('roleUser'), 'Administrador')==true ||
-                                    stristr(Session::get('roleUser'), 'Registrador')==true)
-                                        <li id="mModuleExam"
-                                            class="has-dropdown {{Session::get('menu')=='mModuleExam' ? 'active' : ''}}">
-                                            <a href="#">Opciones para pruebas</a>
-                                            <ul class="it-submenu submenu">
-                                                <li id="mRegisterExam"
-                                                    class="{{Session::get('subMenu')=='mRegisterExam' ? 'active' : ''}}">
-                                                    <a
-                                                        href="{{url('examen/registrar')}}">Registrar prueba</a></li>
-                                            </ul>
-                                        </li>
-                                    @endif
                                     <li id="mContact" class="{{Session::get('menu')=='mContact' ? 'active' : ''}}"><a
-                                            href="{{url('general/contacto')}}">Contacto</a></li>
+                                            href="{{url('general/contacto')}}">Consultas</a></li>
                                 </ul>
                             </nav>
                         </div>

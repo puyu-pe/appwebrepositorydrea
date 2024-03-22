@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
 use App\Mail\Notification;
+use App\Mail\ResetPassword;
 use App\Models\TResetPassword;
 use App\Models\TRole;
 use App\Validation\UserValidation;
@@ -14,11 +15,13 @@ use Illuminate\Session\SessionManager;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 use App\Models\TUser;
 use App\Models\TUserRole;
 use Illuminate\Support\Facades\Mail;
+use function Symfony\Component\String\s;
 
 class UserController extends Controller
 {
@@ -65,8 +68,11 @@ class UserController extends Controller
             }
         }
 
-        if (session('idUser'))
+        if (session('idUser') && !stristr(Session::get('roleUser'), TRole::ROLE['NORMAL']))
             return Redirect::to('/panel');
+
+        if (session('idUser') && stristr(Session::get('roleUser'), TRole::ROLE['NORMAL']))
+            return Redirect::to('usuario/editar');
 
         return view('backoffice/user/login');
     }
@@ -132,7 +138,7 @@ class UserController extends Controller
 
             $linkReset = url('usuario/resetear/' . $tResetPassword->token);
 
-            Mail::to($email)->send(new Notification($linkReset));
+            Mail::to($email)->send(new ResetPassword($linkReset));
         } catch (\Exception $e) {
             DB::rollBack();
 
