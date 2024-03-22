@@ -11,13 +11,13 @@
                                 {{ 'Lista de evaluaciones ' . strtoupper($tTypeExam->acronymTypeExam) }}
                             </h3>
                         </div>
-                        <div class="it-breadcrumb-list-wrap">
+                        {{-- <div class="it-breadcrumb-list-wrap">
                             <div class="it-breadcrumb-list">
                                 <span><a href="index.html">home</a></span>
                                 <span class="dvdr">//</span>
                                 <span>COURSE 02</span>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -31,8 +31,8 @@
                     <div class="it-sv-details-sidebar">
                         <div class="it-sv-details-sidebar-search mb-55">
                             <input id="txtSearch" type="text" placeholder="Información para búsqueda (Enter)"
-                                onkeyup="searchTypeExam(this.value, '{{ url('tipoexamen/' . $tTypeExam->acronymTypeExam . '/1') }}', event);"
-                                value="{{ $searchParameter }}">
+                                value="{{ $filtersData->searchParameter }}"
+                                data-typeexam="{{ $tTypeExam->acronymTypeExam }}">
                             <button type="submit">
                                 <i class="fal fa-search"></i>
                             </button>
@@ -40,6 +40,46 @@
                     </div>
                 </div>
                 <div class="col-8">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="postbox__select">
+                                <select id="slcGrades">
+                                    <option value="all">Todos los grados</option>
+                                    @foreach ($selectFilters['grades'] as $grade)
+                                        <option value="{{ $grade->idGrade }}"
+                                            {{ $filtersData->slcGrades == $grade->idGrade ? 'selected' : '' }}>
+                                            {{ $grade->nameGrade . ' - ' . $grade->numberGrade }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="postbox__select">
+                                <select id="slcSubjects">
+                                    <option value="all">Todos los cursos</option>
+                                    @foreach ($selectFilters['subjects'] as $grade)
+                                        <option value="{{ $grade->idSubject }}"
+                                            {{ $filtersData->slcSubjects == $grade->idSubject ? 'selected' : '' }}>
+                                            {{ $grade->nameSubject }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="postbox__select">
+                                <select id="slcYears">
+                                    <option value="all">Todos los años</option>
+                                    @foreach ($selectFilters['years'] as $year)
+                                        <option value="{{ $year->yearExam }}"
+                                            {{ $filtersData->slcYears == $year->yearExam ? 'selected' : '' }}>
+                                            {{ $year->yearExam }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -51,28 +91,27 @@
                                     target="_blank"><img src="{{ asset('assets/frontoffice/img/course/course-1-4.jpg') }}"
                                         alt=""></a>
                                 <div class="it-course-thumb-text">
-                                    <span>Marketing</span>
+                                    <span>{{ $value->tTypeExam->acronymTypeExam }}</span>
                                 </div>
                             </div>
                             <div class="it-course-content">
-                                <div class="it-course-rating mb-10">
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-solid fa-star"></i>
-                                    <i class="fa-sharp fa-regular fa-star"></i>
-                                    <span>(4.7)</span>
-                                </div>
-                                <h4 class="it-course-title pb-15"><a href="{{ url('examen/ver/' . $value->codeExam) }}">{{ $value->nameExam }}</a>
+                                @include('frontoffice._partials.exam_rating', [
+                                    'qualifiable' => false,
+                                    'idExam' => $value->idExam,
+                                    'ratingAvg' => $value->rating->avg,
+                                ])
+                                <h4 class="it-course-title pb-15"><a
+                                        href="{{ url('examen/ver/' . $value->codeExam) }}">{{ $value->nameExam }}</a>
                                 </h4>
                                 <div class="it-course-info pb-20 mb-25 d-flex justify-content-between">
                                     <span><i
                                             class="fa-light fa-file-invoice"></i>{{ $value->totalPageExam == 1 ? $value->totalPageExam . ' páginas' : $value->totalPageExam . ' páginas' }}</span>
                                     <span><i class="fa-sharp fa-regular fa-calendar"></i>{{ $value->yearExam }}</span>
-                                    <span><i class="fa-light fa-user"></i>Students 20+</span>
+                                    <span><i class="fa-light fa-star"></i>{{ $value->rating->count }} calificaciónes</span>
                                 </div>
                                 <div class="it-course-author pb-25">
-                                    <span>By <i>Angela</i> in <i>Development</i></span>
+                                    <span>Por: <i>{{ $value->user->firstName }}</i>
+                                        <i>{{ $value->tDirection !== null ? ' de ' . $value->tDirection->nameRegion : 'N.R' }}</i></span>
                                 </div>
                                 <div class="it-course-price-box d-flex justify-content-between">
                                     {{-- <span><i>$60</i> $120</span>
@@ -89,7 +128,7 @@
                         'tipoexamen/' . $tTypeExam->acronymTypeExam,
                         $quantityPage,
                         $currentPage,
-                        $searchParameter,
+                        $filtersData->searchParameter,
                     ) !!}
                 </div>
             </div>

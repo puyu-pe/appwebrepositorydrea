@@ -26,6 +26,7 @@
                             <img src="{{ asset('assets/frontoffice/img/course/details.jpg') }}" alt="">
                         </div>
                         @include('frontoffice._partials.exam_rating', [
+                            'qualifiable' => true,
                             'idExam' => $tExam->idExam,
                             'ratingAvg' => $rating->avg,
                         ])

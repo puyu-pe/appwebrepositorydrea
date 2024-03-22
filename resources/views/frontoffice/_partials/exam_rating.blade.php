@@ -11,4 +11,6 @@
     </span>
 </div>
 
-<script src="{{ asset('assets/frontoffice/viewResources/exam/rate.js?x=' . env('CACHE_LAST_UPDATE')) }}"></script>
+@if ($qualifiable)
+    <script src="{{ asset('assets/frontoffice/viewResources/exam/rate.js?x=' . env('CACHE_LAST_UPDATE')) }}"></script>
+@endif
