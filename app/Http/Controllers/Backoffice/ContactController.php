@@ -66,7 +66,7 @@ class ContactController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return PlatformHelper::redirectError([$e->getMessage()], 'contact/mostrar/1');
+                return PlatformHelper::redirectError([$e->getMessage()], 'contacto/mostrar/1');
             }
         }
 
