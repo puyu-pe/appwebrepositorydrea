@@ -38,7 +38,9 @@
                         <div class="form-group col-md-2">
                             <input type="hidden" id="downloadUrl" value="{{ route('download.selected') }}">
                             <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
-                            <button id="downloadBtn" style="display:none;" class="btn btn-primary">Descargar selección
+                            <button id="downloadBtn" style="display:none;" class="btn btn-primary">
+                                <i class="fa fa-download"></i>
+                                Descargar selección
                             </button>
                         </div>
                         <div class="form-group col-md-5">
@@ -51,8 +53,11 @@
                             @foreach($listTExam as $value)
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="result[]" value="{{$value->idExam}}"
-                                               style="width: 30px; height: 30px">
+                                        <label>
+                                            <input type="checkbox" id="result[]" name="result[]"
+                                                   value="{{$value->idExam}}"
+                                                   style="width: 20px; height: 20px">
+                                            <i class="fa fa-download inline" style="margin-bottom: 15px; margin-left: -10px"></i> </label>
                                     </td>
                                     <td class="text-left">
                                         <div style="text-decoration: underline;text-transform: uppercase;">

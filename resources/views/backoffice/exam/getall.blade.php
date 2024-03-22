@@ -24,6 +24,7 @@
                     <table id="tableExam" class="table table-bordered">
                         <thead>
                         <tr>
+                            <th class="text-center"><i class="fa fa-download"></i></th>
                             <th class="text-center">Documento</th>
                             <th class="text-center">Código</th>
                             <th class="text-center">Año</th>
@@ -39,6 +40,7 @@
                         <tbody>
                         @foreach($listTExam as $value)
                             <tr>
+                                <td></td>
                                 <td class="text-center" style="width: 80px;">
                                     <a class="btn btn-xs btn-danger" target="_black"
                                        href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver
