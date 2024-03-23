@@ -289,8 +289,8 @@
                             <div class="it-course-item">
                                 <div class="it-course-thumb mb-20 p-relative">
                                     <a href="{{ url('examen/ver/' . $topExam->codeExam) }}"><img
-                                            src="{{ asset('assets/frontoffice/img/course/course-1-1.jpg') }}"
-                                            alt=""></a>
+                                            src="{{ url('examen/verarchivo/' . $topExam->idExam) }}?x={{ $topExam->updated_at }}"
+                                            alt="imagen vista previa"></a>
                                     <div class="it-course-thumb-text">
                                         <span>{{ $topExam->tTypeExam->acronymTypeExam }}</span>
                                     </div>
