@@ -1,74 +1,84 @@
 'use strict';
+let inpSearchParameter,
+	slcGrades,
+	slcSubjects,
+	slcYears;
 
 $(function () {
-    $('#divSearch').formValidation(objectValidate(
-        {
-            txtSearch:
-                {
-                    validators:
-                        {
-                            regexp:
-                                {
-                                    message: '<b style="color: red;">Solo se permite texto y números.</b>',
-                                    regexp: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙ\s@\.\-_]*$/
-                                }
-                        }
-                }
-        })
-    );
+	$('#divSearch').formValidation(objectValidate(
+		{
+			txtSearch:
+			{
+				validators:
+				{
+					regexp:
+					{
+						message: '<b style="color: red;">Solo se permite texto y números.</b>',
+						regexp: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙ\s@\.\-_]*$/
+					}
+				}
+			}
+		}
+	));
 
-    $('input[type="checkbox"][name="result[]"]').change(function () {
-        var selected = $('input[type="checkbox"][name="result[]"]:checked');
-        if (selected.length >= 2) {
-            $('#downloadBtn').show();
-        } else {
-            $('#downloadBtn').hide();
-        }
-    });
-
-    $('#downloadBtn').click(function () {
-        var selectedValues = $('input[type="checkbox"][name="result[]"]:checked').map(function () {
-            return this.value;
-        }).get();
-
-        $.ajax({
-            url: $("#downloadUrl").val(),
-            type: "POST",
-            data: {
-                _token: $("#csrf_token").val(),
-                ids: selectedValues
-            },
-            success: function (response) {
-                console.log(response);
-                window.open(response.downloadUrl, '_blank');
-            }
-        });
-    });
+	_initElements();
 });
 
-function searchTypeExam(text, url, event) {
-    var evt = event || window.event;
+function searchTypeExam() {
+	let isValid = null;
 
-    var code = evt.charCode || evt.keyCode || evt.which;
+	$('#divSearch').data('formValidation').resetForm();
+	$('#divSearch').data('formValidation').validate();
 
-    if (code == 13) {
-        var isValid = null;
+	isValid = $('#divSearch').data('formValidation').isValid();
 
-        $('#divSearch').data('formValidation').resetForm();
-        $('#divSearch').data('formValidation').validate();
+	if (!isValid) {
+		incorrectNote();
 
-        isValid = $('#divSearch').data('formValidation').isValid();
+		return;
+	}
 
-        if (!isValid) {
-            incorrectNote();
+	$('#modalLoading').show();
 
-            return;
-        }
+	$('#txtSearch').attr('disabled', 'disabled');
 
-        $('#modalLoading').show();
+	window.location.href = _getUrlSearch();
+}
 
-        $('#txtSearch').attr('disabled', 'disabled');
+function _getUrlSearch(url) {
+	const typeExam = inpSearchParameter.dataset.typeexam;
+	const searchParameter = inpSearchParameter.value;
+	const grade = slcGrades.value;
+	const subject = slcSubjects.value;
+	const year = slcYears.value;
+	return `${window.location.origin}/tipoexamen/${typeExam}/1?searchParameter=${searchParameter}&grade=${grade}&subject=${subject}&year=${year}`;
+}
 
-        window.location.href = url + '?searchParameter=' + text;
-    }
+function _initElements() {
+	inpSearchParameter = document.getElementById('txtSearch');
+	slcGrades = document.getElementById('slcGrades');
+	slcSubjects = document.getElementById('slcSubjects');
+	slcYears = document.getElementById('slcYears');
+
+	_intiDefaultEvents();
+}
+
+function _intiDefaultEvents() {
+	inpSearchParameter.addEventListener("keypress", function (event) {
+		if (event.key === "Enter") {
+			searchTypeExam();
+		}
+	});
+
+	$(slcGrades).on('change', function () {
+		searchTypeExam();
+	});
+
+	$(slcSubjects).on('change', function () {
+		searchTypeExam();
+	});
+
+	$(slcYears).on('change', function () {
+		searchTypeExam();
+	});
 }
