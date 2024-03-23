@@ -52,7 +52,13 @@ class ExamHelper
 
     public static function  getRegisteringUser(string $examId)
     {
-        return (TUserExam::with(['tUser'])->where(['idExam' => $examId, 'typeFunctionExam' => 'Registro'])->first())->tUser;
+        $tuser = TUserExam::with(['tUser'])->where(['idExam' => $examId, 'typeFunctionExam' => 'Registro'])->first();
+
+        if ($tuser != null) {
+            return ($tuser)->tUser;
+        } else {
+            return null;
+        }
     }
 
     static function getRatingAndUser($rows)

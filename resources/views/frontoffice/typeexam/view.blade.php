@@ -88,7 +88,7 @@
                         <div class="it-course-2-wrap d-flex align-items-center">
                             <div class="it-course-thumb  p-relative">
                                 <a href="{{ url('examen/verarchivo/' . $value->idExam) }}?x={{ $value->updated_at }}"
-                                    target="_blank"><img src="{{ asset('assets/frontoffice/img/course/course-1-4.jpg') }}"
+                                    target="_blank"><img src="{{ asset('storage/exam-img/' . $value->idExam . '.jpg') }}"
                                         alt=""></a>
                                 <div class="it-course-thumb-text">
                                     <span>{{ $value->tTypeExam->acronymTypeExam }}</span>
@@ -111,8 +111,8 @@
                                     <span><i class="fa-light fa-star"></i>{{ $value->rating->count }} calificaciónes</span>
                                 </div>
                                 <div class="it-course-author pb-25">
-                                    <span>Por: <i>{{ $value->user->firstName }}</i>
-                                        <i>{{ $value->tDirection !== null ? ' de ' . $value->tDirection->nameRegion : 'N.R' }}</i></span>
+                                    <span>Por: <i>{{ $value->user !== null ? $value->user->firstName : 'N.R' }}</i>
+                                        <i>{{ $value->tDirection !== null ? ' de ' . $value->tDirection->nameRegion : '' }}</i></span>
                                 </div>
                                 <div class="it-course-price-box d-flex justify-content-between">
                                     {{-- <span><i>$60</i> $120</span>
