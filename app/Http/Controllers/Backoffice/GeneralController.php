@@ -66,4 +66,20 @@ class GeneralController extends Controller
             return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/panel');
         }
     }
+
+    //STATISTICS
+    public function actionGetExamTotals()
+    {
+        return TExam::totals();
+    }
+
+    public function actionGetExamTotalsBySubject()
+    {
+        return TExam::totalsBySubject();
+    }
+
+    public function actionGetTopMostViewed()
+    {
+        return TExam::topMostViewed();
+    }
 }
