@@ -27,8 +27,14 @@ class ExamController extends Controller
     {
         $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
 
-        $paginate = PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam), ?, 77)=1', [$searchParameter])
-            ->orderby('created_at', 'desc'), 7, $currentPage);
+        $status = stristr(session('roleUser'), TRole::ROLE['REGISTER']);
+        $paginate = !$status ? PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])
+            ->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam, stateExam, number_question, numberEvaluation), ?, 77)=1', [$searchParameter])
+            ->orderby('created_at', 'desc'), 7, $currentPage) :
+            PlatformHelper::preparePaginate(TExam::with(['tSubject', 'tGrade', 'tTypeExam'])
+                ->whereRaw('register_answer = ? AND stateExam = ?', [TExam::REGISTER_RESPONSE['YES'], TExam::STATUS['PUBLIC']])
+                ->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam, stateExam, number_question, numberEvaluation), ?, 77)=1', [$searchParameter])
+                ->orderby('created_at', 'desc'), 7, $currentPage);
 
         return view('backoffice/exam/getall',
             [
@@ -52,6 +58,7 @@ class ExamController extends Controller
 
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/insertar');
                 }
+                $status = stristr(session('roleUser'), TRole::ROLE['ADMIN']) || stristr(session('roleUser'), TRole::ROLE['SUPERVISOR']);
 
                 $tTypeExam = TTypeExam::find($request->input('selectTypeExam'));
                 $tSubject = TSubject::find($request->input('selectSubject'));
@@ -76,11 +83,11 @@ class ExamController extends Controller
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
                 $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
-                $tExam->number_question = 0;
-                $tExam->stateExam = 'Publico';
+                $tExam->number_question = $request->input('selectRegisterAnswer') == TExam::REGISTER_RESPONSE['NO'] ? 0 : $request->input('txtResponseExamPermit');
+                $tExam->stateExam = $status ? TExam::STATUS['PUBLIC'] : TExam::STATUS['HIDDEN'];
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
                 $tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
-                $tExam->register_answer = 0;
+                $tExam->register_answer = $request->input('selectRegisterAnswer');
 
                 $tExam->save();
 
@@ -111,13 +118,14 @@ class ExamController extends Controller
                 $imageData = $imagick->getImageBlob();
                 Storage::disk('exam-img')->put($tExam->idExam . '.jpg', $imageData);
 
-                if ($request->has('txtValueResponseExam')) {
+                if ($request->has('txtValueResponseExam') && $request->has('numberValueExam')) {
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
                         $tAnswer = new TAnswer();
 
                         $tAnswer->idAnswer = uniqid();
                         $tAnswer->idExam = $tExam->idExam;
-                        $tAnswer->numberAnswer = $number + 1;
+                        $tAnswer->idUser = session('idUser');
+                        $tAnswer->numberAnswer =  $request->input('numberValueExam')[$number];
                         $tAnswer->descriptionAnswer = $valueResponse;
 
                         $tAnswer->save();
@@ -181,7 +189,9 @@ class ExamController extends Controller
                 $tExam->totalPageExam = $request->input('txtTotalPageExam');
                 $tExam->yearExam = $request->input('txtYearExam');
                 $tExam->numberEvaluation = $request->input('numberEvaluationExecute');
+                $tExam->number_question = $request->input('selectRegisterAnswer') == TExam::REGISTER_RESPONSE['NO'] ? 0 : $request->input('txtResponseExamPermit');
                 $tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
+                $tExam->register_answer = $request->input('selectRegisterAnswer');
 
                 $tExam->save();
 

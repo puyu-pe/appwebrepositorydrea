@@ -5,7 +5,7 @@
         <div class="tab-content">
             <div class="tab-pane active" id="tab_1-1">
                 <div id="divSearch" class="row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-5">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-search"></i>
@@ -16,7 +16,15 @@
                                    autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-2">
+                        <input type="hidden" id="downloadUrl" value="{{ route('download.selected') }}">
+                        <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
+                        <button id="downloadBtn" style="display:none;" class="btn btn-primary btn-success">
+                            <i class="fa fa-download"></i>
+                            Descargar archivos
+                        </button>
+                    </div>
+                    <div class="form-group col-md-5">
                         {!!ViewHelper::renderPagination('examen/mostrar', $quantityPage, $currentPage, $searchParameter)!!}
                     </div>
                 </div>
@@ -24,6 +32,7 @@
                     <table id="tableExam" class="table table-bordered">
                         <thead>
                         <tr>
+                            <th class="text-center"><i class="fa fa-download text-success"></i></th>
                             <th class="text-center">Documento</th>
                             <th class="text-center">Código</th>
                             <th class="text-center">Año</th>
@@ -39,8 +48,13 @@
                         <tbody>
                         @foreach($listTExam as $value)
                             <tr>
+                                <td>
+                                    <input type="checkbox" id="result[]" name="result[]"
+                                           value="{{$value->idExam}}"
+                                           style="width: 30px; height: 30px;">
+                                </td>
                                 <td class="text-center" style="width: 80px;">
-                                    <a class="btn btn-xs btn-danger" target="_black"
+                                    <a class="btn btn-xs btn-danger" target="_blank"
                                        href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver
                                         examen</a>
                                 </td>
@@ -52,6 +66,10 @@
                                 </td>
                                 <td class="text-center">
                                     <div>{{$value->nameExam}}</div>
+                                    <div><small style="font-weight: bold;">{{$value->register_answer == 0 ? 'No permite respuestas' : 'Permite respuestas'}}</small></div>
+                                    @if($value->register_answer != 0)
+                                        <div><small style="font-weight: bold;">{{$value->number_question == 1 ? 'Máximo 1 respuesta' : 'Máximo '.$value->number_question. ' respuestas'}}</small></div>
+                                    @endif
                                 </td>
                                 <td class="text-center">
                                     <div>{{$value->totalPageExam==1 ? $value->totalPageExam.' páginas' : $value->totalPageExam.' páginas'}}</div>
@@ -78,21 +96,21 @@
                                     <div>{{date('g:i A', strtotime($value->created_at))}}</div>
                                 </td>
                                 <td class="text-center" style="width: 100px;">
-                                    <span class="btn btn-info btn-xs glyphicon glyphicon-pencil" data-toggle="tooltip"
-                                          title="Modificar datos" data-placement="left"
-                                          onclick="ajaxDialog('divGeneralContainer', 'modal-lg', 'Modificar datos de la evaluación', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('examen/editar')}}', 'POST', null, null, false, true);"></span>
-                                    @if ($value->statusAnwser == 0)
+                                    @if(stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor'))
+                                        <span class="btn btn-info btn-xs glyphicon glyphicon-pencil" data-toggle="tooltip"
+                                              title="Modificar datos" data-placement="left"
+                                              onclick="ajaxDialog('divGeneralContainer', 'modal-lg', 'Modificar datos de la evaluación', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('examen/editar')}}', 'POST', null, null, false, true);"></span>
+                                    @endif
+                                    @if ($value->register_answer == 1)
                                         <span class="btn btn-info btn-xs glyphicon glyphicon-list" data-toggle="tooltip"
                                               title="Registrar respuestas" data-placement="left"
-                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Registrar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('cuestinario/registrar')}}', 'POST', null, null, false, true);"></span>
-                                    @else
-                                        <span class="btn btn-warning btn-xs glyphicon glyphicon-list"
-                                              data-toggle="tooltip" title="Modificar respuestas" data-placement="left"
-                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Modificar respuestas', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('cuestinario/editar')}}', 'POST', null, null, false, true);"></span>
+                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Registrar respuestas (Máximo {{$value->number_question > 1 ? $value->number_question.' respuestas)' : $value->number_question.' respuesta)'}}', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('respuesta/insertar')}}', 'POST', null, null, false, true);"></span>
                                     @endif
-                                    <span class="btn btn-default btn-xs glyphicon glyphicon-eye-{{$value->stateExam == 'Publico' ? 'close' : 'open'}}" data-toggle="tooltip" title="{{$value->stateExam== 'Publico' ? 'Ocultar evaluacion' : 'Publicar evaluación'}}" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
+                                    @if(stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor'))
+                                        <span class="btn btn-default btn-xs glyphicon glyphicon-eye-{{$value->stateExam == 'Publico' ? 'close' : 'open'}}" data-toggle="tooltip" title="{{$value->stateExam== 'Publico' ? 'Ocultar evaluacion' : 'Publicar evaluación'}}" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>
+                                    @endif
                                     <span class="btn btn-{{$value->stateExam == 'Publico' ? 'default' : 'warning'}} btn-xs glyphicon glyphicon-save-file" data-toggle="tooltip" title="{{$value->stateExam == 'Publico' ? 'Ver página de evaluación' : 'Vista previa de la evaluación'}}" data-placement="left" onclick="window.open('{{url('examen/ver/'.$value->codeExam)}}', '_blank');"></span>
-                                    @if ($value->stateExam != 'Publico')
+                                    @if ($value->stateExam != 'Publico' && (stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor')))
                                         <span class="btn btn-danger btn-xs glyphicon glyphicon-trash" data-toggle="tooltip" title="Eliminar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').show(); window.location.href='{{url('examen/eliminar/'.$value->idExam)}}'; });"></span>
                                     @endif
                                 </td>
