@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Frontoffice;
 
+use App\Helper\ExamHelper;
+
 use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;
 use App\Models\TTypeExam;
@@ -25,6 +27,7 @@ class GeneralController extends Controller
             ->take(3)
             ->get();
 
+        ExamHelper::getRatingAndUser($topExams);
 
         return view(
             'frontoffice/general/welcome',

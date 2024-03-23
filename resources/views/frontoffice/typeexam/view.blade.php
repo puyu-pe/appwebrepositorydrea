@@ -96,6 +96,7 @@
                             </div>
                             <div class="it-course-content">
                                 @include('frontoffice._partials.exam_rating', [
+                                    'containerClass' => 'it-course-rating mb-10',
                                     'qualifiable' => false,
                                     'idExam' => $value->idExam,
                                     'ratingAvg' => $value->rating->avg,

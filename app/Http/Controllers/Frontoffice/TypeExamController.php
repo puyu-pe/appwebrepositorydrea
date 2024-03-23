@@ -48,7 +48,7 @@ class TypeExamController extends Controller
 			$currentPage
 		);
 
-		self::aditionalData($paginate['listRow']);
+		ExamHelper::getRatingAndUser($paginate['listRow']);
 
 		$selectFilters = self::getSelectFilters();
 
@@ -70,14 +70,6 @@ class TypeExamController extends Controller
 				'selectFilters' => $selectFilters
 			]
 		);
-	}
-
-	private function aditionalData($rows)
-	{
-		foreach ($rows as $key => &$item) {
-			$item['rating'] = ExamHelper::getRatingData($item->idExam);
-			$item['user'] = (TUserExam::with(['tUser'])->where(['idExam' => $item->idExam, 'typeFunctionExam' => 'Registro'])->first())->tUser;
-		}
 	}
 
 	private function getSelectFilters()

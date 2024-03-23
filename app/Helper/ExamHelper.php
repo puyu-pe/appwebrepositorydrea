@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use Exception;
 use App\Models\TExamRating;
+use App\Models\TUserExam;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -46,6 +47,19 @@ class ExamHelper
             return $data;
         } catch (\Throwable $th) {
             throw $th;
+        }
+    }
+
+    public static function  getRegisteringUser(string $examId)
+    {
+        return (TUserExam::with(['tUser'])->where(['idExam' => $examId, 'typeFunctionExam' => 'Registro'])->first())->tUser;
+    }
+
+    static function getRatingAndUser($rows)
+    {
+        foreach ($rows as $key => &$item) {
+            $item['rating'] = self::getRatingData($item->idExam);
+            $item['user'] = self::getRegisteringUser($item->idExam);
         }
     }
 }

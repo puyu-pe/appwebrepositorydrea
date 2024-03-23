@@ -1,4 +1,4 @@
-<div class="it-evn-details-rate mb-15 rate-start-container" data-id-exam="{{ $idExam }}"
+<div class="{{ $containerClass }} rate-start-container" data-id-exam="{{ $idExam }}"
     data-logging={{ Session::get('firstName') ? 1 : 0 }}>
     <span>
         @for ($i = 1; $i <= 5; $i++)
