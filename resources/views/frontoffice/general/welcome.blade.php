@@ -288,42 +288,40 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
                             <div class="it-course-item">
                                 <div class="it-course-thumb mb-20 p-relative">
-                                    <a href="course-details.html"><img
-                                            src="{{ asset('assets/frontoffice/img/course/course-1-1.jpg') }}"
-                                            alt=""></a>
+                                    <a href="{{ url('examen/ver/' . $topExam->codeExam) }}"><img
+                                            src="{{ url('examen/verarchivo/' . $topExam->idExam) }}?x={{ $topExam->updated_at }}"
+                                            alt="imagen vista previa"></a>
                                     <div class="it-course-thumb-text">
                                         <span>{{ $topExam->tTypeExam->acronymTypeExam }}</span>
                                     </div>
                                 </div>
                                 <div class="it-course-content">
-                                    {{-- TODO  llenar datos ESTRELLAS, PAGINAS, RESPUESTAS, (DIRECCION == NULL ??)  --}}
-                                    <div class="it-course-rating mb-10">
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-solid fa-star"></i>
-                                        <i class="fa-sharp fa-regular fa-star"></i>
-                                        <span>(4.7)</span>
-                                    </div>
+                                    @include('frontoffice._partials.exam_rating', [
+                                        'containerClass' => 'it-course-rating mb-10',
+                                        'qualifiable' => false,
+                                        'idExam' => null,
+                                        'ratingAvg' => $topExam->rating->avg,
+                                    ])
                                     <h4 class="it-course-title pb-5">
-                                        <a href="course-details.html">{{ $topExam->nameExam }}</a>
+                                        <a href="{{ url('examen/ver/' . $topExam->codeExam) }}">{{ $topExam->nameExam }}</a>
                                     </h4>
                                     <div class="it-course-info pb-15 mb-25 d-flex justify-content-between">
-                                        <span><i class="fa-light fa-file-invoice"></i>Paginas 10</span>
+                                        <span><i class="fa-light fa-file-invoice"></i>{{ $topExam->totalPageExam }} Paginas</span>
                                         <span><i
                                                 class="fa-sharp fa-regular fa-calendar"></i>{{ $topExam->created_at->format('d-m-Y') }}</span>
-                                        <span><i class="fa-light fa-user"></i>Respuestas 5</span>
+                                        <span><i class="fa-light fa-user"></i>{{ $topExam->rating->count }} calificaciónes</span>
                                     </div>
                                     <div class="it-course-author pb-15">
                                         <img src="{{ asset('assets/frontoffice/img/course/avata-1.png') }}"
                                              alt="">
                                         <span>Subido por
-                                            <i>{{ $topExam->tUserExam[0]->tUser->firstName }}</i> -
+                                            <i>{{ $topExam->tUserExam[0]->tUser !== null ? $topExam->tUserExam[0]->tUser->firstName : 'S.U' }}</i>
+                                            -
                                             <i>{{ $topExam->tDirection !== null ? $topExam->tDirection->nameRegion : 'N.R' }}</i></span>
                                     </div>
                                     <div class="it-course-price-box d-flex justify-content-between">
                                         <span><i>{{ $topExam->view_counter }}</i></span>
-                                        <a href="cart.html"><i class="fa-light fa-eye"></i>Cantidad de vistas</a>
+                                        <a href="javascript:void(0);"><i class="fa-light fa-eye"></i>Cantidad de vistas</a>
                                     </div>
                                 </div>
                             </div>

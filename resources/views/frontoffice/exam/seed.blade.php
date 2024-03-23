@@ -30,6 +30,8 @@
                             >
                         </div>
                         @include('frontoffice._partials.exam_rating', [
+                            'containerClass' => 'it-evn-details-rate mb-15',
+                            'qualifiable' => true,
                             'idExam' => $tExam->idExam,
                             'ratingAvg' => $rating->avg,
                         ])
