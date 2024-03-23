@@ -288,8 +288,8 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
                             <div class="it-course-item">
                                 <div class="it-course-thumb mb-20 p-relative">
-                                    <a href="{{ asset('storage/exam-img/' . $topExam->idExam . '.jpg') }}"><img
-                                            src="{{ url('examen/verarchivo/' . $topExam->idExam) }}?x={{ $topExam->updated_at }}"
+                                    <a href="{{ url('examen/ver/' . $topExam->codeExam) }}"><img
+                                            src="{{ asset('storage/exam-img/' . $topExam->idExam . '.jpg') }}"
                                             alt="imagen vista previa"></a>
                                     <div class="it-course-thumb-text">
                                         <span>{{ $topExam->tTypeExam->acronymTypeExam }}</span>
