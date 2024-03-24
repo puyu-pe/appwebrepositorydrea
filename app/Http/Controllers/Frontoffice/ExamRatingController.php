@@ -14,62 +14,66 @@ use App\Helper\ExamHelper;
 
 class ExamRatingController extends Controller
 {
-	function actionInsert(Request $request)
-	{
-		try {
-			DB::beginTransaction();
+    function actionInsert(Request $request)
+    {
+        try {
+            DB::beginTransaction();
 
-			$idExam = $request->input('idExam');
-			$rating = $request->input('rating');
+            $idExam = $request->input('idExam');
+            $rating = $request->input('rating');
 
-			$tExam = TExam::where(['idExam' => $idExam])->firstOr(function () {
-				throw new ModelNotFoundException('Error al intentar registrar la calificación. Examen no encontrado o no disponible.');
-			});
+            $tExam = TExam::where(['idExam' => $idExam])->firstOr(function () {
+                throw new ModelNotFoundException('Error al intentar registrar la calificación. Examen no encontrado o no disponible.');
+            });
 
-			$tExamRating = TExamRating::where(['idUser' => session('idUser'), 'idExam' => $idExam])->first();
+            $tExamRating = TExamRating::where(['idUser' => session('idUser'), 'idExam' => $idExam])->first();
 
-			if (!$tExamRating) {
-				$tExamRating = new TExamRating();
-				$tExamRating->idExamRating = uniqid();
-				$tExamRating->idExam = $idExam;
-				$tExamRating->idUser = session('idUser');
-				$tExamRating->rating = $rating;
-				$tExamRating->save();
+            if (!$tExamRating) {
+                $tExamRating = new TExamRating();
+                $tExamRating->idExamRating = uniqid();
+                $tExamRating->idExam = $idExam;
+                $tExamRating->idUser = session('idUser');
+                $tExamRating->rating = $rating;
+                $tExamRating->save();
 
-				$message = 'Evaluación calificada de exitosamente.';
-			} else {
-				$tExamRating->rating = $rating;
-				$tExamRating->update();
+                $message = 'Evaluación calificada de exitosamente.';
+            } else {
+                $tExamRating->rating = $rating;
+                $tExamRating->update();
 
-				$message = 'Calificación actualizada de exitosamente.';
-			}
+                $message = 'Calificación actualizada de exitosamente.';
+            }
 
-			$rating = ExamHelper::getRatingData($tExam->idExam);
+            $rating = ExamHelper::getRatingData($tExam->idExam);
 
-			$response = [
-				'success' => true,
-				'data' => [
-					'tExamRating' => $tExamRating,
-					'rating' => $rating
-				],
-				'message' => $message
-			];
+            $tExam->rating_counter = $rating->count;
+            $tExam->rating_average = $rating->avg;
+            $tExam->save();
 
-			DB::commit();
+            $response = [
+                'success' => true,
+                'data' => [
+                    'tExamRating' => $tExamRating,
+                    'rating' => $rating
+                ],
+                'message' => $message
+            ];
 
-			return response()->json($response, 200);
-		} catch (ModelNotFoundException $th) {
-			DB::rollBack();
+            DB::commit();
 
-			$response = [
-				'success' => false,
-				'data' => [
-					'tExamRating' => null
-				],
-				'message' => $th->getMessage()
-			];
+            return response()->json($response, 200);
+        } catch (ModelNotFoundException $th) {
+            DB::rollBack();
 
-			return response()->json($response, 500);
-		}
-	}
+            $response = [
+                'success' => false,
+                'data' => [
+                    'tExamRating' => null
+                ],
+                'message' => $th->getMessage()
+            ];
+
+            return response()->json($response, 500);
+        }
+    }
 }
