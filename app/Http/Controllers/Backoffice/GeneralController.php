@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;
+use App\Models\TContact;
 use App\Models\TExam;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -66,4 +67,28 @@ class GeneralController extends Controller
             return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), '/panel');
         }
     }
+
+    //STATISTICS
+    public function actionGetExamTotals()
+    {
+        $totals = TExam::totals();
+        $totals['total_pending_messages'] = TContact::getUnreadCount();
+        return response()->json($totals);
+    }
+
+    public function actionGetExamTotalsBySubject()
+    {
+        return TExam::totalsBySubject();
+    }
+
+    public function actionGetTopQualified()
+    {
+        return TExam::topExams('rating_average', 10);
+    }
+
+    public function actionGetTopMostViewed()
+    {
+        return TExam::topExams('view_counter', 10);
+    }
+
 }

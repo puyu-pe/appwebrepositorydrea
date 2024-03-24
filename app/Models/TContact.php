@@ -10,5 +10,10 @@ class TContact extends Model
     protected $keyType='string';
     public $incrementing=false;
     public $timestamps=true;
+
+
+    public static function getUnreadCount(){
+        return TContact::where('statusContact', 0)->count();
+    }
 }
 ?>

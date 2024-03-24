@@ -5,11 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class TExam extends Model
 {
-    protected $table='texam';
-    protected $primaryKey='idExam';
-    protected $keyType='string';
-    public $incrementing=false;
-    public $timestamps=true;
+    protected $table = 'texam';
+    protected $primaryKey = 'idExam';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = true;
 
     public const STATUS = [
         'PUBLIC' => 'Publico',
@@ -55,5 +55,70 @@ class TExam extends Model
     {
         return $this->hasMany('App\Models\TExamRating', 'idExam');
     }
+
+    //REPORTES
+
+    public static function totals()
+    {
+        $totalExams = Texam::count();
+        $totalPublicExams = Texam::where('stateExam', 'Publico')->count();
+        $totalHiddenExams = Texam::where('stateExam', 'Oculto')->count();
+
+        $data = [
+            'total_exam' => $totalExams,
+            'total_exam_public' => $totalPublicExams,
+            'total_exam_hidden' => $totalHiddenExams
+        ];
+
+        return $data;
+    }
+
+    public static function totalsBySubject()
+    {
+        $colors = ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de', '#8e44ad', '#27ae60', '#f1c40f', '#3498db'];
+
+        $examCounts = TExam::select('idSubject', \DB::raw('COUNT(*) as count'))
+            ->groupBy('idSubject')
+            ->orderBy('count', 'desc')
+            ->get();
+        $subjects = TSubject::all();
+        $PieData = [];
+        $colorIndex = 0;
+        foreach ($examCounts as $examCount) {
+            $subject = $subjects->where('idSubject', $examCount->idSubject)->first();
+            $PieData[] = [
+                'value' => $examCount->count,
+                'color' => $colors[$colorIndex],
+                'highlight' => $colors[$colorIndex],
+                'label' => $subject->nameSubject
+            ];
+            $colorIndex++;
+        }
+
+        return response()->json($PieData);
+    }
+
+    public static function topQualified()
+    {
+        $topMostViewedExams = Texam::select('idExam', 'codeExam', 'yearExam', 'nameExam', 'view_counter', 'rating_counter', 'rating_average')
+            ->where('rating_average', ">", 0)
+            ->orderBy('rating_average', 'desc')
+            ->limit(10)
+            ->get();
+
+        return response()->json($topMostViewedExams);
+    }
+    public static function topExams($orderBy, $limit)
+    {
+        $query = Texam::select('idExam', 'codeExam', 'yearExam', 'nameExam', 'view_counter', 'rating_counter', 'rating_average')
+            ->where($orderBy, ">", 0) // Filter by $orderBy column
+            ->orderBy($orderBy, 'desc')
+            ->limit($limit);
+
+        $topExams = $query->get();
+
+        return response()->json($topExams);
+    }
 }
+
 ?>

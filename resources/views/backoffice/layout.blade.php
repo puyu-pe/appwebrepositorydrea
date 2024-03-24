@@ -45,6 +45,9 @@
     </head>
   <body class="hold-transition skin-blue sidebar-mini">
       <script>
+
+          const  BASE_URL = '{{ url('/') }}';
+
         $(function()
         {
           @if(Session::has('globalMessage'))

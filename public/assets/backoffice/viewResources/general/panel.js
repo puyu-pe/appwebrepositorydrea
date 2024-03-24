@@ -1,5 +1,6 @@
-$(function() {
+$(function () {
     'use strict';
+    /* PANEL MENSUAL
     var salesChartCanvas = $('#salesChart').get(0).getContext('2d');
     var salesChart = new Chart(salesChartCanvas);
     var salesChartData = {
@@ -45,188 +46,161 @@ $(function() {
         responsive: true
     };
     salesChart.Line(salesChartData, salesChartOptions);
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-    var pieChart = new Chart(pieChartCanvas);
-    var PieData = [{
-        value: 700,
-        color: '#f56954',
-        highlight: '#f56954',
-        label: 'Chrome'
-    }, {
-        value: 500,
-        color: '#00a65a',
-        highlight: '#00a65a',
-        label: 'IE'
-    }, {
-        value: 400,
-        color: '#f39c12',
-        highlight: '#f39c12',
-        label: 'FireFox'
-    }, {
-        value: 600,
-        color: '#00c0ef',
-        highlight: '#00c0ef',
-        label: 'Safari'
-    }, {
-        value: 300,
-        color: '#3c8dbc',
-        highlight: '#3c8dbc',
-        label: 'Opera'
-    }, {
-        value: 100,
-        color: '#d2d6de',
-        highlight: '#d2d6de',
-        label: 'Navigator'
-    }];
-    var pieOptions = {
-        segmentShowStroke: true,
-        segmentStrokeColor: '#fff',
-        segmentStrokeWidth: 1,
-        percentageInnerCutout: 50,
-        animationSteps: 100,
-        animationEasing: 'easeOutBounce',
-        animateRotate: true,
-        animateScale: false,
-        responsive: true,
-        maintainAspectRatio: false,
-        legendTemplate: '<ul class=\'<%=name.toLowerCase()%>-legend\'><% for (var i=0; i<segments.length; i++){%><li><span style=\'background-color:<%=segments[i].fillColor%>\'></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>',
-        tooltipTemplate: '<%=value %> <%=label%> users'
-    };
-    pieChart.Doughnut(PieData, pieOptions);
-    $('#world-map-markers').vectorMap({
-        map: 'world_mill_en',
-        normalizeFunction: 'polynomial',
-        hoverOpacity: 0.7,
-        hoverColor: false,
-        backgroundColor: 'transparent',
-        regionStyle: {
-            initial: {
-                fill: 'rgba(210, 214, 222, 1)',
-                'fill-opacity': 1,
-                stroke: 'none',
-                'stroke-width': 0,
-                'stroke-opacity': 1
-            },
-            hover: {
-                'fill-opacity': 0.7,
-                cursor: 'pointer'
-            },
-            selected: {
-                fill: 'yellow'
-            },
-            selectedHover: {}
-        },
-        markerStyle: {
-            initial: {
-                fill: '#00a65a',
-                stroke: '#111'
-            }
-        },
-        markers: [{
-            latLng: [41.90, 12.45],
-            name: 'Vatican City'
-        }, {
-            latLng: [43.73, 7.41],
-            name: 'Monaco'
-        }, {
-            latLng: [-0.52, 166.93],
-            name: 'Nauru'
-        }, {
-            latLng: [-8.51, 179.21],
-            name: 'Tuvalu'
-        }, {
-            latLng: [43.93, 12.46],
-            name: 'San Marino'
-        }, {
-            latLng: [47.14, 9.52],
-            name: 'Liechtenstein'
-        }, {
-            latLng: [7.11, 171.06],
-            name: 'Marshall Islands'
-        }, {
-            latLng: [17.3, -62.73],
-            name: 'Saint Kitts and Nevis'
-        }, {
-            latLng: [3.2, 73.22],
-            name: 'Maldives'
-        }, {
-            latLng: [35.88, 14.5],
-            name: 'Malta'
-        }, {
-            latLng: [12.05, -61.75],
-            name: 'Grenada'
-        }, {
-            latLng: [13.16, -61.23],
-            name: 'Saint Vincent and the Grenadines'
-        }, {
-            latLng: [13.16, -59.55],
-            name: 'Barbados'
-        }, {
-            latLng: [17.11, -61.85],
-            name: 'Antigua and Barbuda'
-        }, {
-            latLng: [-4.61, 55.45],
-            name: 'Seychelles'
-        }, {
-            latLng: [7.35, 134.46],
-            name: 'Palau'
-        }, {
-            latLng: [42.5, 1.51],
-            name: 'Andorra'
-        }, {
-            latLng: [14.01, -60.98],
-            name: 'Saint Lucia'
-        }, {
-            latLng: [6.91, 158.18],
-            name: 'Federated States of Micronesia'
-        }, {
-            latLng: [1.3, 103.8],
-            name: 'Singapore'
-        }, {
-            latLng: [1.46, 173.03],
-            name: 'Kiribati'
-        }, {
-            latLng: [-21.13, -175.2],
-            name: 'Tonga'
-        }, {
-            latLng: [15.3, -61.38],
-            name: 'Dominica'
-        }, {
-            latLng: [-20.2, 57.5],
-            name: 'Mauritius'
-        }, {
-            latLng: [26.02, 50.55],
-            name: 'Bahrain'
-        }, {
-            latLng: [0.33, 6.73],
-            name: 'São Tomé and Príncipe'
-        }]
-    });
-    $('.sparkbar').each(function() {
-        var $this = $(this);
-        $this.sparkline('html', {
-            type: 'bar',
-            height: $this.data('height') ? $this.data('height') : '30',
-            barColor: $this.data('color')
-        });
-    });
-    $('.sparkpie').each(function() {
-        var $this = $(this);
-        $this.sparkline('html', {
-            type: 'pie',
-            height: $this.data('height') ? $this.data('height') : '90',
-            sliceColors: $this.data('color')
-        });
-    });
-    $('.sparkline').each(function() {
-        var $this = $(this);
-        $this.sparkline('html', {
-            type: 'line',
-            height: $this.data('height') ? $this.data('height') : '90',
-            width: '100%',
-            lineColor: $this.data('linecolor'),
-            fillColor: $this.data('fillcolor'),
-            spotColor: $this.data('spotcolor')
-        });
-    });
+    */
+
+    getTotals();
+
+    getTopMostViewed();
+
+    getTopMostQualified();
+
+    generateSubjectChart();
 });
+
+function getTotals() {
+    $.ajax({
+        url: BASE_URL + '/panel/totals',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            $("#total_exam").html(data.total_exam + " Evaluaciones");
+            $("#total_exam_public").html(data.total_exam_public + " Evaluaciones");
+            $("#total_exam_hidden").html(data.total_exam_hidden + " Evaluaciones");
+            $("#total_pending_messages").html(data.total_pending_messages + " Mensajes");
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function getTopMostViewed() {
+    $.ajax({
+        url: BASE_URL + '/panel/topViewed',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var tbody = $('#topViewedDetails');
+            tbody.empty();
+            data.forEach(function (item) {
+                var rating = parseFloat(item.rating_average);
+                var stars = generateStars(rating);
+                var row = '<tr>' +
+                    '<td>' + item.codeExam + '</td>' +
+                    '<td>' + item.yearExam + ' - ' + item.nameExam + '</td>' +
+                    '<td>' + item.view_counter + '</td>' +
+                    '<td>' + stars + '</td>' +
+                    '</tr>';
+                tbody.append(row);
+            });
+
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function getTopMostQualified() {
+    $.ajax({
+        url: BASE_URL + '/panel/topQualified',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var tbody = $('#topQualifiedDetails');
+            tbody.empty();
+            data.forEach(function (item) {
+                var rating = parseFloat(item.rating_average);
+                var stars = generateStars(rating);
+                var row = '<tr>' +
+                    '<td>' + item.codeExam + '</td>' +
+                    '<td>' + item.yearExam + ' - ' + item.nameExam + '</td>' +
+                    '<td>' + item.view_counter + '</td>' +
+                    '<td>' + stars + '</td>' +
+                    '</tr>';
+                tbody.append(row);
+            });
+
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function generateSubjectChart() {
+    $.ajax({
+        url: BASE_URL + '/panel/totalsBySubject',
+        type: 'GET',
+        dataType: 'json',
+        success: function (pieData) {
+            console.log(pieData);
+            var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+            var pieChart = new Chart(pieChartCanvas);
+            var pieOptions = {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        fontColor: '#333',
+                        boxWidth: 20
+                    }
+                },
+                segmentShowStroke: true,
+                segmentStrokeColor: '#fff',
+                segmentStrokeWidth: 1,
+                percentageInnerCutout: 50,
+                animationSteps: 100,
+                animationEasing: 'easeOutBounce',
+                animateRotate: true,
+                animateScale: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltipTemplate: '<%=label%> <%=value %>',
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = Math.round((currentValue / total) * 100);
+                            return data.labels[tooltipItem.index] + ': ' + currentValue + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            };
+            pieChart.Doughnut(pieData, pieOptions);
+
+            completeLabels(pieData);
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function completeLabels(data) {
+    var legendContainer = $('.chart-legend');
+    legendContainer.empty();
+
+    data.forEach(function (item) {
+        var listItem = $('<li>').html('<i class="fa fa-circle-o" style="color:' + item.color + '"></i> ' + item.label + ' (' + item.value + ')');
+        legendContainer.append(listItem);
+    });
+}
+
+function generateStars(ratingAverage) {
+    var stars = '';
+    for (var i = 0; i < Math.floor(ratingAverage); i++) {
+        stars += '<i class="fa fa-star"></i>';
+    }
+    if (ratingAverage % 1 !== 0) {
+        stars += '<i class="fa fa-star-half"></i>';
+    }
+    return stars;
+}
