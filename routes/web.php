@@ -25,8 +25,8 @@ Route::get('/',[FrontGeneralOffice::class, 'actionWelcome'])->middleware('Generi
 Route::get('panel',[BackGeneralOffice::class, 'actionWelcomeDashboard'])->middleware('GenericMiddleware:panel');
 Route::get('panel/totals',[BackGeneralOffice::class, 'actionGetExamTotals'])->middleware('GenericMiddleware:panel');
 Route::get('panel/totalsBySubject',[BackGeneralOffice::class, 'actionGetExamTotalsBySubject'])->middleware('GenericMiddleware:panel');
-Route::get('panel/topMostViewed',[BackGeneralOffice::class, 'actionGetTopMostViewed'])->middleware('GenericMiddleware:panel');
-
+Route::get('panel/topViewed',[BackGeneralOffice::class, 'actionGetTopMostViewed'])->middleware('GenericMiddleware:panel');
+Route::get('panel/topQualified',[BackGeneralOffice::class, 'actionGetTopQualified'])->middleware('GenericMiddleware:panel');
 
 Route::get('sistema/generarbackup',[BackGeneralOffice::class, 'actionBackupDatabase'])->middleware('GenericMiddleware:sistema/generarbackup');
 Route::get('sistema/descargar',[BackGeneralOffice::class, 'actionDownloadExam'])->middleware('GenericMiddleware:sistema/descargar');

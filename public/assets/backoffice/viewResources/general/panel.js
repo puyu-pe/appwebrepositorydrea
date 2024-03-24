@@ -1,5 +1,6 @@
 $(function () {
     'use strict';
+    /* PANEL MENSUAL
     var salesChartCanvas = $('#salesChart').get(0).getContext('2d');
     var salesChart = new Chart(salesChartCanvas);
     var salesChartData = {
@@ -45,10 +46,13 @@ $(function () {
         responsive: true
     };
     salesChart.Line(salesChartData, salesChartOptions);
+    */
 
     getTotals();
 
     getTopMostViewed();
+
+    getTopMostQualified();
 
     generateSubjectChart();
 });
@@ -63,6 +67,7 @@ function getTotals() {
             $("#total_exam").html(data.total_exam + " Evaluaciones");
             $("#total_exam_public").html(data.total_exam_public + " Evaluaciones");
             $("#total_exam_hidden").html(data.total_exam_hidden + " Evaluaciones");
+            $("#total_pending_messages").html(data.total_pending_messages + " Mensajes");
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -72,11 +77,52 @@ function getTotals() {
 
 function getTopMostViewed() {
     $.ajax({
-        url: BASE_URL + '/panel/topMostViewed',
+        url: BASE_URL + '/panel/topViewed',
         type: 'GET',
         dataType: 'json',
         success: function (data) {
             console.log(data);
+            var tbody = $('#topViewedDetails');
+            tbody.empty();
+            data.forEach(function (item) {
+                var rating = parseFloat(item.rating_average);
+                var stars = generateStars(rating);
+                var row = '<tr>' +
+                    '<td>' + item.codeExam + '</td>' +
+                    '<td>' + item.yearExam + ' - ' + item.nameExam + '</td>' +
+                    '<td>' + item.view_counter + '</td>' +
+                    '<td>' + stars + '</td>' +
+                    '</tr>';
+                tbody.append(row);
+            });
+
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function getTopMostQualified() {
+    $.ajax({
+        url: BASE_URL + '/panel/topQualified',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var tbody = $('#topQualifiedDetails');
+            tbody.empty();
+            data.forEach(function (item) {
+                var rating = parseFloat(item.rating_average);
+                var stars = generateStars(rating);
+                var row = '<tr>' +
+                    '<td>' + item.codeExam + '</td>' +
+                    '<td>' + item.yearExam + ' - ' + item.nameExam + '</td>' +
+                    '<td>' + item.view_counter + '</td>' +
+                    '<td>' + stars + '</td>' +
+                    '</tr>';
+                tbody.append(row);
+            });
 
         },
         error: function (xhr, status, error) {
@@ -146,4 +192,15 @@ function completeLabels(data) {
         var listItem = $('<li>').html('<i class="fa fa-circle-o" style="color:' + item.color + '"></i> ' + item.label + ' (' + item.value + ')');
         legendContainer.append(listItem);
     });
+}
+
+function generateStars(ratingAverage) {
+    var stars = '';
+    for (var i = 0; i < Math.floor(ratingAverage); i++) {
+        stars += '<i class="fa fa-star"></i>';
+    }
+    if (ratingAverage % 1 !== 0) {
+        stars += '<i class="fa fa-star-half"></i>';
+    }
+    return stars;
 }

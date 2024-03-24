@@ -52,6 +52,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box">
+                    <!--
                     <div class="box-header with-border">
                         <h3 class="box-title">VISITAS MENSUALES A EVALUACIONES</h3>
                         <div class="box-tools pull-right">
@@ -76,6 +77,7 @@
                         </div>
 
                     </div>
+                    -->
                     <!--
                                         <div class="box-footer">
                                             <h3 class="box-title">Crecimiento constante de visitas por categoria de examen</h3>
@@ -128,142 +130,131 @@
 
                             </div>
                     -->
+                </div>
+            </div>
+            <div class="row">
 
-                    <div class="row">
+                <div class="col-md-8">
 
-                        <div class="col-md-8">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Evaluaciones mas vistas</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
 
-                            <div class="box box-info">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Evaluaciones mas visitadas</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-box-tool" data-widget="remove">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="box-body">
-                                    <div class="table-responsive">
-                                        <table class="table no-margin">
-                                            <thead>
-                                            <tr>
-                                                <th>Codigo</th>
-                                                <th>Evaluaciones</th>
-                                                <th>Valoracion</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>1° EVALUACIÓN ERA APURÍMAC MATEMÁTICA 2° PRIMARIA</td>
-                                                <td>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>1° EVALUACIÓN ERA APURÍMAC MATEMÁTICA 2° PRIMARIA</td>
-                                                <td>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>1° EVALUACIÓN ERA APURÍMAC MATEMÁTICA 2° PRIMARIA</td>
-                                                <td>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>1° EVALUACIÓN ERA APURÍMAC MATEMÁTICA 2° PRIMARIA</td>
-                                                <td>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>1° EVALUACIÓN ERA APURÍMAC MATEMÁTICA 2° PRIMARIA</td>
-                                                <td>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>1° EVALUACIÓN ERA APURÍMAC MATEMÁTICA 2° PRIMARIA</td>
-                                                <td>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                                <!--
-                                                    <div class="box-footer clearfix">
-                                                        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-                                                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
-                                                            Orders</a>
-                                                    </div>
-                                -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Evaluacion</th>
+                                        <th>Visitas</th>
+                                        <th>Valoracion</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="topViewedDetails">
+                                    <tr>
+                                        <td colspan="4">
+                                            <i class="fa fa-spinner fa-spin"></i> No se encontraron vistas para los
+                                            registros
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
                         </div>
-
-                        <div class="col-md-4">
-
-                            <div class="box box-default">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Evaluaciones por curso</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                                class="fa fa-minus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                                class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="chart-responsive">
-                                                <canvas id="pieChart" style="width: 329px; height: 155px;">
-                                                    <i class="fa fa-spinner fa-spin"></i>
-                                                </canvas>
+                        <!--
+                                            <div class="box-footer clearfix">
+                                                <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+                                                <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
+                                                    Orders</a>
                                             </div>
-                                        </div>
+                        -->
+                    </div>
 
-                                        <div class="col-md-6">
-                                            <ul class="chart-legend clearfix">
-                                                <i class="fa fa-spinner fa-spin"></i>
-                                            </ul>
-                                        </div>
-
-                                    </div>
-                                </div>
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Evaluaciones mejor calificadas</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
                             </div>
                         </div>
 
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Evaluacion</th>
+                                        <th>Visitas</th>
+                                        <th>Valoracion</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="topQualifiedDetails">
+                                    <tr>
+                                        <td colspan="4">
+                                            <i class="fa fa-spinner fa-spin"></i> No se encontraron valoraciones para
+                                            los registros
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <!--
+                                            <div class="box-footer clearfix">
+                                                <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+                                                <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All
+                                                    Orders</a>
+                                            </div>
+                        -->
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Evaluaciones por curso</h3>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="chart-responsive">
+                                        <canvas id="pieChart" style="width: 329px; height: 155px;">
+                                            <i class="fa fa-spinner fa-spin"></i>
+                                        </canvas>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <ul class="chart-legend clearfix">
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
 

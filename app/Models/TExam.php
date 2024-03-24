@@ -70,7 +70,7 @@ class TExam extends Model
             'total_exam_hidden' => $totalHiddenExams
         ];
 
-        return response()->json($data);
+        return $data;
     }
 
     public static function totalsBySubject()
@@ -98,18 +98,27 @@ class TExam extends Model
         return response()->json($PieData);
     }
 
-    public static function topMostViewed()
+    public static function topQualified()
     {
-        $topMostViewedExams = Texam::select('texam.idExam', 'texam.codeExam', 'texam.yearExam', 'texam.nameExam', 'texam.view_counter', \DB::raw('AVG(texamrating.rating) as average_rating'))
-            ->leftJoin('texamrating', 'texam.idExam', '=', 'texamrating.idExam')
-            ->groupBy('texam.idExam', 'texam.codeExam', 'texam.yearExam', 'texam.nameExam', 'texam.view_counter')
-            ->orderBy('texam.view_counter', 'desc')
+        $topMostViewedExams = Texam::select('idExam', 'codeExam', 'yearExam', 'nameExam', 'view_counter', 'rating_counter', 'rating_average')
+            ->where('rating_average', ">", 0)
+            ->orderBy('rating_average', 'desc')
             ->limit(10)
             ->get();
 
         return response()->json($topMostViewedExams);
     }
+    public static function topExams($orderBy, $limit)
+    {
+        $query = Texam::select('idExam', 'codeExam', 'yearExam', 'nameExam', 'view_counter', 'rating_counter', 'rating_average')
+            ->where($orderBy, ">", 0) // Filter by $orderBy column
+            ->orderBy($orderBy, 'desc')
+            ->limit($limit);
 
+        $topExams = $query->get();
+
+        return response()->json($topExams);
+    }
 }
 
 ?>
