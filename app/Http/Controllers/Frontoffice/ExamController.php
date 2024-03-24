@@ -48,10 +48,17 @@ class ExamController extends Controller
             ExamHelper::incrementViewCounter($tExam);
             $rating = ExamHelper::getRatingData($tExam->idExam);
 
+            $tAnswersGroupedByUser = TAnswer::where('idExam', $tExam->idExam)
+                ->orderBy('numberAnswer')
+                ->with('tuser')
+                ->get()
+                ->groupBy('idUser');
+
             return view('frontoffice/exam/seed',
             [
                 'tExam' => $tExam,
-                'rating' => $rating
+                'rating' => $rating,
+                'tAnswersGroupedByUser' => $tAnswersGroupedByUser,
             ]);
         }
         catch(\Exception $e)

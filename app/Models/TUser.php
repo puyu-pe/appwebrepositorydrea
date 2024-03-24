@@ -25,5 +25,10 @@ class TUser extends Model
     {
         return $this->hasMany('App\Models\TResetPassword', 'idUser');
     }
+
+    public function tAnswer()
+    {
+        return $this->hasMany('App\Models\TAnswer', 'idUser');
+    }
 }
 ?>

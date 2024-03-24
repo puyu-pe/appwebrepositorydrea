@@ -56,6 +56,18 @@
                                 <h6 class="it-evn-details-title-sm pb-5">Descripción de la evaluación.</h6>
                                 <p>{{ $tExam->descriptionExam }}
                                 </p>
+                                @if($tExam->register_answer == '1')
+                                    <button class="it-btn w-100 text-center" id="btnModalResponse" onclick="$('#dvAnswer').show();">
+                                        Ver respuestas
+                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
+                                                  stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -86,6 +98,55 @@
                     </div>
                 </div>
             </div>
+            @if($tExam->register_answer == 1)
+                 @if($tAnswersGroupedByUser->isNotEmpty())
+                    <div class="row" id="dvAnswer" style="display: none;">
+                        @foreach($tAnswersGroupedByUser as $idUser => $answers)
+                            @php
+                                $user = $answers->first()->tuser;
+                                $firstName = $user->firstName;
+                                $surName = $user->surName;
+                            @endphp
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="it-sv-details-content-box mb-50">
+                                    <h5 class="it-sv-details-title-sm">
+                                        <span><i class="fa-sharp fa-light fa-check"></i></span>
+                                        {{ $firstName }} {{ $surName }}
+                                    </h5>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>N° de pregunta</th>
+                                                <th>Descripción de la respuesta</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($answers as $tanswer_value)
+                                            <tr>
+                                                <td class="text-center">
+                                                    <div>{{ $tanswer_value->numberAnswer }}</div>
+                                                </td>
+                                                <td>
+                                                    <div>{{ $tanswer_value->descriptionAnswer }}</div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="row" id="dvAnswer" style="display: none;">
+                        <div class="col-xl-12 col-lg-12">
+                            <h5 class="it-sv-details-title-sm" style="font-weight: bold;">
+                                No se registró respuestas para la evaluación
+                            </h5>
+                        </div>
+                    </div>
+                @endif
+            @endif
         </div>
     </div>
 @endsection
