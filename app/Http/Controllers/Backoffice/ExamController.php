@@ -223,6 +223,21 @@ class ExamController extends Controller
                     $tExam->save();
 
                     $request->file('fileExamExtension')->move(storage_path('/app/file/exam/'), $tExam->idExam . '.' . $tExam->extensionExam);
+
+                    $filePath = $tExam->idExam . '.jpg';
+                    if (Storage::disk('exam-img')->exists($filePath)) {
+                        Storage::disk('exam-img')->delete($filePath);
+                    }
+
+                    $filename = $tExam->idExam . '.' . $tExam->extensionExam;
+                    $pdfPath = storage_path('app/file/exam/' . $filename);
+                    $imagick = new Imagick($pdfPath . '[0]');
+                    $imagick->scaleImage(250, 0);
+                    $imagick->setResolution(72, 72);
+
+                    $imagick->setImageFormat('jpg');
+                    $imageData = $imagick->getImageBlob();
+                    Storage::disk('exam-img')->put($tExam->idExam . '.jpg', $imageData);
                 }
 
                 DB::commit();
@@ -315,6 +330,11 @@ class ExamController extends Controller
             if($tExam->extensionExam!='' && file_exists($directoryFiles)==true)
             {
                 unlink($directoryFiles);
+            }
+
+            $filePath = $tExam->idExam . '.jpg';
+            if (Storage::disk('exam-img')->exists($filePath)) {
+                Storage::disk('exam-img')->delete($filePath);
             }
 
             DB::delete('delete from texam where idExam = ?', [$idExam]);

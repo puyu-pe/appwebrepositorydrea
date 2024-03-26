@@ -91,7 +91,7 @@
                                     target="_blank"><img src="{{ asset('storage/exam-img/' . $value->idExam . '.jpg') }}"
                                         alt=""></a>
                                 <div class="it-course-thumb-text">
-                                    <span>{{ $value->tTypeExam->acronymTypeExam }}</span>
+                                    <span>{{ strtoupper($value->tTypeExam->acronymTypeExam) }}</span>
                                 </div>
                             </div>
                             <div class="it-course-content">

@@ -25,28 +25,22 @@ class TypeExamController extends Controller
 
 		$tTypeExam = TTypeExam::whereRaw('acronymTypeExam=?', [$acronymTypeExam])->first();
 
-		$paginate = PlatformHelper::preparePaginate(
-			TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])->whereRaw(
-				'compareFind(
-					concat(
-						codeExam,
-						nameExam,
-						descriptionExam
-					),
-				?, 77) = 1
-				AND idTypeExam=?
-				AND stateExam = "Publico"' .
-					($grade != 'all' ? 'AND idGrade="' . $grade . '"' : '') .
-					($subject != 'all' ? 'AND idSubject="' . $subject . '"' : '') .
-					($year != 'all' ? 'AND yearExam="' . $year . '"' : ''),
-				[
-					$searchParameter,
-					$tTypeExam->idTypeExam
-				]
-			)->orderby('created_at', 'desc'),
-			4,
-			$currentPage
-		);
+        $examsQuery = TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])
+            ->whereRaw(
+                'compareFind(concat(codeExam, nameExam, descriptionExam), ?, 77) = 1
+        AND idTypeExam=?
+        AND stateExam = "'.TExam::STATUS['PUBLIC'].'"'.
+                ($grade != 'all' ? 'AND idGrade="' . $grade . '"' : '') .
+                ($subject != 'all' ? 'AND idSubject="' . $subject . '"' : '') .
+                ($year != 'all' ? 'AND yearExam="' . $year . '"' : ''),
+                [
+                    $searchParameter,
+                    $tTypeExam->idTypeExam
+                ]
+            )->orderBy('created_at', 'desc');
+
+        $exams = $this->filterAndDeleteExamsWithoutFiles($examsQuery);
+        $paginate = PlatformHelper::preparePaginate($exams, 4, $currentPage);
 
 		ExamHelper::getRatingAndUser($paginate['listRow']);
 
@@ -80,4 +74,19 @@ class TypeExamController extends Controller
 			'years' => TExam::select(DB::raw('yearExam'))->groupByRaw('yearExam')->get()
 		];
 	}
+
+    private function filterAndDeleteExamsWithoutFiles($examsQuery) {
+        $exams = $examsQuery->get();
+
+        $filteredExams = $exams->filter(function ($exam) {
+            $directoryFiles = storage_path('app/file/exam/'.$exam->idExam.'.'.$exam->extensionExam);
+            return file_exists($directoryFiles);
+        });
+
+        $examsWithoutFiles = $exams->diff($filteredExams)->pluck('idExam');
+        $examsQuery->whereNotIn('idExam', $examsWithoutFiles);
+
+        return $examsQuery;
+    }
+
 }
