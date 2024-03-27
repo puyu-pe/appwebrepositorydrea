@@ -74,7 +74,7 @@ class UserController extends Controller
         if (session('idUser') && stristr(Session::get('roleUser'), TRole::ROLE['NORMAL']))
             return Redirect::to('usuario/editar');
 
-        return view('backoffice/user/login');
+        return view('frontoffice/general/login');
     }
 
     public function actionRecuperate(Request $request)
@@ -229,7 +229,7 @@ class UserController extends Controller
                 return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/registrar');
             }
         }
-        return view('backoffice/user/register');
+        return view('frontoffice/general/register');
     }
 
     public function actionEdit(Request $request, SessionManager $sessionManager)

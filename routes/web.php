@@ -22,6 +22,7 @@ use App\Http\Controllers\Backoffice\DownloadController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[FrontGeneralOffice::class, 'actionWelcome'])->middleware('GenericMiddleware:/');
+Route::get('/',[FrontGeneralOffice::class, 'actionWelcome'])->middleware('GenericMiddleware:/');
 Route::get('panel',[BackGeneralOffice::class, 'actionWelcomeDashboard'])->middleware('GenericMiddleware:panel');
 Route::get('panel/totals',[BackGeneralOffice::class, 'actionGetExamTotals'])->middleware('GenericMiddleware:panel');
 Route::get('panel/totalsBySubject',[BackGeneralOffice::class, 'actionGetExamTotalsBySubject'])->middleware('GenericMiddleware:panel');
