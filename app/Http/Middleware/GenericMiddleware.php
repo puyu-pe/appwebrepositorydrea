@@ -39,7 +39,7 @@ class GenericMiddleware
             ['Administrador,Supervisor', 'tipoexamen/insertar', null, null],
             ['Administrador,Supervisor', 'tipoexamen/editar', null, null],
             ['Administrador', 'tipoexamen/eliminar', null, null],
-            ['Público', 'examen/buscar', 'mTypeExam', $acronymTypeExam != null ? 'm'.strtoupper($acronymTypeExam) : null],
+            ['Público', 'tipoexamen/acroninmo', 'mTypeExam', $acronymTypeExam != null ? 'm'.strtoupper($acronymTypeExam) : null],
 
             ['Administrador,Supervisor', 'curso/mostrar', 'mPrincipal', 'mGetAllSubject'],
             ['Administrador,Supervisor', 'curso/insertar', null, null],

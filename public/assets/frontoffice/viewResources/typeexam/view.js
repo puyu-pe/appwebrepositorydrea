@@ -101,27 +101,28 @@ function searchTypeExam() {
     window.location.href = _getUrlSearch();
 }
 
-function _getUrlSearch(url) {
-    const searchParameter = inpSearchParameter.value;
-    const typeExam = slcTypes.value;
-    const grade = slcGrades.value;
-    const subject = slcSubjects.value;
-    const year = slcYears.value;
-    return `${window.location.origin}/examen/buscar/1?searchParameter=${searchParameter}&type=${typeExam}&grade=${grade}&subject=${subject}&year=${year}`;
+function _getUrlSearch() {
+    const searchParameter = inpSearchParameter.val();
+    const typeExam = slcTypes.val();
+    const grade = slcGrades.val();
+    const subject = slcSubjects.val();
+    const year = slcYears.val();
+    const acronym = $('#hdAcronymExam').val();
+    return `${window.location.origin}/tipoexamen/${acronym}/1?searchParameter=${searchParameter}&type=${typeExam}&grade=${grade}&subject=${subject}&year=${year}`;
 }
 
 function _initElements() {
-    inpSearchParameter = document.getElementById('txtSearch');
-    slcTypes = document.getElementById('slcTypes');
-    slcGrades = document.getElementById('slcGrades');
-    slcSubjects = document.getElementById('slcSubjects');
-    slcYears = document.getElementById('slcYears');
+    inpSearchParameter = $('#txtSearch');
+    slcTypes = $('#slcTypes');
+    slcGrades = $('#slcGrades');
+    slcSubjects = $('#slcSubjects');
+    slcYears = $('#slcYears');
 
     _intiDefaultEvents();
 }
 
 function _intiDefaultEvents() {
-    inpSearchParameter.addEventListener("keypress", function (event) {
+    inpSearchParameter.on("keypress", function (event) {
         if (event.key === "Enter") {
             searchTypeExam();
         }

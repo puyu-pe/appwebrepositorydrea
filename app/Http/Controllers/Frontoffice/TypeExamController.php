@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class TypeExamController extends Controller
 {
-    public function actionViewTypeExam(Request $request, $currentPage)
+    public function actionViewTypeExam(Request $request, $acronymTypeExam, $currentPage)
     {
         $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
         $type = $request->has('type') ? $request->input('type') : 'all';
@@ -23,13 +23,16 @@ class TypeExamController extends Controller
         $subject = $request->has('subject') ? $request->input('subject') : 'all';
         $year = $request->has('year') ? $request->input('year') : 'all';
 
-        $tTypeExam = TTypeExam::whereRaw('acronymTypeExam=?', [$type])->first();
+        $tTypeExam = $acronymTypeExam != 'all' ? TTypeExam::whereRaw('acronymTypeExam=?', [$acronymTypeExam])->first() : null;
+
+        if ($acronymTypeExam != 'all' && $type != 'all')
+            $tTypeExam =  TTypeExam::whereRaw('acronymTypeExam=?', [$type])->first();
 
         $examsQuery = TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])
             ->whereRaw(
                 'compareFind(concat(codeExam, nameExam, descriptionExam), ?, 77) = 1 ' .
                 'AND stateExam = "' . TExam::STATUS['PUBLIC'] . '"' .
-                ($type != 'all' ? 'AND idTypeExam="' . $tTypeExam->idTypeExam . '"' : '') .
+                ($tTypeExam != null ? 'AND idTypeExam="' . $tTypeExam->idTypeExam . '"' : '') .
                 ($grade != 'all' ? 'AND idGrade="' . $grade . '"' : '') .
                 ($subject != 'all' ? 'AND idSubject="' . $subject . '"' : '') .
                 ($year != 'all' ? 'AND yearExam="' . $year . '"' : ''),
@@ -51,7 +54,7 @@ class TypeExamController extends Controller
             'type' => $type,
             'grade' => $grade,
             'subject' => $subject,
-            'year' => $year
+            'year' => $year,
         ];
 
         return view(
@@ -62,7 +65,8 @@ class TypeExamController extends Controller
                 'currentPage' => $paginate['currentPage'],
                 'quantityPage' => $paginate['quantityPage'],
                 'filtersData' => $filtersData,
-                'selectFilters' => $selectFilters
+                'selectFilters' => $selectFilters,
+                'acronymTypeExam' => $acronymTypeExam
             ]
         );
     }

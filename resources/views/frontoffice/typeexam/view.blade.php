@@ -10,10 +10,10 @@
                             <h3 class="it-breadcrumb-title">
                                 {{ 'Lista de evaluaciones' }}
                             </h3>
-                            @unless($filtersData->type === 'all')
+                            @if ($acronymTypeExam != 'all')
                                 <h4 class="it-breadcrumb-title"
                                     style="font-size: 40px"> {{$tTypeExam->nameTypeExam }}</h4>
-                            @endunless
+                            @endif
                         </div>
                         {{-- <div class="it-breadcrumb-list-wrap">
                             <div class="it-breadcrumb-list">
@@ -41,21 +41,32 @@
                     </div>
                 </div>
                 <div class="col-8">
+                    <input type="hidden" id="hdAcronymExam" value="{{$acronymTypeExam}}">
                     <div class="row">
-                        <div class="col-3">
-                            <div class="postbox__select">
-                                <select id="slcTypes">
-                                    <option value="all">Todos los tipos</option>
-                                    @foreach ($selectFilters['types'] as $type)
-                                        <option value="{{ $type->acronymTypeExam }}"
-                                            {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
-                                            {{ strtoupper($type->acronymTypeExam)}}</option>
-                                    @endforeach
-                                </select>
+                        @if ($acronymTypeExam != 'all')
+                            <div class="col-3" style="display: none;">
+                                <div class="postbox__select">
+                                    <select id="slcTypes">
+                                        <option value="{{$acronymTypeExam}}" selected>{{ strtoupper($acronymTypeExam)}}</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="col-3">
+                                <div class="postbox__select">
+                                    <select id="slcTypes">
+                                        <option value="all">Todos los tipos</option>
+                                        @foreach ($selectFilters['types'] as $type)
+                                        <option value="{{ $type->acronymTypeExam }}"
+                                                {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
+                                            {{ strtoupper($type->acronymTypeExam)}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
 
-                        <div class="col-3">
+                        <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
                             <div class="postbox__select">
                                 <select id="slcGrades">
                                     <option value="all">Todos los grados</option>
@@ -68,7 +79,7 @@
                             </div>
                         </div>
 
-                        <div class="col-3">
+                        <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
                             <div class="postbox__select">
                                 <select id="slcSubjects">
                                     <option value="all">Todos los cursos</option>
@@ -81,7 +92,7 @@
                             </div>
                         </div>
 
-                        <div class="col-3">
+                        <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
                             <div class="postbox__select">
                                 <select id="slcYears">
                                     <option value="all">Todos los años</option>
