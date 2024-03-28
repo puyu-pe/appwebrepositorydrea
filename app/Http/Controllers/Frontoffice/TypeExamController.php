@@ -9,77 +9,80 @@ use App\Models\TTypeExam;
 use App\Helper\ExamHelper;
 use App\Models\TGrade;
 use App\Models\TSubject;
-use App\Models\TUserExam;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TypeExamController extends Controller
 {
-	public function actionViewTypeExam(Request $request, $acronymTypeExam, $currentPage)
-	{
-		$searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
-		$grade = $request->has('grade') ? $request->input('grade') : 'all';
-		$subject = $request->has('subject') ? $request->input('subject') : 'all';
-		$year = $request->has('year') ? $request->input('year') : 'all';
+    public function actionViewTypeExam(Request $request, $currentPage)
+    {
+        $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
+        $type = $request->has('type') ? $request->input('type') : 'all';
+        $grade = $request->has('grade') ? $request->input('grade') : 'all';
+        $subject = $request->has('subject') ? $request->input('subject') : 'all';
+        $year = $request->has('year') ? $request->input('year') : 'all';
 
-		$tTypeExam = TTypeExam::whereRaw('acronymTypeExam=?', [$acronymTypeExam])->first();
+        $tTypeExam = TTypeExam::whereRaw('acronymTypeExam=?', [$type])->first();
 
         $examsQuery = TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])
             ->whereRaw(
-                'compareFind(concat(codeExam, nameExam, descriptionExam), ?, 77) = 1
-        AND idTypeExam=?
-        AND stateExam = "'.TExam::STATUS['PUBLIC'].'"'.
+                'compareFind(concat(codeExam, nameExam, descriptionExam), ?, 77) = 1 ' .
+                'AND stateExam = "' . TExam::STATUS['PUBLIC'] . '"' .
+                ($type != 'all' ? 'AND idTypeExam="' . $tTypeExam->idTypeExam . '"' : '') .
                 ($grade != 'all' ? 'AND idGrade="' . $grade . '"' : '') .
                 ($subject != 'all' ? 'AND idSubject="' . $subject . '"' : '') .
                 ($year != 'all' ? 'AND yearExam="' . $year . '"' : ''),
                 [
-                    $searchParameter,
-                    $tTypeExam->idTypeExam
+                    $searchParameter
                 ]
             )->orderBy('created_at', 'desc');
 
         $exams = $this->filterAndDeleteExamsWithoutFiles($examsQuery);
-        $paginate = PlatformHelper::preparePaginate($exams, 4, $currentPage);
 
-		ExamHelper::getRatingAndUser($paginate['listRow']);
+        $paginate = PlatformHelper::preparePaginate($exams, 20, $currentPage);
 
-		$selectFilters = self::getSelectFilters();
+        ExamHelper::getRatingAndUser($paginate['listRow']);
 
-		$filtersData = (object) [
-			'searchParameter' => $searchParameter,
-			'grade' => $grade,
-			'subject' => $subject,
-			'year' => $year
-		];
+        $selectFilters = self::getSelectFilters();
 
-		return view(
-			'frontoffice/typeexam/view',
-			[
-				'tTypeExam' => $tTypeExam,
-				'listTExam' => $paginate['listRow'],
-				'currentPage' => $paginate['currentPage'],
-				'quantityPage' => $paginate['quantityPage'],
-				'filtersData' => $filtersData,
-				'selectFilters' => $selectFilters
-			]
-		);
-	}
+        $filtersData = (object)[
+            'searchParameter' => $searchParameter,
+            'type' => $type,
+            'grade' => $grade,
+            'subject' => $subject,
+            'year' => $year
+        ];
 
-	private function getSelectFilters()
-	{
-		return [
-			'grades' => TGrade::all(),
-			'subjects' => TSubject::all(),
-			'years' => TExam::select(DB::raw('yearExam'))->groupByRaw('yearExam')->get()
-		];
-	}
+        return view(
+            'frontoffice/typeexam/view',
+            [
+                'tTypeExam' => $tTypeExam,
+                'listTExam' => $paginate['listRow'],
+                'currentPage' => $paginate['currentPage'],
+                'quantityPage' => $paginate['quantityPage'],
+                'filtersData' => $filtersData,
+                'selectFilters' => $selectFilters
+            ]
+        );
+    }
 
-    private function filterAndDeleteExamsWithoutFiles($examsQuery) {
+    private function getSelectFilters()
+    {
+        return [
+            'types' => TTypeExam::all(),
+            'grades' => TGrade::all(),
+            'subjects' => TSubject::all(),
+            'years' => TExam::select(DB::raw('yearExam'))->groupByRaw('yearExam')->get()
+        ];
+    }
+
+    private function filterAndDeleteExamsWithoutFiles($examsQuery)
+    {
         $exams = $examsQuery->get();
 
         $filteredExams = $exams->filter(function ($exam) {
-            $directoryFiles = storage_path('app/file/exam/'.$exam->idExam.'.'.$exam->extensionExam);
+            $directoryFiles = storage_path('app/file/exam/' . $exam->idExam . '.' . $exam->extensionExam);
             return file_exists($directoryFiles);
         });
 
