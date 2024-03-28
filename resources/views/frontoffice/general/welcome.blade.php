@@ -27,7 +27,7 @@
                                 las evaluaciones que las DRE realiza a nivel nacional.</p>
                         </div>
                         <div class="it-hero-3-btn-box d-flex align-items-center">
-                            <a class="it-btn-white" href="course-details.html">
+                            <a class="it-btn-white" href="{{ url('examen/buscar/1') }}">
                                 <span>
                                     Buscar Evaluación
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6">
                         <div class="it-category-4-btn-box text-start text-md-end pt-25">
-                            <a class="it-btn-blue" href="course-details.html">
+                            <a class="it-btn-blue" href="{{ url('examen/buscar/1') }}">
                                 Buscar evaluación
                                 <span>
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
@@ -90,7 +90,7 @@
             <div class="row row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1">
                 @foreach ($tTypeExam as $value)
                     <div class="col mb-30">
-                        <a href="{{ url('tipoexamen/' . $value->acronymTypeExam . '/1') }}">
+                        <a href="{{ url('examen/buscar/1?type='.$value->acronymTypeExam) }}">
                             <div class="it-category-4-item text-center">
                                 <div class="it-category-4-icon">
                                     <span>
@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="it-category-4-content">
                                     <h4 class="it-category-4-title">
-                                        <a href="{{ url('tipoexamen/' . $value->acronymTypeExam . '/1') }}">
+                                        <a href="{{ url('examen/buscar/1?type='.$value->acronymTypeExam) }}">
                                             {{ $value->nameTypeExam }}</a>
                                     </h4>
                                     <span>{{ $value->acronymTypeExam }}</span>
