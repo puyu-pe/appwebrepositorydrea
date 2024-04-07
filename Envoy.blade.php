@@ -47,7 +47,7 @@
 @task('run_composer')
     echo "Starting deployment ({{ $release }})"
     cd {{ $new_release_dir }}
-    composer install --ignore-platform-reqs --prefer-dist --no-scripts -q -o
+/opt/cpanel/composer/bin/composer install --ignore-platform-reqs --prefer-dist --no-scripts -q -o
 @endtask
 
 @task('update_symlinks')
