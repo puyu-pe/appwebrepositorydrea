@@ -18,6 +18,7 @@ class ExamValidation
             'totalPageExam' => $request->input('txtTotalPageExam'),
             'yearExam' => $request->input('txtYearExam'),
             'numberEvaluation' => $request->input('numberEvaluationExecute'),
+            'register_answer' => $request->input('selectRegisterAnswer'),
             'keywordExam' => $request->input('selectKeywordExam'),
             'extensionExam' => $request->input('fileExamExtension')
         ],
@@ -29,6 +30,7 @@ class ExamValidation
             'totalPageExam' => ['required', 'regex:/^[0-9]{1,3}$/'],
             'yearExam' => ['required', 'regex:/^[0-9]{4}$/'],
             'numberEvaluation' => ['required'],
+            'register_answer' => ['required'],
             'keywordExam' => ['required'],
             'extensionExam.*' => ['required','mimes:pdf']
         ],
@@ -42,6 +44,7 @@ class ExamValidation
             'yearExam.required' => 'El campo "yearExam" es requerido.',
             'yearExam.regex' => 'El campo "yearExam" no cumple con el formato correspondiente.',
             'numberEvaluation.required' => 'El campo "numberEvaluation" es requerido.',
+            'register_answer.required' => 'El campo "register_answer" es requerido.',
             'keywordExam.required' => 'El campo "keywordExam" es requerido.',
             'extensionExam.required' => 'El campo "extensionExam" es requerido.',
             'extensionExam.mimes' => 'El archivo "extensionExam" no tiene un formato permitido.'
@@ -71,6 +74,7 @@ class ExamValidation
             'totalPageExam' => $request->input('txtTotalPageExam'),
             'yearExam' => $request->input('txtYearExam'),
             'numberEvaluation' => $request->input('numberEvaluationExecute'),
+            'register_answer' => $request->input('selectRegisterAnswer'),
             'keywordExam' => $request->input('selectKeywordExam'),
             'extensionExam' => $request->input('fileExamExtension')
         ],
@@ -82,6 +86,7 @@ class ExamValidation
             'totalPageExam' => ['required', 'regex:/^[0-9]{1,3}$/'],
             'yearExam' => ['required', 'regex:/^[0-9]{4}$/'],
             'numberEvaluation' => ['required'],
+            'register_answer' => ['required'],
             'keywordExam' => ['required'],
             'extensionExam.*' => ['required','mimes:pdf']
         ],
@@ -95,6 +100,7 @@ class ExamValidation
             'yearExam.required' => 'El campo "yearExam" es requerido.',
             'yearExam.regex' => 'El campo "yearExam" no cumple con el formato correspondiente.',
             'numberEvaluation.required' => 'El campo "numberEvaluation" es requerido.',
+            'register_answer.required' => 'El campo "register_answer" es requerido.',
             'keywordExam.required' => 'El campo "keywordExam" es requerido.',
             'extensionExam.required' => 'El campo "extensionExam" es requerido.',
             'extensionExam.mimes' => 'El archivo "extensionExam" no tiene un formato permitido.'

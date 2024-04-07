@@ -15,5 +15,10 @@ class TAnswer extends Model
     {
         return $this->belongsTo('App\Models\TExam', 'idExam');
     }
+
+    public function tUser()
+    {
+        return $this->belongsTo('App\Models\TUser', 'idUser');
+    }
 }
 ?>

@@ -54,13 +54,24 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-9">
+        <div class="form-group col-md-5">
             <label for="selectKeywordExam">Palabras clave*</label>
             <select name="selectKeywordExam[]" id="selectKeywordExam" class="form-control select2ExamKeyword" multiple style="width: 100%;">
                 @foreach(explode('__7SEPARATOR7__',$tExam->keywordExam) as $value)
                     <option value="{{$value}}" selected>{{$value}}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="selectRegisterAnswer">Respuestas*</label>
+            <select name="selectRegisterAnswer" id="selectRegisterAnswer" style="width: 100%" class="form-control" onchange="showButtonResponse($(this).val());">
+                <option value="1" {{$tExam->register_answer == 1 ? 'selected' : ''}}>Si</option>
+                <option value="0" {{$tExam->register_answer == 0 ? 'selected' : ''}}>No</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="txtResponseExamPermit">N° preguntas</label>
+            <input type="number" id="txtResponseExamPermit" name="txtResponseExamPermit" min="1" class="form-control" {{$tExam->register_answer == 0 ? 'readonly' : ''}} value="{{$tExam->number_question == 0 ? '' : $tExam->number_question}}">
         </div>
         <div class="form-group col-md-3">
             <label for="fileExamExtension">Archivo pdf</label>

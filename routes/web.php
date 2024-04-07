@@ -8,22 +8,33 @@ use App\Http\Controllers\Backoffice\SubjectController as BackSubjectController;
 use App\Http\Controllers\Backoffice\ContactController as BackContactController;
 use App\Http\Controllers\Backoffice\TypeExamController as BackTypeExamController;
 use App\Http\Controllers\Backoffice\ExamController as BackExamController;
+use App\Http\Controllers\Backoffice\AnswerController as BackAnswerController;
 
 use App\Http\Controllers\Frontoffice\GeneralController as FrontGeneralOffice;
 use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
 use App\Http\Controllers\Frontoffice\ContactController as FrontContactController;
 use App\Http\Controllers\Frontoffice\TypeExamController as FrontTypeExamController;
 use App\Http\Controllers\Frontoffice\ExamController as FrontExamController;
+use App\Http\Controllers\Frontoffice\ExamRatingController as FrontExamRatingController;
+
+use App\Http\Controllers\Backoffice\DownloadController;
 
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[FrontGeneralOffice::class, 'actionWelcome'])->middleware('GenericMiddleware:/');
+Route::get('/',[FrontGeneralOffice::class, 'actionWelcome'])->middleware('GenericMiddleware:/');
 Route::get('panel',[BackGeneralOffice::class, 'actionWelcomeDashboard'])->middleware('GenericMiddleware:panel');
+Route::get('panel/totals',[BackGeneralOffice::class, 'actionGetExamTotals'])->middleware('GenericMiddleware:panel');
+Route::get('panel/totalsBySubject',[BackGeneralOffice::class, 'actionGetExamTotalsBySubject'])->middleware('GenericMiddleware:panel');
+Route::get('panel/topViewed',[BackGeneralOffice::class, 'actionGetTopMostViewed'])->middleware('GenericMiddleware:panel');
+Route::get('panel/topQualified',[BackGeneralOffice::class, 'actionGetTopQualified'])->middleware('GenericMiddleware:panel');
+
 Route::get('sistema/generarbackup',[BackGeneralOffice::class, 'actionBackupDatabase'])->middleware('GenericMiddleware:sistema/generarbackup');
 Route::get('sistema/descargar',[BackGeneralOffice::class, 'actionDownloadExam'])->middleware('GenericMiddleware:sistema/descargar');
 
 Route::match(['get','post'],'general/contacto',[FrontContactController::class,'actionInsert'])->middleware('GenericMiddleware:general/contacto');
 Route::get('contacto/mostrar/{currentPage}',[BackContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/mostrar');
+Route::post('contacto/responder',[BackContactController::class,'actionReply'])->middleware('GenericMiddleware:contacto/responder');
 
 Route::match(['get','post'],'usuario/acceder',[BackUserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
 Route::get('usuario/salir',[BackUserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');
@@ -42,6 +53,7 @@ Route::get('tipoexamen/mostrar/{currentPage}',[BackTypeExamController::class,'ac
 Route::match(['get', 'post'], 'tipoexamen/insertar',[BackTypeExamController::class,'actionInsert'])->middleware('GenericMiddleware:tipoexamen/insertar');
 Route::post('tipoexamen/editar',[BackTypeExamController::class,'actionEdit'])->middleware('GenericMiddleware:tipoexamen/editar');
 Route::get('tipoexamen/eliminar/{idTypeExam}',[BackTypeExamController::class,'actionDelete'])->middleware('GenericMiddleware:tipoexamen/eliminar');
+
 Route::get('tipoexamen/{acronymTypeExam}/{currentPage}',[FrontTypeExamController::class,'actionViewTypeExam'])->middleware('GenericMiddleware:tipoexamen/acroninmo');
 
 Route::get('curso/mostrar/{currentPage}',[BackSubjectController::class,'actionGetAll'])->middleware('GenericMiddleware:curso/mostrar');
@@ -61,9 +73,14 @@ Route::get('direccion/eliminar/{idSubject}',[BackDirectionController::class,'act
 
 Route::get('examen/mostrar/{currentPage}',[BackExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/mostrar');
 Route::match(['get', 'post'], 'examen/insertar',[BackExamController::class,'actionInsert'])->middleware('GenericMiddleware:examen/insertar');
-Route::match(['get', 'post'], 'examen/registrar',[FrontExamController::class,'actionRegister'])->middleware('GenericMiddleware:examen/registrar');
 Route::post('examen/editar',[BackExamController::class,'actionEdit'])->middleware('GenericMiddleware:examen/editar');
 Route::get('examen/eliminar/{idSubject}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
-Route::get('examen/verarchivo/{idEgress}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
+Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
 Route::get('examen/estado/{idUser}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])->middleware('GenericMiddleware:examen/ver');
+
+Route::post('download/zipexam', [DownloadController::class, 'packZipFile'])->name('download.selected');
+Route::any('download/zipfile/{filename}', [DownloadController::class, 'downloadZipFile'])->name('download.zip');
+Route::post('examen/calificar',[FrontExamRatingController::class,'actionInsert'])->middleware('GenericMiddleware:examen/calificar');
+
+Route::post('respuesta/insertar',[BackAnswerController::class,'actionInsert'])->middleware('GenericMiddleware:respuesta/insertar');

@@ -11,19 +11,24 @@ class TUser extends Model
     public $incrementing=false;
     public $timestamps=true;
 
-    public function tUserExam()
-    {
-        return $this->hasMany('App\Models\TUserExam', 'idUser');
-    }
-
     public function tUserRole()
     {
         return $this->hasMany('App\Models\TUserRole', 'idUser');
     }
 
+    public function tUserExam()
+    {
+        return $this->hasMany('App\Models\TUserExam', 'idUser');
+    }
+
     public function tResetPassword()
     {
         return $this->hasMany('App\Models\TResetPassword', 'idUser');
+    }
+
+    public function tAnswer()
+    {
+        return $this->hasMany('App\Models\TAnswer', 'idUser');
     }
 }
 ?>

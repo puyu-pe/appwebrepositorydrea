@@ -1,0 +1,42 @@
+name: Deploy Production
+run-name: ${{ github.actor }} Deploy Production 🚀
+
+on:
+  workflow_dispatch
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🎯 Checkout current branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 1
+          fetch-tags: true
+
+      - name: 🛠 install Envoy
+        run: |
+          rm composer.*
+          composer require laravel/envoy
+
+      - name: ⚙ Config SSH
+        run: |
+          eval $(ssh-agent -s)
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY_HOSTGATOR}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh-add ~/.ssh/id_rsa
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+        env:
+          SSH_PRIVATE_KEY_HOSTGATOR: ${{secrets.SSH_PRIVATE_KEY_HOSTGATOR}}
+
+      - name: 🛩 Run deployer!
+        run: |
+          php vendor/bin/envoy run deploy --env=prod
+
+      - name: 🏀 Extract version
+        id: extract-version
+        run: echo "::set-output name=VERSION::$(cat VERSION)"
+
+      - run: echo "🔊 Final Status ${{ job.status }}."
