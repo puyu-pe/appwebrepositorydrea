@@ -27,7 +27,7 @@
                                 las evaluaciones que las DRE realiza a nivel nacional.</p>
                         </div>
                         <div class="it-hero-3-btn-box d-flex align-items-center">
-                            <a class="it-btn-white" href="{{ url('examen/buscar/1') }}">
+                            <a class="it-btn-white" href="{{ url('tipoexamen/all/1') }}">
                                 <span>
                                     Buscar Evaluación
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
@@ -67,41 +67,24 @@
                             <h4 class="it-section-title-3">Tipos de evaluaciones</h4>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6">
-                        <div class="it-category-4-btn-box text-start text-md-end pt-25">
-                            <a class="it-btn-blue" href="{{ url('examen/buscar/1') }}">
-                                Buscar evaluación
-                                <span>
-                                    <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                              stroke-width="1.5"
-                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <div class="row row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1">
+            <div class="row row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1 justify-content-center">
                 @foreach ($tTypeExam as $value)
                     <div class="col mb-30">
-                        <a href="{{ url('examen/buscar/1?type='.$value->acronymTypeExam) }}">
+                        <a href="{{ url('tipoexamen/'.$value->acronymTypeExam.'/1') }}">
                             <div class="it-category-4-item text-center">
                                 <div class="it-category-4-icon">
                                     <span>
                                         <img
                                             src="{{ asset("assets/frontoffice/img/category/{$value->acronymTypeExam}-img.{$value->extensionImageType}?x={$value->updated_at}") }}"
-                                            alt="">
+                                            alt="{{$value->acronymTypeExam}}">
                                     </span>
                                 </div>
                                 <div class="it-category-4-content">
                                     <h4 class="it-category-4-title">
-                                        <a href="{{ url('examen/buscar/1?type='.$value->acronymTypeExam) }}">
+                                        <a href="{{ url('tipoexamen/'.$value->acronymTypeExam.'/1') }}">
                                             {{ $value->nameTypeExam }}</a>
                                     </h4>
                                     <span>{{ $value->acronymTypeExam }}</span>
@@ -178,7 +161,7 @@
                                 </div>
                             </div>
                             <div class="it-about-3-btn-box p-relative">
-                                <a class="it-btn-blue" href="contact.html">
+                                <a class="it-btn-blue" href="{{url('general/contacto')}}">
                                     <span>
                                         Conocer mas
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
@@ -207,43 +190,18 @@
         <!-- funfact-area-start -->
         <div class="it-funfact-4-area theme-bg-3 pt-75 pb-45">
             <div class="container">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-6 mb-30 d-flex justify-content-center">
-                        <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
-                            <div class="it-funfact-4-item">
-                                <h4><span data-purecounter-duration="1" data-purecounter-end="6879"
-                                          class="purecounter">6,879</span>+</h4>
-                                <p>Recursos ECE</p>
+                <div class="row justify-content-center">
+                    @foreach($tTotalTypeExams as $tTotalTypeExam)
+                        <div class="col-xl-3 col-lg-3 col-md-6 mb-30 d-flex justify-content-center">
+                            <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
+                                <div class="it-funfact-4-item">
+                                    <h4><span data-purecounter-duration="1" data-purecounter-end="{{$tTotalTypeExam->totalExam}}"
+                                              class="purecounter">{{$tTotalTypeExam->totalExam}}</span>+</h4>
+                                    <p>Recursos {{strtoupper($tTotalTypeExam->acronymTypeExam)}}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 mb-30 d-flex justify-content-center">
-                        <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
-                            <div class="it-funfact-4-item">
-                                <h4><span data-purecounter-duration="1" data-purecounter-end="1327"
-                                          class="purecounter">1327</span>+</h4>
-                                <p>Recursos ERA</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 mb-30 d-flex justify-content-center">
-                        <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
-                            <div class="it-funfact-4-item">
-                                <h4><span data-purecounter-duration="1" data-purecounter-end="1359"
-                                          class="purecounter">1359</span>+</h4>
-                                <p>Recursos LLECE</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 mb-30 d-flex justify-content-center">
-                        <div class="it-funfact-4-wrap d-flex align-items-center justify-content-center">
-                            <div class="it-funfact-4-item">
-                                <h4><span data-purecounter-duration="1" data-purecounter-end="1557"
-                                          class="purecounter">1557</span>+</h4>
-                                <p>Recursos EM</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -265,9 +223,9 @@
                         </div>
                         <div class="col-xl-5 col-lg-5 col-md-4">
                             <div class="it-course-button text-start text-md-end pt-25">
-                                <a class="it-btn-blue" href="course-2.html">
+                                <a class="it-btn-blue" href="{{url('tipoexamen/all/1')}}">
                                     <span>
-                                        Ver mas evaluaciones
+                                        Ver más evaluaciones
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
@@ -292,7 +250,7 @@
                                             src="{{ asset('storage/exam-img/' . $topExam->idExam . '.jpg') }}"
                                             alt="imagen vista previa"></a>
                                     <div class="it-course-thumb-text">
-                                        <span>{{ $topExam->tTypeExam->acronymTypeExam }}</span>
+                                        <span>{{ strtoupper($topExam->tTypeExam->acronymTypeExam) }}</span>
                                     </div>
                                 </div>
                                 <div class="it-course-content">
@@ -333,63 +291,6 @@
         <!-- course-area-end -->
 
         <!-- video-area-start -->
-        <div class="it-video-area it-video-style-4 it-video-bg p-relative fix pt-100 pb-95"
-             data-background="{{ asset('assets/frontoffice/img/video/bg-4-1.jpg') }}">
-            <div class="it-video-shape-1 d-none d-lg-block">
-                <img src="{{ asset('assets/frontoffice/img/video/shape-4-1.png') }}" alt="">
-            </div>
-            <div class="it-video-shape-2 d-none d-lg-block">
-                <img src="{{ asset('assets/frontoffice/img/video/shape-1-2.png') }}" alt="">
-            </div>
-            <div class="it-video-shape-3 d-none d-xl-block">
-                <img src="{{ asset('assets/frontoffice/img/video/shape-1-4.png') }}" alt="">
-            </div>
-            <div class="it-video-shape-5 d-none d-lg-block">
-                <img src="{{ asset('assets/frontoffice/img/video/shape-1-5.png') }}" alt="">
-            </div>
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-xl-7 col-lg-7 col-md-9 col-sm-9">
-                        <div class="it-video-content">
-                            <span>Mantente al dia con el repositorio</span>
-                            <h3 class="it-video-title">Suscríbete para Recibir Notificaciones</h3>
-                            <p>¡Mantente al tanto de las últimas evaluaciones subidas y respondidas en nuestro
-                                repositorio!
-                            </p>
-                            <p>Suscríbete a nuestras notificaciones y recibe actualizaciones directamente en tu bandeja
-                                de
-                                entrada</p>
-                            <div class="it-video-button">
-                                <a class="it-btn-blue" href="contact.html">
-                                    <span>
-                                        Suscríbirse
-                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                                  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                  stroke-miterlimit="10" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                        </svg>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-5 col-md-3 col-sm-3">
-                        <div
-                            class="it-video-play-wrap d-flex justify-content-start justify-content-md-end align-items-center">
-                            <div class="it-video-play text-center">
-                                <a class="popup-video play" href="https://www.youtube.com/watch?v=PO_fBTkoznc"><i
-                                        class="fas fa-play"></i></a>
-                                <a class="text" href="#">Tutorial</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- video-area-end -->
 
         <!-- work-area-start -->

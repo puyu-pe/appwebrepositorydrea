@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Place favicon.ico in the root directory -->
-        <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/frontoffice/img/logo/favicon.png')}}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{asset('img/dreaapurimac.png')}}">
 
         <!-- CSS here -->
         <link rel="stylesheet" href="{{asset('assets/frontoffice/css/bootstrap.min.css')}}">
@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="{{asset('css/cssPagination.css')}}">
         <link rel="stylesheet" href="{{asset('css/cssExamType.css')}}">
 
-        <script src="{{asset('assets/frontoffice/js/jquery.js')}}"></script>
+        <script src="{{asset('assets/backoffice/plugins/adminlte/bower_components/jquery/dist/jquery.min.js')}}"></script>
     </head>
     <body>
         <script>

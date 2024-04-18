@@ -57,16 +57,16 @@
                                                     </div>
                                                     <div class="it-teacher-details-left-btn">
                                                         <a class="it-btn" href="contact.html">
-                              <span>
-                                 Subir imagen
-                                 <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                                 </svg>
-                              </span>
+                                                            <span>
+                                                                Subir imagen
+                                                                <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
+                                                                      stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                                                      stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                                </svg>
+                                                            </span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -85,7 +85,7 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="checkout-form-list">
-                                                                <label>Last Name <span class="required">*</span></label>
+                                                                <label>Apellidos <span class="required">*</span></label>
                                                                 <input type="text" placeholder="Apellido"
                                                                        value="{{Session::get('surName')}}"
                                                                        id="txtSurNameUser" name="txtSurNameUser">
@@ -101,9 +101,9 @@
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="checkout-form-list">
-                                                                <label>Rol(es)*<span class="required">*</span></label>
+                                                                <label>Rol(es)<span class="required"></span></label>
                                                                 <input type="text" placeholder="Roles"
-                                                                       id="txtCreasted_at"
+                                                                       id="txtCreated_at"
                                                                        name="txtCreated_at"
                                                                        value="{{Session::get('roleUser')}}"
                                                                        class="form-control pull-right" readonly>

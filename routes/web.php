@@ -78,9 +78,9 @@ Route::get('examen/eliminar/{idSubject}',[BackExamController::class,'actionDelet
 Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
 Route::get('examen/estado/{idUser}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])->middleware('GenericMiddleware:examen/ver');
-
-Route::post('download/zipexam', [DownloadController::class, 'packZipFile'])->name('download.selected');
-Route::any('download/zipfile/{filename}', [DownloadController::class, 'downloadZipFile'])->name('download.zip');
 Route::post('examen/calificar',[FrontExamRatingController::class,'actionInsert'])->middleware('GenericMiddleware:examen/calificar');
+
+Route::post('download/selected', [DownloadController::class, 'packZipFile'])->name('GenericMiddleware:download/selected');
+Route::any('download/zip/{filename}', [DownloadController::class, 'downloadZipFile'])->name('GenericMiddleware:download/zip');
 
 Route::post('respuesta/insertar',[BackAnswerController::class,'actionInsert'])->middleware('GenericMiddleware:respuesta/insertar');

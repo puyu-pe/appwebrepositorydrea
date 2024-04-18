@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="hidden" id="downloadUrl" value="{{ route('download.selected') }}">
+                        <input type="hidden" id="downloadUrl" value="{{ url('download/selected') }}">
                         <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
                         <button id="downloadBtn" style="display:none;" class="btn btn-primary btn-success">
                             <i class="fa fa-download"></i>

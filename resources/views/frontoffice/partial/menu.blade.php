@@ -16,7 +16,7 @@
                                             href="{{url('/')}}">Inicio</a></li>
                                     <li id="mTypeExam"
                                         class="has-dropdown {{Session::get('menu')=='mTypeExam' ? 'active' : ''}}">
-                                        <a href="#">Tipos de pruebas</a>
+                                        <a href="#">Tipos de evaluación</a>
                                         <ul class="it-submenu submenu">
                                             <li id="mALL"
                                                 class="{{Session::get('subMenu')=='mALL' ? 'active' : ''}}">
@@ -24,7 +24,7 @@
                                             @foreach ($menuTypeExamItem as $item)
                                             <li id="{{'m'.strtoupper($item->acronymTypeExam)}}"
                                                 class="{{Session::get('subMenu')=='m'.strtoupper($item->acronymTypeExam) ? 'active' : ''}}">
-                                                <a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}">Pruebas
+                                                <a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}">Evaluaciones
                                                     {{strtoupper($item->acronymTypeExam)}}</a></li>
                                             @endforeach
                                         </ul>
