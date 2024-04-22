@@ -88,6 +88,17 @@ $('#frmEditExam').formValidation(objectValidate(
                 }
             }
         },
+        fileTableResource:
+        {
+            validators:
+            {
+                file:
+                {
+                    message: '<b style="color: red;">Solo se permite formato "pdf".</b>',
+                    extension: 'pdf'
+                }
+            }
+        },
         txtTotalPageExam:
         {
             validators:

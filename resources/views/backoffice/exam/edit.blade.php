@@ -78,6 +78,12 @@
             <input type="file" id="fileExamExtension" name="fileExamExtension" class="form-control" accept=".pdf" style="padding: 5px;">
         </div>
     </div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label for="fileTableResource">Tabla de especificaciones</label>
+            <input type="file" id="fileTableResource" name="fileTableResource" class="form-control" accept=".pdf" style="padding: 5px;">
+        </div>
+    </div>
     <hr>
     <div class="row">
         <div class="form-group col-md-12 text-right">

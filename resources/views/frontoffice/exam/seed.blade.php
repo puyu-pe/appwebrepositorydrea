@@ -113,7 +113,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Nombre</th>
+                                                <th>Materiales de refuerzo</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

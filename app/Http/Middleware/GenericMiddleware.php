@@ -62,7 +62,6 @@ class GenericMiddleware
             ['Administrador,Supervisor', 'examen/estado', null, null],
             ['Administrador', 'examen/eliminar', null, null],
             ['Público', 'examen/verarchivo', null, null],
-            ['Público', 'recurso/verarchivo', null, null],
             ['Público', 'examen/ver', null, null],
             ['Público', 'examen/calificar', null, null],
 
@@ -70,6 +69,10 @@ class GenericMiddleware
 
             ['Público', 'donwload/selected', null, null],
             ['Público', 'donwload/zip', null, null],
+
+            ['Administrador,Supervisor,Registrador', 'recurso/insertar', null, null],
+            ['Administrador,Supervisor,Registrador', 'recurso/eliminar', null, null],
+            ['Público', 'recurso/verarchivo', null, null],
         ];
 
         $myMainRole=Session::get('mainRole', '');

@@ -51,7 +51,8 @@ class ExamController extends Controller
 	public function actionInsert(Request $request)
 	{
 		if ($_POST) {
-            try {
+            try
+            {
 				DB::beginTransaction();
 
 				$this->_so->mo->listMessage = (new ExamValidation())->validationInsert($request);
@@ -141,19 +142,19 @@ class ExamController extends Controller
                 if ($request->hasFile('fileResource'))
                 {
                     $files = $request->file('fileResource');
-                    foreach ($files as $file) {
+                    foreach ($files as $key => $file) {
                         $tResource = new TResource();
 
                         $tResource->idResource = uniqid();
                         $tResource->idExam = $tExam->idExam;
-                        $tResource->namecompleteResource = 'Recursos '.$tExam->nameExam;
+                        $tResource->namecompleteResource = 'Material ' . date('Y-m-d_H:i:s') . '_' . ($key+1) . ' ' . $tExam->nameExam;
                         $tResource->type = TResource::TYPE_RESOURCE['MATERIAL'];
                         $tResource->extension = strtolower($file->getClientOriginalExtension());
 
                         $tResource->save();
 
                         $filename = $tResource->idResource . '.' . $tResource->extension;
-                        $request->file($file)->move(storage_path('/app/public/resource/'), $filename);
+                        $file->move(storage_path('/app/public/resource/'), $filename);
                     }
                 }
 
@@ -281,6 +282,43 @@ class ExamController extends Controller
 					Storage::disk('exam-img')->put($tExam->idExam . '.jpg', $imageData);
 				}
 
+                if ($request->hasFile('fileTableResource'))
+                {
+                    $tResourceTable = TResource::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TResource::TYPE_RESOURCE['TABLE']])->first();
+
+                    if (!$tResourceTable)
+                    {
+                        $tResource = new TResource();
+
+                        $tResource->idResource = uniqid();
+                        $tResource->idExam = $tExam->idExam;
+                        $tResource->namecompleteResource = 'Tabla de especificacion '.$tExam->nameExam;
+                        $tResource->type = TResource::TYPE_RESOURCE['TABLE'];
+                        $tResource->extension = strtolower($request->file('fileTableResource')->getClientOriginalExtension());
+
+                        $tResource->save();
+
+                        $filename = $tResource->idResource . '.' . $tResource->extension;
+                        $request->file('fileTableResource')->move(storage_path('/app/public/resource/'), $filename);
+                    }
+                    else
+                    {
+                        $directoryResource = storage_path('app/public/resource/' . $tResourceTable->idResource . '.' . $tResourceTable->extension);
+
+                        if ($tResourceTable->extension != '' && file_exists($directoryResource))
+                            unlink($directoryResource);
+
+                        $tResourceTable->namecompleteResource = 'Tabla de especificacion '.$tExam->nameExam;
+                        $tResourceTable->extension = strtolower($request->file('fileTableResource')->getClientOriginalExtension());
+                        $tResourceTable->updated_at = date('Y-m-d H:i:s');
+
+                        $tResourceTable->save();
+
+                        $filename = $tResourceTable->idResource . '.' . $tResourceTable->extension;
+                        $request->file('fileTableResource')->move(storage_path('/app/public/resource/'), $filename);
+                    }
+                }
+
 				DB::commit();
 
 				return PlatformHelper::redirectCorrect(['Cambios guardado correctamente.'], 'examen/mostrar/1');
@@ -363,56 +401,6 @@ class ExamController extends Controller
 			);
 		}
 	}
-
-    public function actionViewResource($idResource)
-    {
-        try {
-            $tResource = TResource::find($idResource);
-            $tExam = $tResource->idExam ? TExam::find($tResource->idExam) : null;
-
-            if (!$tResource) {
-                $message = 'No se encontró el recurso perteneciente a la evaluación';
-
-                return view(
-                    'frontoffice/exam/error',
-                    [
-                        'message' => $message
-                    ]
-                );
-            }
-
-            if (($tExam && $tExam->stateExam != TExam::STATUS['PUBLIC']) &&
-                !stristr(session('roleUser'), TRole::ROLE['ADMIN']) && !stristr(session('roleUser'), TRole::ROLE['SUPERVISOR'])
-            ) {
-                $message = 'El archivo del recurso no está disponible por el momento.';
-
-                return view(
-                    'frontoffice/exam/error',
-                    [
-                        'message' => $message
-                    ]
-                );
-            }
-
-            $fileName = preg_replace(['/ /', '/[\/\\\\]/', '/\./'], ['_', '', ''], $tResource->namecompleteResource);
-            $directoryFiles = storage_path('/app/public/resource/' . $tResource->idResource . '.' . $tResource->extension);
-
-            $response = new BinaryFileResponse($directoryFiles);
-            $response->setContentDisposition('inline', $fileName . '.' . $tResource->extension);
-
-            BinaryFileResponse::trustXSendfileTypeHeader();
-
-            return $response;
-        } catch (\Exception $e) {
-            $message = 'No se encontró el documento pdf del recurso mencionado, consulte al administrador del sistema.';
-            return view(
-                'frontoffice/exam/error',
-                [
-                    'message' => $message
-                ]
-            );
-        }
-    }
 
 	public function actionDelete($idExam)
 	{

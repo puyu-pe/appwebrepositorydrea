@@ -47,7 +47,7 @@ class ExamController extends Controller
             }
 
             $tResourceTable = TResource::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TResource::TYPE_RESOURCE['TABLE']])->first();
-            $tResourceMaterial = TResource::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TResource::TYPE_RESOURCE['TABLE']])->get();
+            $tResourceMaterial = TResource::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TResource::TYPE_RESOURCE['MATERIAL']])->get();
             ExamHelper::incrementViewCounter($tExam);
             $rating = ExamHelper::getRatingData($tExam->idExam);
 
