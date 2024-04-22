@@ -56,6 +56,11 @@ class TExam extends Model
         return $this->hasMany('App\Models\TExamRating', 'idExam');
     }
 
+    public function tResource()
+    {
+        return $this->hasMany('App\Models\TResource', 'idExam');
+    }
+
     //REPORTES
 
     public static function totals()

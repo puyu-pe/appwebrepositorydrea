@@ -85,6 +85,16 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="fileTableResource">Tabla de especificaciones</label>
+                        <input type="file" id="fileTableResource" name="fileTableResource" class="form-control" accept=".pdf" style="padding: 5px;">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="fileResource">Recursos adicionales</label>
+                        <input type="file" name="fileResource[]" id="fileResource" multiple accept=".pdf" class="form-control" style="padding: 5px;">
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-12 text-right">
                         {{csrf_field()}}
                         <input type="button" class="btn btn-facebook" value="Registrar respuestas" id="btnModalResponse" onclick="openModal()" style="display: none;">
