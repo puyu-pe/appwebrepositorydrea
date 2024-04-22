@@ -6,6 +6,7 @@ use App\Helper\PlatformHelper;
 use App\Models\TAnswer;
 use App\Models\TDirection;
 use App\Models\TDocument;
+use App\Models\TResource;
 use App\Models\TRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,6 +46,8 @@ class ExamController extends Controller
                 ]);
             }
 
+            $tResourceTable = TResource::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TResource::TYPE_RESOURCE['TABLE']])->first();
+            $tResourceMaterial = TResource::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TResource::TYPE_RESOURCE['MATERIAL']])->get();
             ExamHelper::incrementViewCounter($tExam);
             $rating = ExamHelper::getRatingData($tExam->idExam);
 
@@ -57,6 +60,8 @@ class ExamController extends Controller
             return view('frontoffice/exam/seed',
             [
                 'tExam' => $tExam,
+                'tResourceTable' => $tResourceTable,
+                'tResourceMaterial' => $tResourceMaterial,
                 'rating' => $rating,
                 'tAnswersGroupedByUser' => $tAnswersGroupedByUser,
             ]);

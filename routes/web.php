@@ -9,6 +9,7 @@ use App\Http\Controllers\Backoffice\ContactController as BackContactController;
 use App\Http\Controllers\Backoffice\TypeExamController as BackTypeExamController;
 use App\Http\Controllers\Backoffice\ExamController as BackExamController;
 use App\Http\Controllers\Backoffice\AnswerController as BackAnswerController;
+use App\Http\Controllers\Backoffice\ResourceController as BackResourceController;
 
 use App\Http\Controllers\Frontoffice\GeneralController as FrontGeneralOffice;
 use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
@@ -74,7 +75,7 @@ Route::get('direccion/eliminar/{idSubject}',[BackDirectionController::class,'act
 Route::get('examen/mostrar/{currentPage}',[BackExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/mostrar');
 Route::match(['get', 'post'], 'examen/insertar',[BackExamController::class,'actionInsert'])->middleware('GenericMiddleware:examen/insertar');
 Route::post('examen/editar',[BackExamController::class,'actionEdit'])->middleware('GenericMiddleware:examen/editar');
-Route::get('examen/eliminar/{idSubject}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
+Route::get('examen/eliminar/{idExam}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
 Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
 Route::get('examen/estado/{idUser}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])->middleware('GenericMiddleware:examen/ver');
@@ -84,3 +85,7 @@ Route::post('download/selected', [DownloadController::class, 'packZipFile'])->na
 Route::any('download/zip/{filename}', [DownloadController::class, 'downloadZipFile'])->name('GenericMiddleware:download/zip');
 
 Route::post('respuesta/insertar',[BackAnswerController::class,'actionInsert'])->middleware('GenericMiddleware:respuesta/insertar');
+
+Route::post('recurso/insertar',[BackResourceController::class,'actionInsert'])->middleware('GenericMiddleware:recurso/insertar');
+Route::get('recurso/eliminar/{idResource}',[BackResourceController::class,'actionDelete'])->middleware('GenericMiddleware:recurso/eliminar');
+Route::get('recurso/verarchivo/{idResource}',[BackResourceController::class,'actionViewResource'])->middleware('GenericMiddleware:recurso/verarchivo');
