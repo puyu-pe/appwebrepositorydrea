@@ -61,5 +61,5 @@
     <script src="{{asset('js/codideepHelpers.js')}}"></script>
     <script src="{{asset('assets/backoffice/plugins/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
-    <script src="{{asset('assets/backoffice/viewResources/user/register.js')}}?x={{env('CACHE_LAST_UPDATE')}}"></script>
+    <script src="{{asset('assets/frontoffice/viewResources/user/register.js')}}?x={{env('CACHE_LAST_UPDATE')}}"></script>
 @endsection

@@ -33,7 +33,7 @@
                         <thead>
                         <tr>
                             <th class="text-center"><i class="fa fa-download text-success"></i></th>
-                            <th class="text-center">Documento</th>
+                            <th class="text-center">Evaluación</th>
                             <th class="text-center">Código</th>
                             <th class="text-center">Año</th>
                             <th class="text-center">Nombre del examen</th>
@@ -55,8 +55,7 @@
                                 </td>
                                 <td class="text-center" style="width: 80px;">
                                     <a class="btn btn-xs btn-danger" target="_blank"
-                                       href="{{url('recurso/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver
-                                        archivo</a>
+                                       href="{{url('recurso/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver archivo</a>
                                 </td>
                                 <td class="text-center">
                                     <div>{{$value->codeExam}}</div>

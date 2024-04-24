@@ -1,5 +1,5 @@
 @extends('backoffice.layout')
-@section('title', 'Lista de tipos de exámenes')
+@section('title', 'Lista de tipos de evaluaciones')
 @section('generalBody')
 <div class="nav-tabs-custom">
     <div class="tab-content">

@@ -1,5 +1,5 @@
 @extends('backoffice.layout')
-@section('title', 'Registrar un nuevo examen')
+@section('title', 'Registrar una nuevo evaluación')
 @section('generalBody')
 <div class="nav-tabs-custom">
     <div class="tab-content">

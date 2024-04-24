@@ -31,14 +31,14 @@
         <li id="mPrincipal" class="{{Session::get('menu')=='mPrincipal' ? 'active' : ''}} treeview">
             <a href="#">
                 <i class="fa fa-book"></i>
-                <span>Módulo de pruebas</span>
+                <span>Módulo evaluación</span>
                 <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                 </span>
             </a>
             <ul class="treeview-menu">
                 @if(stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor'))
-                    <li id="mGetAllTypeExam" class="{{Session::get('subMenu')=='mGetAllTypeExam' ? 'active' : ''}}"><a href="{{url('tipoexamen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Tipos de prueba</a></li>
+                    <li id="mGetAllTypeExam" class="{{Session::get('subMenu')=='mGetAllTypeExam' ? 'active' : ''}}"><a href="{{url('tipoexamen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Tipos de evaluación</a></li>
                     <li id="mGetAllSubject" class="{{Session::get('subMenu')=='mGetAllSubject' ? 'active' : ''}}"><a href="{{url('curso/mostrar/1')}}"><i class="fa fa-circle-o"></i>Materias</a></li>
                     <li id="mGetAllGrade" class="{{Session::get('subMenu')=='mGetAllGrade' ? 'active' : ''}}"><a href="{{url('grado/mostrar/1')}}"><i class="fa fa-circle-o"></i>Grados académicos</a></li>
                     <li id="mGetAllDirection" class="{{Session::get('subMenu')=='mGetAllDirection' ? 'active' : ''}}"><a href="{{url('direccion/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de DRE</a></li>
