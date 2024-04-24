@@ -71,7 +71,7 @@ class UserController extends Controller
         if (session('idUser') && stristr(Session::get('roleUser'), TRole::ROLE['NORMAL']))
             return Redirect::to('usuario/editar');
 
-        return view('frontoffice/general/login');
+        return view('frontoffice/user/login');
     }
 
     public function actionRegister(Request $request, Encrypter $encrypter)
@@ -132,8 +132,9 @@ class UserController extends Controller
                 return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/registrar');
             }
         }
-        return view('frontoffice/general/register');
+        return view('frontoffice/user/register');
     }
+
     public function actionEdit(Request $request, SessionManager $sessionManager)
     {
         if($request->has('hdIdUser'))
