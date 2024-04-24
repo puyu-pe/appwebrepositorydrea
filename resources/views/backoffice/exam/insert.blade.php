@@ -110,33 +110,13 @@
                                 <span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">Registrar respuestas</h4>
                         </div>
-                        <div class="modal-body" id="dvExamResponse">
-                            <div class="row">
-                                <div class="form-group col-md-3">
-                                    <label for="numberResponse">N° de pregunta*</label>
-                                </div>
-                                <div class="form-group col-md-9">
-                                    <label for="txtDescriptionResponse">Respuesta (puede ser solo la vocal, n° o fundamentar la respuesta)*</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-3">
-                                    <input type="number" id="numberResponse" name="numberResponse" class="form-control" min="1" value="1">
-                                </div>
-                                <div class="form-group col-md-8">
-                                    <input type="text" id="txtDescriptionResponse" name="txtDescriptionResponse" class="form-control">
-                                </div>
-                                <div class="form-group col-md-1">
-                                    <span class="btn btn-default btn-sm glyphicon glyphicon-plus pull-right" data-toggle="tooltip" title="Añadir" data-placement="left" onclick="addElementConcept();"></span>
-                                </div>
-                            </div>
+                        <div class="modal-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="tblResponseExam">
                                     <thead>
                                     <tr>
                                         <th style="width: 120px;">N° de pregunta</th>
                                         <th>Descripción de la respuesta</th>
-                                        <th class="text-center" style="width: 40px;"></th>
                                     </tr>
                                     </thead>
                                     <tbody>

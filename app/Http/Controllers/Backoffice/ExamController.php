@@ -165,8 +165,8 @@ class ExamController extends Controller
 						$tAnswer->idAnswer = uniqid();
 						$tAnswer->idExam = $tExam->idExam;
 						$tAnswer->idUser = session('idUser');
-						$tAnswer->numberAnswer =  $request->input('numberValueExam')[$number];
-						$tAnswer->descriptionAnswer = $valueResponse;
+						$tAnswer->numberAnswer =  $number + 1;
+						$tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
 
 						$tAnswer->save();
 					}
