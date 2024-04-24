@@ -1,19 +1,18 @@
 'use strict';
 
 function validateNotEmptyResponse(){
-    let total_empty_response = 0;
+    let total_not_empty_response = 0;
     let status_response = false;
-    let total_answer_table =  parseInt($('#tblResponseExam > tbody > tr').length);
 
     $('#tblResponseExam > tbody > tr').each((index, element) =>
     {
         let value_description = $($(element).find('> td > input[name="txtValueResponseExam[]"]')[0]).val();
 
         if (value_description !== '')
-            total_empty_response++;
+            total_not_empty_response++;
     });
 
-    if (total_empty_response === total_answer_table)
+    if (total_not_empty_response === 0)
         status_response = true;
 
     if (status_response)
