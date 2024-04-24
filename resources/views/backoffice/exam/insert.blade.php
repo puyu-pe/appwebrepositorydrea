@@ -127,8 +127,11 @@
                         <hr>
                         <div class="modal-footer">
                             <div class="row">
-                                <div class="form-group col-md-12 text-center">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar Ventana</button>
+                                <div class="form-group col-md-6 text-left">
+                                    <button type="button" class="btn btn-info" data-dismiss="modal">Aceptar</button>
+                                </div>
+                                <div class="form-group col-md-6 right">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetQuestion();">Cancelar</button>
                                 </div>
                             </div>
                         </div>

@@ -158,7 +158,7 @@ class ExamController extends Controller
                     }
                 }
 
-				if ($request->has('txtValueResponseExam') && $request->has('numberValueExam')) {
+				if ($request->has('txtValueResponseExam')) {
 					foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
 						$tAnswer = new TAnswer();
 
