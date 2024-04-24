@@ -37,18 +37,17 @@ Route::match(['get','post'],'general/contacto',[FrontContactController::class,'a
 Route::get('contacto/mostrar/{currentPage}',[BackContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/mostrar');
 Route::post('contacto/responder',[BackContactController::class,'actionReply'])->middleware('GenericMiddleware:contacto/responder');
 
-Route::match(['get','post'],'usuario/acceder',[BackUserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
-Route::get('usuario/salir',[BackUserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');
-Route::match(['get','post'],'usuario/insertar',[BackUserController::class,'actionInsert'])->middleware('GenericMiddleware:usuario/insertar');
-Route::match(['get','post'],'usuario/registrar',[BackUserController::class,'actionRegister'])->middleware('GenericMiddleware:usuario/registrar');
 Route::get('usuario/mostrar/{currentPage}',[BackUserController::class,'actionGetAll'])->middleware('GenericMiddleware:usuario/mostrar');
-Route::match(['get', 'post'], 'usuario/editar',[FrontUserController::class, 'actionEdit'])->middleware('GenericMiddleware:usuario/editar');
-Route::post('usuario/cambiar',[BackUserController::class, 'actionChange'])->middleware('GenericMiddleware:usuario/cambiar');
 Route::get('usuario/estado/{idUser}',[BackUserController::class,'actionChangeStatus'])->middleware('GenericMiddleware:usuario/estado');
 Route::post('usuario/rol',[BackUserController::class, 'actionChangeRole'])->middleware('GenericMiddleware:usuario/rol');
+Route::get('usuario/salir',[BackUserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');
 Route::get('usuario/eliminar/{idUser}',[BackUserController::class, 'actionDelete'])->middleware('GenericMiddleware:usuario/eliminar');
-Route::match(['get','post'],'usuario/recuperar',[BackUserController::class,'actionRecuperate'])->middleware('GenericMiddleware:usuario/recuperar');
-Route::match(['get','post'],'usuario/resetear/{token}',[BackUserController::class,'actionReset'])->middleware('GenericMiddleware:usuario/resetear');
+Route::match(['get','post'],'usuario/acceder',[FrontUserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
+Route::match(['get','post'],'usuario/registrar',[FrontUserController::class,'actionRegister'])->middleware('GenericMiddleware:usuario/registrar');
+Route::match(['get', 'post'], 'usuario/editar',[FrontUserController::class, 'actionEdit'])->middleware('GenericMiddleware:usuario/editar');
+Route::post('usuario/cambiar',[FrontUserController::class, 'actionChange'])->middleware('GenericMiddleware:usuario/cambiar');
+Route::match(['get','post'],'usuario/recuperar',[FrontUserController::class,'actionRecuperate'])->middleware('GenericMiddleware:usuario/recuperar');
+Route::match(['get','post'],'usuario/resetear/{token}',[FrontUserController::class,'actionReset'])->middleware('GenericMiddleware:usuario/resetear');
 
 Route::get('tipoexamen/mostrar/{currentPage}',[BackTypeExamController::class,'actionGetAll'])->middleware('GenericMiddleware:tipoexamen/mostrar');
 Route::match(['get', 'post'], 'tipoexamen/insertar',[BackTypeExamController::class,'actionInsert'])->middleware('GenericMiddleware:tipoexamen/insertar');
