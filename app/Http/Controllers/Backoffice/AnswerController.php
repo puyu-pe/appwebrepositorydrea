@@ -47,7 +47,8 @@ class AnswerController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'examen/mostrar/1');
+                $previousUrl = url()->previous();
+                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], $previousUrl);
             }
 
             $tExam = TExam::find($request->input('idExam'));

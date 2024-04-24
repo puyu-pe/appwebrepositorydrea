@@ -3,7 +3,7 @@
     {{ csrf_field() }}
 
     <div class="it-breadcrumb-area it-breadcrumb-bg"
-        data-background="{{ asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg') }}">
+         data-background="{{ asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg') }}">
         <div class="container">
             <div class="row ">
                 <div class="col-md-12">
@@ -22,7 +22,8 @@
             <div class="row">
                 <div class="col-xl-9 col-lg-8">
                     <div class="it-course-details-wrap">
-                        <div class="it-evn-details-thumb mb-35" style="text-align: center; background: #DEDEDE; padding: 10px">
+                        <div class="it-evn-details-thumb mb-35"
+                             style="text-align: center; background: #DEDEDE; padding: 10px">
 
                             <img src="{{ asset('storage/exam-img/' . $tExam->idExam . '.jpg') }}"
                                  alt="Vista previa"
@@ -55,18 +56,40 @@
                             <div class="it-evn-details-text mb-40">
                                 <h6 class="it-evn-details-title-sm pb-5">Descripción de la evaluación.</h6>
                                 <p>{{ $tExam->descriptionExam }}</p>
-                                @if($tExam->register_answer == '1')
-                                    <button class="it-btn w-80 text-center" id="btnModalResponse" onclick="$('#dvAnswer').show();">
-                                        Ver respuestas
+                                @if (Session::get('idUser'))
+                                    <button class="it-btn w-80 text-center" data-bs-toggle="modal"
+                                            data-bs-target="#mdlAnswerRegister">
+                                        Registro de respuestas
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
-                                                  stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                                  stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </button>
                                 @endif
+
+                                @if($tExam->register_answer == '1')
+                                    <button class="it-btn w-80 text-center" id="btnModalResponse"
+                                            onclick="$('#dvAnswer').show();">
+                                        Ver respuestas
+                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                                  stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                @endif
+
                             </div>
                         </div>
                     </div>
@@ -80,12 +103,13 @@
                                     <li><span>Nro descargas: </span> <span>12</span></li>
                                     <li><span>Año de evaluación: </span> <span>{{ $tExam->yearExam }}</span></li>
                                     @if($tResourceTable)
-                                    <li><span>Tabla de especificaciones: </span>
-                                        <a class="btn btn-info text-center" href="{{ url('recurso/verarchivo/' . $tResourceTable->idResource) }}?x={{ $tResourceTable->updated_at }}"
-                                           target="_blank">
-                                            Ver
-                                        </a>
-                                    </li>
+                                        <li><span>Tabla de especificaciones: </span>
+                                            <a class="btn btn-info text-center"
+                                               href="{{ url('recurso/verarchivo/' . $tResourceTable->idResource) }}?x={{ $tResourceTable->updated_at }}"
+                                               target="_blank">
+                                                Ver
+                                            </a>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>
@@ -97,9 +121,10 @@
                                 <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
-                                          stroke-linecap="round" stroke-linejoin="round" />
+                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                          stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </span>
                             </a>
@@ -112,27 +137,28 @@
                                 <div class="it-evn-sidebar-list mb-20">
                                     <table class="table">
                                         <thead>
-                                            <tr>
-                                                <th>Materiales de refuerzo</th>
-                                                <th></th>
-                                            </tr>
+                                        <tr>
+                                            <th>Materiales de refuerzo</th>
+                                            <th></th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($tResourceMaterial as $key =>$tResourceMaterialExam)
-                                                <tr>
-                                                    <td class="text-center">
-                                                        <div>{{ 'Material de refuerzo '.($key+1) }}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            <a class="btn btn-info text-center" href="{{ url('recurso/verarchivo/' . $tResourceMaterialExam->idResource) }}?x={{ $tResourceMaterialExam->updated_at }}"
-                                                               target="_blank">
-                                                                Ver
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                        @foreach($tResourceMaterial as $key =>$tResourceMaterialExam)
+                                            <tr>
+                                                <td class="text-center">
+                                                    <div>{{ 'Material de refuerzo '.($key+1) }}</div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <a class="btn btn-info text-center"
+                                                           href="{{ url('recurso/verarchivo/' . $tResourceMaterialExam->idResource) }}?x={{ $tResourceMaterialExam->updated_at }}"
+                                                           target="_blank">
+                                                            Ver
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -158,22 +184,22 @@
                                             </h5>
                                             <table class="table">
                                                 <thead>
-                                                    <tr>
-                                                        <th>N° de pregunta</th>
-                                                        <th>Descripción de la respuesta</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th>N° de pregunta</th>
+                                                    <th>Descripción de la respuesta</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($answers as $tanswer_value)
-                                                        <tr>
-                                                            <td class="text-center">
-                                                                <div>{{ $tanswer_value->numberAnswer }}</div>
-                                                            </td>
-                                                            <td>
-                                                                <div>{{ $tanswer_value->descriptionAnswer }}</div>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
+                                                @foreach($answers as $tanswer_value)
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <div>{{ $tanswer_value->numberAnswer }}</div>
+                                                        </td>
+                                                        <td>
+                                                            <div>{{ $tanswer_value->descriptionAnswer }}</div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -194,4 +220,55 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Modal -->
+    <div class="modal" id="mdlAnswerRegister" data-backdrop="" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mdlAnswerRegisterLabel">Registro de respuestas a la evaluación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        @include('backoffice.answer.insert', [
+                            'tExam' => $tExam,
+                            'tAnswer' => $tAnswer,
+                            'maxNumberAnswer' => $tExam->number_question,
+                        ])
+{{--                    </div>--}}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+
+{{--<form id="frmInsertAnswer" action="{{url('respuesta/insertar')}}" method="post">--}}
+{{--    <div class="overflow-auto" style="max-height: calc(100vh - 200px);">--}}
+{{--        <div class="it-sv-details-content-box mb-50">--}}
+{{--            <table class="table table-sm">--}}
+{{--                <thead>--}}
+{{--                <tr>--}}
+{{--                    <th>N° de pregunta</th>--}}
+{{--                    <th>Descripción de la respuesta</th>--}}
+{{--                </tr>--}}
+{{--                </thead>--}}
+{{--                <tbody>--}}
+{{--                @for($i=1; $i<=$tExam->number_question; $i++)--}}
+{{--                    <tr>--}}
+{{--                        <td class="text-center">--}}
+{{--                            <div>{{ $i }}</div>--}}
+{{--                        </td>--}}
+{{--                        <td>--}}
+{{--                            <input type="text" name="response[{{$i}}]" id=""--}}
+{{--                                   value="{{ $tAnswerUserSession[$i]->descriptionAnswer ?? '' }}">--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                @endfor--}}
+{{--                </tbody>--}}
+{{--            </table>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
+{{--</form>--}}
