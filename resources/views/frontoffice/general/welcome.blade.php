@@ -78,7 +78,7 @@
                                 <div class="it-category-4-icon">
                                     <span>
                                         <img
-                                            src="{{ asset("assets/frontoffice/img/category/{$value->acronymTypeExam}-img.{$value->extensionImageType}?x={$value->updated_at}") }}"
+                                            src="{{ asset("storage/typeexam/{$value->idTypeExam}.{$value->extensionImageType}?x={$value->updated_at}") }}"
                                             alt="{{$value->acronymTypeExam}}">
                                     </span>
                                 </div>

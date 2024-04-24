@@ -258,9 +258,10 @@ class UserController extends Controller
                     $tUser = TUser::find($request->input('hdIdUser'));
 
                     if ($tUser->avatarExtension != '') {
-                        $direcciónLink = public_path('img/logo/user/' . $tUser->idUser . '.' . $tUser->avatarExtension);
+                        $direcciónLink = storage_path('app/public/user/' . $tUser->idUser . '.' . $tUser->avatarExtension);
 
-                        unlink($direcciónLink);
+                        if (file_exists($direcciónLink))
+                            unlink($direcciónLink);
                     }
 
                     $tUser->avatarExtension = strtolower($request->file('fileAvatarExtension')->getClientOriginalExtension());
@@ -268,7 +269,7 @@ class UserController extends Controller
 
                     $tUser->save();
 
-                    $request->file('fileAvatarExtension')->move(public_path('/img/logo/user/'), $tUser->idUser . '.' . $tUser->avatarExtension);
+                    $request->file('fileAvatarExtension')->move(storage_path('/app/public/user/'), $tUser->idUser . '.' . $tUser->avatarExtension);
                 }
 
                 DB::commit();

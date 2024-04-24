@@ -18,27 +18,27 @@
                             <div class="it-signup-wrap">
                                 <h4 class="it-signup-title">Registrarse</h4>
                                 <div class="it-signup-input-wrap mb-40">
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="text" id="txtFirstName" name="txtFirstName" placeholder="Nombre *">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="text" id="txtSurName" name="txtSurName" placeholder="Apellido *">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="text" id="txtNumberDni" name="txtNumberDni" placeholder="Nº DNI *">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="email" id="txtEmail" name="txtEmail"  placeholder="Correo *">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="password" id="passPasswordUser" name="passPasswordUser" placeholder="Contraseña *">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="password" id="passPasswordRetypeUser" name="passPasswordRetypeUser" placeholder="Repita contraseña *">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>

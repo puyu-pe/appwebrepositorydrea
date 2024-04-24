@@ -36,23 +36,22 @@ class UserController extends Controller
 
                 $tUser->save();
 
-                if($request->hasFile('fileAvatarExtension'))
-                {
-                    $tUser=TUser::find($request->input('hdIdUser'));
+                if ($request->hasFile('fileAvatarExtension')) {
+                    $tUser = TUser::find($request->input('hdIdUser'));
 
-                    if($tUser->avatarExtension!='')
-                    {
-                        $direcciónLink=public_path('img/logo/user/'.$tUser->idUser.'.'.$tUser->avatarExtension);
+                    if ($tUser->avatarExtension != '') {
+                        $direcciónLink = storage_path('app/public/user/' . $tUser->idUser . '.' . $tUser->avatarExtension);
 
-                        unlink($direcciónLink);
+                        if (file_exists($direcciónLink))
+                            unlink($direcciónLink);
                     }
 
-                    $tUser->avatarExtension=strtolower($request->file('fileAvatarExtension')->getClientOriginalExtension());
-                    $tUser->updated_at=date('Y-m-d H:i:s');
+                    $tUser->avatarExtension = strtolower($request->file('fileAvatarExtension')->getClientOriginalExtension());
+                    $tUser->updated_at = date('Y-m-d H:i:s');
 
                     $tUser->save();
 
-                    $request->file('fileAvatarExtension')->move(public_path('/img/logo/user/'), $tUser->idUser.'.'.$tUser->avatarExtension);
+                    $request->file('fileAvatarExtension')->move(storage_path('/app/public/user/'), $tUser->idUser . '.' . $tUser->avatarExtension);
                 }
 
                 DB::commit();

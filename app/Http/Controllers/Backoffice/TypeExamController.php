@@ -48,7 +48,7 @@ class TypeExamController extends Controller
 
                 $tTypeExam->save();
 
-                $request->file('fileTypeExamLogo')->move(public_path('/img/logo/typeexam/'), $tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
+                $request->file('fileTypeExamLogo')->move(storage_path('/app/public/typeexam/'), $tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
 
                 DB::commit();
 
@@ -95,12 +95,10 @@ class TypeExamController extends Controller
                 {
                     $tTypeExam=TTypeExam::find($tTypeExam->idTypeExam);
 
-                    $directoryFiles= public_path('img/logo/typeexam/'.$tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
+                    $direccionLink= storage_path('app/public/typeexam/'.$tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
 
-                    if($tTypeExam->extensionImageType!='' && file_exists($directoryFiles)==true)
+                    if($tTypeExam->extensionImageType!='' && file_exists($direccionLink))
                     {
-                        $direccionLink=public_path('img/logo/typeexam/'.$tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
-
                         unlink($direccionLink);
                     }
 
@@ -109,7 +107,7 @@ class TypeExamController extends Controller
 
                     $tTypeExam->save();
 
-                    $request->file('fileTypeExamLogo')->move(public_path('/img/logo/typeexam/'), $tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
+                    $request->file('fileTypeExamLogo')->move(storage_path('/app/public/typeexam/'), $tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
                 }
 
                 DB::commit();
@@ -150,9 +148,9 @@ class TypeExamController extends Controller
 
             $tTypeExam=TTypeExam::find($idTypeExam);
 
-            $directoryFiles= public_path('img/logo/typeexam/'.$tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
+            $directoryFiles= storage_path('app/public/typeexam/'.$tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
 
-            if(file_exists($directoryFiles)==true)
+            if(file_exists($directoryFiles))
             {
                 unlink($directoryFiles);
             }

@@ -51,23 +51,9 @@
                                                     <div class="it-teacher-details-left-thumb">
                                                         <img src="{{Session::get('avatarExtension')=='' ?
                             asset('img/userlogo.png') :
-                            asset('img/logo/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}"
+                            asset('storage/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}"
                                                              style="border: 1px solid #999999; border-radius: 50%; width: 150px; "
                                                              class="img-circle" alt="User Image">
-                                                    </div>
-                                                    <div class="it-teacher-details-left-btn">
-                                                        <a class="it-btn" href="contact.html">
-                                                            <span>
-                                                                Subir imagen
-                                                                <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                                                      stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                                      stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                                                                </svg>
-                                                            </span>
-                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,7 +77,13 @@
                                                                        id="txtSurNameUser" name="txtSurNameUser">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
+                                                        <div class="col-md-6">
+                                                            <div class="checkout-form-list">
+                                                                <label>Avatar</label>
+                                                                <input type="file" id="fileAvatarExtension" name="fileAvatarExtension" class="form-control pull-right" accept=".jpg,.png,.jpeg" style="padding: 5px;">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
                                                             <div class="checkout-form-list">
                                                                 <label>DNI <span class="required">*</span></label>
                                                                 <input type="text" placeholder="DNI"
