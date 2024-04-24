@@ -39,7 +39,7 @@
                                 <td class="text-center">
                                     <div class="user-panel">
                                         <div class="pull-left image text-center">
-                                            <img src="{{asset('img/logo/typeexam/'.$value->idTypeExam.'.'.$value->extensionImageType.'?x='.$value->updated_at)}}">
+                                            <img src="{{asset('storage/typeexam/'.$value->idTypeExam.'.'.$value->extensionImageType.'?x='.$value->updated_at)}}">
                                         </div>
                                     </div>
                                 </td>

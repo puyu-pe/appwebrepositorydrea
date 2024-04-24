@@ -54,7 +54,7 @@ class DirectionController extends Controller
 
                     $tDirection->save();
 
-                    $request->file('fileLogoExtension')->move(public_path('/img/logo/direction/'), $tDirection->idDirection.'.'.$tDirection->logoExtension);
+                    $request->file('fileLogoExtension')->move(storage_path('/app/public/direction/'), $tDirection->idDirection.'.'.$tDirection->logoExtension);
                 }
 
                 DB::commit();
@@ -111,9 +111,10 @@ class DirectionController extends Controller
 
                     if($tDirection->logoExtension!='')
                     {
-                        $direcciónLink=public_path('img/logo/direction/'.$tDirection->idDirection.'.'.$tDirection->logoExtension);
+                        $direcciónLink=storage_path('app/public/direction/'.$tDirection->idDirection.'.'.$tDirection->logoExtension);
 
-                        unlink($direcciónLink);
+                        if (file_exists($direcciónLink))
+                            unlink($direcciónLink);
                     }
 
                     $tDirection->logoExtension=strtolower($request->file('fileLogoExtension')->getClientOriginalExtension());
@@ -121,7 +122,7 @@ class DirectionController extends Controller
 
                     $tDirection->save();
 
-                    $request->file('fileLogoExtension')->move(public_path('/img/logo/direction/'), $tDirection->idDirection.'.'.$tDirection->logoExtension);
+                    $request->file('fileLogoExtension')->move(storage_path('/app/public/direction/'), $tDirection->idDirection.'.'.$tDirection->logoExtension);
                 }
 
                 DB::commit();
@@ -158,7 +159,17 @@ class DirectionController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'direccion/mostrar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que pertenecen a esta Direccción.'], 'direccion/mostrar/1');
+            }
+
+            $tDirection = TDirection::find($idDirection);
+
+            if($tDirection->logoExtension!='')
+            {
+                $direcciónLink=storage_path('app/public/direction/'.$tDirection->idDirection.'.'.$tDirection->logoExtension);
+
+                if (file_exists($direcciónLink))
+                    unlink($direcciónLink);
             }
 
             DB::delete('delete from tdirection where idDirection = ?', [$idDirection]);

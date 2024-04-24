@@ -39,7 +39,7 @@
                                     @if ($value->logoExtension != '')
                                         <div class="user-panel">
                                             <div class="pull-left image">
-                                                <img src="{{asset('img/logo/direction/'.$value->idDirection.'.'.$value->logoExtension.'?x='.$value->updated_at)}}" class="img-circle" alt="User Image">
+                                                <img src="{{asset('storage/direction/'.$value->idDirection.'.'.$value->logoExtension.'?x='.$value->updated_at)}}" class="img-circle" alt="User Image">
                                             </div>
                                         </div>
                                     @else
