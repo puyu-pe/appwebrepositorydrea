@@ -158,15 +158,15 @@ class ExamController extends Controller
                     }
                 }
 
-				if ($request->has('txtValueResponseExam') && $request->has('numberValueExam')) {
+				if ($request->has('txtValueResponseExam')) {
 					foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
 						$tAnswer = new TAnswer();
 
 						$tAnswer->idAnswer = uniqid();
 						$tAnswer->idExam = $tExam->idExam;
 						$tAnswer->idUser = session('idUser');
-						$tAnswer->numberAnswer =  $request->input('numberValueExam')[$number];
-						$tAnswer->descriptionAnswer = $valueResponse;
+						$tAnswer->numberAnswer =  $number + 1;
+						$tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
 
 						$tAnswer->save();
 					}
