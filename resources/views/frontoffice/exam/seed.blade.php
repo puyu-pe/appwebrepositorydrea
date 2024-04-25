@@ -56,7 +56,7 @@
                             <div class="it-evn-details-text mb-40">
                                 <h6 class="it-evn-details-title-sm pb-5">Descripción de la evaluación.</h6>
                                 <p>{{ $tExam->descriptionExam }}</p>
-                                @if (Session::get('idUser'))
+                                @if (Session::get('idUser') && $tExam->register_answer == '1')
                                     <button class="it-btn w-80 text-center" data-bs-toggle="modal"
                                             data-bs-target="#mdlAnswerRegister">
                                         Registro de respuestas

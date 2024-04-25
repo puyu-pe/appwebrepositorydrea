@@ -55,7 +55,7 @@
                                 </td>
                                 <td class="text-center" style="width: 80px;">
                                     <a class="btn btn-xs btn-danger" target="_blank"
-                                       href="{{url('recurso/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver archivo</a>
+                                       href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver archivo</a>
                                 </td>
                                 <td class="text-center">
                                     <div>{{$value->codeExam}}</div>
