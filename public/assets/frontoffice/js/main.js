@@ -824,51 +824,6 @@
 
     scrollNav();
 
-
-    $('#modal').on('hidden.bs.modal', function () {
-        $('.modal-backdrop').remove();
-    });
-
-    const $mdlAnswerRegister = $("#mdlAnswerRegister");
-
-    $mdlAnswerRegister.on("click", "#btnClose", function (e) {
-        if (!confirm("Esta seguro de cerrar la ventana?")) {
-            e.preventDefault();
-        } else {
-            $mdlAnswerRegister.hide();
-            $('.modal-backdrop').remove();
-
-        }
-    });
-
-    $mdlAnswerRegister.on("click", "#btnSave", function (e) {
-        var datos = [];
-        $mdlAnswerRegister.find('table tbody tr').each(function () {
-            var number_question = $(this).find('td:eq(0)').text().trim();
-            var answer = $(this).find('td:eq(1) input').val().trim();
-            var fila = {
-                number_question : number_question,
-                answer: answer
-            };
-            datos.push(fila);
-        });
-        console.log(datos);
-
-        //send to endpoint
-        $.ajax({
-            type: "POST",
-            url: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            data: JSON.stringify(datos),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-                $mdlAnswerRegister.hide();
-                $('.modal-backdrop').remove();
-            }
-        });
-    });
-
 })(jQuery);
 
 

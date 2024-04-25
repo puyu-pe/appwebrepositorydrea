@@ -12,25 +12,30 @@
                 </thead>
                 <tbody>
                 @if($tAnswer->isNotEmpty())
-                    @for($i = 0; $i < $tExam->number_question; $i++)
-                        @php
-                            $numberAnswer = $i + 1;
-                        @endphp
+                    @foreach($tAnswer as $key => $tanswer_value)
                         <tr>
-                            <input type="hidden" id="hdIdAnswer{{$numberAnswer}}" name="hdIdAnswer[]"
-                                   value="{{$numberAnswer}}">
-
+                            <input type="hidden" id="hdIdAnswer{{$tanswer_value->numberAnswer}}" name="hdIdAnswer[]" value="{{$tanswer_value->idAnswer}}">
                             <td class="text-center">
-                                <div>{{$numberAnswer}}</div>
+                                <div>{{$tanswer_value->numberAnswer}}</div>
                             </td>
-
                             <td>
-                                <input type="text" id="txtValueResponseExam{{$numberAnswer}}"
-                                       name="txtValueResponseExam[]" value="{{$tAnswer[$i]->descriptionAnswer ?? ''}}"
-                                       class="form-control">
+                                <input type="text" id="txtValueResponseExam{{$tanswer_value->numberAnswer}}" name="txtValueResponseExam[]" value="{{$tanswer_value->descriptionAnswer}}" class="form-control">
                             </td>
                         </tr>
-                    @endfor
+                    @endforeach
+                    @if($maxNumberAnswer<$tExam->number_question)
+                        @for($i = $maxNumberAnswer+1; $i <= $tExam->number_question; $i++)
+                            <tr>
+                                <input type="hidden" id="hdIdAnswer{{$i}}" name="hdIdAnswer[]" value="">
+                                <td class="text-center">
+                                    <div>{{$i}}</div>
+                                </td>
+                                <td>
+                                    <input type="text" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" value="" class="form-control">
+                                </td>
+                            </tr>
+                        @endfor
+                    @endif
                 @else
                     @for($i = 0; $i < $tExam->number_question; $i++)
                         <tr>
@@ -54,7 +59,7 @@
         <div class="form-group col-md-12 text-right">
             {{csrf_field()}}
             <input type="hidden" name="hdIdExam" id="hdIdExam" value="{{$tExam->idExam}}">
-            <input type="button" class="btn btn-dark pull-left col-4" data-dismiss="modal" value="Cerrar ventana">
+            <input type="button" class="btn btn-dark pull-left col-4" data-dismiss="modal" data-bs-dismiss="modal" value="Cerrar ventana">
             <input type="button" class="btn btn-primary col-3" value="Guardar" onclick="sendInsertAnswer();" style="float: right">
         </div>
     </div>

@@ -51,17 +51,10 @@ class ExamController extends Controller
             ExamHelper::incrementViewCounter($tExam);
             $rating = ExamHelper::getRatingData($tExam->idExam);
 
-            $tAnswerUserSession = null;
 
             $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ?', [$tExam->idExam, session('idUser')])
                 ->orderBy('numberAnswer')->get();
 
-//            if (session('idUser'))
-//                $tAnswerUserSession = TAnswer::where('idExam', $tExam->idExam)
-//                    ->orderBy('numberAnswer')
-//                    ->with('tuser')
-//                    ->where('idUser', session('idUser'))
-//                    ->get();
 
             $tAnswersGroupedByUser = TAnswer::where('idExam', $tExam->idExam)
                 ->orderBy('numberAnswer')

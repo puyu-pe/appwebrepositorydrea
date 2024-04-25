@@ -170,41 +170,47 @@
                     @if($tExam->register_answer == 1)
                         @if($tAnswersGroupedByUser->isNotEmpty())
                             <div class="row" id="dvAnswer" style="display: none;">
-                                @foreach($tAnswersGroupedByUser as $idUser => $answers)
-                                    @php
-                                        $user = $answers->first()->tuser;
-                                        $firstName = $user->firstName;
-                                        $surName = $user->surName;
-                                    @endphp
-                                    <div class="col-xl-6 col-lg-6">
-                                        <div class="it-sv-details-content-box mb-50">
-                                            <h5 class="it-sv-details-title-sm">
-                                                <span><i class="fa-sharp fa-light fa-check"></i></span>
-                                                {{ $firstName }} {{ $surName }}
-                                            </h5>
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th>N° de pregunta</th>
-                                                    <th>Descripción de la respuesta</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($answers as $tanswer_value)
-                                                    <tr>
-                                                        <td class="text-center">
-                                                            <div>{{ $tanswer_value->numberAnswer }}</div>
-                                                        </td>
-                                                        <td>
-                                                            <div>{{ $tanswer_value->descriptionAnswer }}</div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
+                                <div class="accordion" id="accordionExample">
+                                    @foreach($tAnswersGroupedByUser as $idUser => $answers)
+                                        <div class="accordion-item">
+                                            @php
+                                                $user = $answers->first()->tuser;
+                                                $firstName = $user->firstName;
+                                                $surName = $user->surName;
+                                            @endphp
+
+                                            <h2 class="accordion-header" id="heading{{$user->idUser}}">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$user->idUser}}" aria-expanded="true" aria-controls="collapse{{$user->idUser}}">
+                                                    {{ $firstName }} {{ $surName }}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{$user->idUser}}" class="accordion-collapse collapse" aria-labelledby="heading{{$user->idUser}}" data-bs-parent="#accAnswers">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>N° de pregunta</th>
+                                                            <th>Descripción de la respuesta</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($answers as $tanswer_value)
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <div>{{ $tanswer_value->numberAnswer }}</div>
+                                                                </td>
+                                                                <td>
+                                                                    <div>{{ $tanswer_value->descriptionAnswer }}</div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
                             </div>
                         @else
                             <div class="row" id="dvAnswer" style="display: none;">
@@ -242,33 +248,3 @@
         </div>
     </div>
 @endsection
-
-
-{{--<form id="frmInsertAnswer" action="{{url('respuesta/insertar')}}" method="post">--}}
-{{--    <div class="overflow-auto" style="max-height: calc(100vh - 200px);">--}}
-{{--        <div class="it-sv-details-content-box mb-50">--}}
-{{--            <table class="table table-sm">--}}
-{{--                <thead>--}}
-{{--                <tr>--}}
-{{--                    <th>N° de pregunta</th>--}}
-{{--                    <th>Descripción de la respuesta</th>--}}
-{{--                </tr>--}}
-{{--                </thead>--}}
-{{--                <tbody>--}}
-{{--                @for($i=1; $i<=$tExam->number_question; $i++)--}}
-{{--                    <tr>--}}
-{{--                        <td class="text-center">--}}
-{{--                            <div>{{ $i }}</div>--}}
-{{--                        </td>--}}
-{{--                        <td>--}}
-{{--                            <input type="text" name="response[{{$i}}]" id=""--}}
-{{--                                   value="{{ $tAnswerUserSession[$i]->descriptionAnswer ?? '' }}">--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
-{{--                @endfor--}}
-{{--                </tbody>--}}
-{{--            </table>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
-{{--</form>--}}
