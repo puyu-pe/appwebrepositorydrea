@@ -31,7 +31,7 @@
     <div class="it-course-area it-course-style-2 it-course-style-5 p-relative pt-50 pb-100">
         <div class="container">
             <div class="row">
-                <div id="divSearch" class="col-12">
+                <div id="divSearch" class="col-md-12">
                     <div class="it-sv-details-sidebar-search mb-55">
                         <input id="txtSearch" type="text" placeholder="Información para búsqueda (Enter)"
                                value="{{ $filtersData->searchParameter }}">
@@ -41,6 +41,8 @@
                     </div>
                 </div>
                 <input type="hidden" id="hdAcronymExam" value="{{$acronymTypeExam}}">
+            </div>
+            <div class="row">
                 @if ($acronymTypeExam != 'all')
                     <div class="col-md-3" style="display: none;">
                         <div class="postbox__select">
@@ -100,6 +102,7 @@
                     </div>
                 </div>
             </div>
+            <br>
             <div class="row">
 
                 <table class="table table-responsive">
@@ -174,7 +177,7 @@
                 </div>
                 <div class="col-8">
                     {!! ViewHelper::renderPaginationFrontExams(
-                        'examen/buscar',
+                        'tipoexamen/'.$acronymTypeExam,
                         $quantityPage,
                         $currentPage,
                         $filtersData,
