@@ -3,7 +3,7 @@
     {{ csrf_field() }}
 
     <div class="it-breadcrumb-area it-breadcrumb-bg"
-        data-background="{{ asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg') }}">
+         data-background="{{ asset('assets/frontoffice/img/breadcrumb/breadcrumb.jpg') }}">
         <div class="container">
             <div class="row ">
                 <div class="col-md-12">
@@ -22,7 +22,8 @@
             <div class="row">
                 <div class="col-xl-9 col-lg-8">
                     <div class="it-course-details-wrap">
-                        <div class="it-evn-details-thumb mb-35" style="text-align: center; background: #DEDEDE; padding: 10px">
+                        <div class="it-evn-details-thumb mb-35"
+                             style="text-align: center; background: #DEDEDE; padding: 10px">
 
                             <img src="{{ asset('storage/exam-img/' . $tExam->idExam . '.jpg') }}"
                                  alt="Vista previa"
@@ -54,80 +55,107 @@
                         <div class="it-course-details-content">
                             <div class="it-evn-details-text mb-40">
                                 <h6 class="it-evn-details-title-sm pb-5">Descripción de la evaluación.</h6>
-                                <p>{{ $tExam->descriptionExam }}
-                                </p>
-                                @if($tExam->register_answer == '1')
-                                    <button class="it-btn w-100 text-center" id="btnModalResponse" onclick="$('#dvAnswer').show();">
-                                        Ver respuestas
+                                <p>{{ $tExam->descriptionExam }}</p>
+                                @if (Session::get('idUser') && $tExam->register_answer == '1')
+                                    <button class="it-btn w-80 text-center" data-bs-toggle="modal"
+                                            data-bs-target="#mdlAnswerRegister">
+                                        Registro de respuestas
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
-                                                  stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                                  stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                     </button>
                                 @endif
+
+                                @if($tExam->register_answer == '1')
+                                    <button class="it-btn w-80 text-center" id="btnModalResponse"
+                                            onclick="$('#dvAnswer').show();">
+                                        Ver respuestas
+                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                                  stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                @endif
+
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-4">
-                    <div class="it-evn-sidebar-box it-course-sidebar-box">
-                        <div class="it-evn-sidebar-list mb-20">
-                            <ul>
-                                <li><span>Nro visitas: </span> <span>{{ $tExam->view_counter }}</span></li>
-                                <li><span>Nro descargas: </span> <span>12</span></li>
-                                <li><span>Año de evaluación: </span> <span>{{ $tExam->yearExam }}</span></li>
-                            </ul>
-                        </div>
-                        <a class="it-btn w-100 text-center"
-                            href="{{ url('examen/verarchivo/' . $tExam->idExam) }}?x={{ $tExam->updated_at }}"
-                            target="_blank">
+                    <div class="row">
+                        <div class="it-evn-sidebar-box it-course-sidebar-box">
+                            <div class="it-evn-sidebar-list mb-20">
+                                <ul>
+                                    <li><span>Nro visitas: </span> <span>{{ $tExam->view_counter }}</span></li>
+                                    <li><span>Nro descargas: </span> <span>12</span></li>
+                                    <li><span>Año de evaluación: </span> <span>{{ $tExam->yearExam }}</span></li>
+                                    @if($tResourceTable)
+                                        <li><span>Tabla de especificaciones: </span>
+                                            <a class="btn btn-info text-center"
+                                               href="{{ url('recurso/verarchivo/' . $tResourceTable->idResource) }}?x={{ $tResourceTable->updated_at }}"
+                                               target="_blank">
+                                                Ver
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                            <a class="it-btn w-100 text-center"
+                               href="{{ url('examen/verarchivo/' . $tExam->idExam) }}?x={{ $tExam->updated_at }}"
+                               target="_blank">
                             <span>
-                                Descargar
+                                Ver evaluación
                                 <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor" stroke-width="1.5"
-                                        stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5" stroke-miterlimit="10"
-                                        stroke-linecap="round" stroke-linejoin="round" />
+                                          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                          stroke-miterlimit="10"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </span>
-                        </a>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </div>
-            @if($tExam->register_answer == 1)
-                 @if($tAnswersGroupedByUser->isNotEmpty())
-                    <div class="row" id="dvAnswer" style="display: none;">
-                        @foreach($tAnswersGroupedByUser as $idUser => $answers)
-                            @php
-                                $user = $answers->first()->tuser;
-                                $firstName = $user->firstName;
-                                $surName = $user->surName;
-                            @endphp
-                            <div class="col-xl-6 col-lg-6">
-                                <div class="it-sv-details-content-box mb-50">
-                                    <h5 class="it-sv-details-title-sm">
-                                        <span><i class="fa-sharp fa-light fa-check"></i></span>
-                                        {{ $firstName }} {{ $surName }}
-                                    </h5>
+                    <br>
+                    @if($tResourceMaterial->isNotEmpty())
+                        <div class="row">
+                            <div class="it-evn-sidebar-box it-course-sidebar-box">
+                                <div class="it-evn-sidebar-list mb-20">
                                     <table class="table">
                                         <thead>
-                                            <tr>
-                                                <th>N° de pregunta</th>
-                                                <th>Descripción de la respuesta</th>
-                                            </tr>
+                                        <tr>
+                                            <th>Materiales de refuerzo</th>
+                                            <th></th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($answers as $tanswer_value)
+                                        @foreach($tResourceMaterial as $key =>$tResourceMaterialExam)
                                             <tr>
                                                 <td class="text-center">
-                                                    <div>{{ $tanswer_value->numberAnswer }}</div>
+                                                    <div>{{ 'Material de refuerzo '.($key+1) }}</div>
                                                 </td>
                                                 <td>
-                                                    <div>{{ $tanswer_value->descriptionAnswer }}</div>
+                                                    <div>
+                                                        <a class="btn btn-info text-center"
+                                                           href="{{ url('recurso/verarchivo/' . $tResourceMaterialExam->idResource) }}?x={{ $tResourceMaterialExam->updated_at }}"
+                                                           target="_blank">
+                                                            Ver
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -135,18 +163,88 @@
                                     </table>
                                 </div>
                             </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="row" id="dvAnswer" style="display: none;">
-                        <div class="col-xl-12 col-lg-12">
-                            <h5 class="it-sv-details-title-sm" style="font-weight: bold;">
-                                No se registró respuestas para la evaluación
-                            </h5>
                         </div>
-                    </div>
-                @endif
-            @endif
+                    @endif
+                </div>
+                <div class="col-xl-9 col-lg-8">
+                    @if($tExam->register_answer == 1)
+                        @if($tAnswersGroupedByUser->isNotEmpty())
+                            <div class="row" id="dvAnswer" style="display: none;">
+                                <div class="accordion" id="accordionExample">
+                                    @foreach($tAnswersGroupedByUser as $idUser => $answers)
+                                        <div class="accordion-item">
+                                            @php
+                                                $user = $answers->first()->tuser;
+                                                $firstName = $user->firstName;
+                                                $surName = $user->surName;
+                                            @endphp
+
+                                            <h2 class="accordion-header" id="heading{{$user->idUser}}">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$user->idUser}}" aria-expanded="true" aria-controls="collapse{{$user->idUser}}">
+                                                    {{ $firstName }} {{ $surName }}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{$user->idUser}}" class="accordion-collapse collapse" aria-labelledby="heading{{$user->idUser}}" data-bs-parent="#accAnswers">
+                                                <div class="accordion-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>N° de pregunta</th>
+                                                            <th>Descripción de la respuesta</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($answers as $tanswer_value)
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <div>{{ $tanswer_value->numberAnswer }}</div>
+                                                                </td>
+                                                                <td>
+                                                                    <div>{{ $tanswer_value->descriptionAnswer }}</div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @else
+                            <div class="row" id="dvAnswer" style="display: none;">
+                                <div class="col-xl-12 col-lg-12">
+                                    <h5 class="it-sv-details-title-sm" style="font-weight: bold;">
+                                        No se registró respuestas para la evaluación
+                                    </h5>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal" id="mdlAnswerRegister" data-backdrop="" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mdlAnswerRegisterLabel">Registro de respuestas a la evaluación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        @include('backoffice.answer.insert', [
+                            'tExam' => $tExam,
+                            'tAnswer' => $tAnswer,
+                            'maxNumberAnswer' => $tExam->number_question,
+                        ])
+{{--                    </div>--}}
+                </div>
+            </div>
         </div>
     </div>
 @endsection

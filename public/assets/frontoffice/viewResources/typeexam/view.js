@@ -1,5 +1,5 @@
 'use strict';
-let inpSearchParameter,
+var inpSearchParameter,
     slcTypes,
     slcGrades,
     slcSubjects,
@@ -41,11 +41,11 @@ $(function () {
         var selectedValues;
         if (selectionMode === 'all') {
             selectedValues = {
-                search: inpSearchParameter.value,
-                type: slcTypes.value,
-                grade: slcGrades.value,
-                subject: slcSubjects.value,
-                year: slcYears.value
+                search: inpSearchParameter.val(),
+                type: slcTypes.val(),
+                grade: slcGrades.val(),
+                subject: slcSubjects.val(),
+                year: slcYears.val()
             };
         } else {
             selectedValues = $('input[type="checkbox"][name="result[]"]:checked').map(function () {
@@ -62,7 +62,6 @@ $(function () {
                 ids: selectedValues
             },
             success: function (response) {
-                console.log(response);
                 window.open(response.downloadUrl, '_blank');
             }
         });

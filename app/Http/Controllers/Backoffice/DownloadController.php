@@ -21,8 +21,6 @@ class DownloadController extends Controller
             $files = TExam::findMany($ids);
         } else if ($mode == 'all') {
 
-            //dd($ids);
-
             $search = $ids['search'];
             $type = $ids['type'];
             $grade = $ids['grade'];
@@ -55,7 +53,7 @@ class DownloadController extends Controller
             return response()->json(['error' => 'Invalid mode specified'], 400);
         }
 
-        $zip = new ZipArchive;
+        $zip = new ZipArchive();
         $zipFileName = 'descarga_' . time() . rand(1, 10) . '.zip';
         $zipPath = storage_path('app/public/zip/ ' . $zipFileName);
 
@@ -69,7 +67,7 @@ class DownloadController extends Controller
             Storage::disk('zip')->put($zipFileName, file_get_contents($zipPath));
             unlink($zipPath);
 
-            return response()->json(['downloadUrl' => url("/download/zipfile/$zipFileName")]);
+            return response()->json(['downloadUrl' => url("download/zip/$zipFileName")]);
         } else {
             return response()->json(['error' => 'No se pudo crear el archivo'], 500);
         }

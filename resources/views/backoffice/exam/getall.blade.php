@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="hidden" id="downloadUrl" value="{{ route('download.selected') }}">
+                        <input type="hidden" id="downloadUrl" value="{{ url('download/selected') }}">
                         <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
                         <button id="downloadBtn" style="display:none;" class="btn btn-primary btn-success">
                             <i class="fa fa-download"></i>
@@ -33,7 +33,7 @@
                         <thead>
                         <tr>
                             <th class="text-center"><i class="fa fa-download text-success"></i></th>
-                            <th class="text-center">Documento</th>
+                            <th class="text-center">Evaluación</th>
                             <th class="text-center">Código</th>
                             <th class="text-center">Año</th>
                             <th class="text-center">Nombre del examen</th>
@@ -55,8 +55,7 @@
                                 </td>
                                 <td class="text-center" style="width: 80px;">
                                     <a class="btn btn-xs btn-danger" target="_blank"
-                                       href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver
-                                        examen</a>
+                                       href="{{url('examen/verarchivo/'.$value->idExam)}}?x={{$value->updated_at}}">Ver archivo</a>
                                 </td>
                                 <td class="text-center">
                                     <div>{{$value->codeExam}}</div>
@@ -113,6 +112,9 @@
                                     @if ($value->stateExam != 'Publico' && (stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor')))
                                         <span class="btn btn-danger btn-xs glyphicon glyphicon-trash" data-toggle="tooltip" title="Eliminar evaluación" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').show(); window.location.href='{{url('examen/eliminar/'.$value->idExam)}}'; });"></span>
                                     @endif
+                                    <span class="btn btn-default btn-xs glyphicon glyphicon-list-alt" data-toggle="tooltip"
+                                          title="Agregar recursos" data-placement="left"
+                                          onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Agregar recursos para la evaluación', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('recurso/insertar')}}', 'POST', null, null, false, true);"></span>
                                 </td>
                             </tr>
                         @endforeach

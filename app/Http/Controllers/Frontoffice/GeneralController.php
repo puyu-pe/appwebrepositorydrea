@@ -27,13 +27,21 @@ class GeneralController extends Controller
             ->take(3)
             ->get();
 
+        $tTotalTypeExams = TTypeExam::select('ttypeexam.idTypeExam', 'ttypeexam.acronymTypeExam')
+            ->leftJoin('texam', 'ttypeexam.idTypeExam', '=', 'texam.idTypeExam')
+            ->where('texam.stateExam', '=', 'Publico')
+            ->groupBy('ttypeexam.idTypeExam', 'ttypeexam.acronymTypeExam')
+            ->selectRaw('COUNT(texam.idExam) as totalExam')
+            ->get();
+
         ExamHelper::getRatingAndUser($topExams);
 
         return view(
             'frontoffice/general/welcome',
             [
                 'tTypeExam' => $tTypeExam,
-                'topExams' => $topExams
+                'topExams' => $topExams,
+                'tTotalTypeExams' => $tTotalTypeExams
             ]
         );
     }

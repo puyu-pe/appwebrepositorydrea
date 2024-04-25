@@ -9,6 +9,7 @@ use App\Http\Controllers\Backoffice\ContactController as BackContactController;
 use App\Http\Controllers\Backoffice\TypeExamController as BackTypeExamController;
 use App\Http\Controllers\Backoffice\ExamController as BackExamController;
 use App\Http\Controllers\Backoffice\AnswerController as BackAnswerController;
+use App\Http\Controllers\Backoffice\ResourceController as BackResourceController;
 
 use App\Http\Controllers\Frontoffice\GeneralController as FrontGeneralOffice;
 use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
@@ -36,18 +37,17 @@ Route::match(['get','post'],'general/contacto',[FrontContactController::class,'a
 Route::get('contacto/mostrar/{currentPage}',[BackContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/mostrar');
 Route::post('contacto/responder',[BackContactController::class,'actionReply'])->middleware('GenericMiddleware:contacto/responder');
 
-Route::match(['get','post'],'usuario/acceder',[BackUserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
-Route::get('usuario/salir',[BackUserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');
-Route::match(['get','post'],'usuario/insertar',[BackUserController::class,'actionInsert'])->middleware('GenericMiddleware:usuario/insertar');
-Route::match(['get','post'],'usuario/registrar',[BackUserController::class,'actionRegister'])->middleware('GenericMiddleware:usuario/registrar');
 Route::get('usuario/mostrar/{currentPage}',[BackUserController::class,'actionGetAll'])->middleware('GenericMiddleware:usuario/mostrar');
-Route::match(['get', 'post'], 'usuario/editar',[FrontUserController::class, 'actionEdit'])->middleware('GenericMiddleware:usuario/editar');
-Route::post('usuario/cambiar',[BackUserController::class, 'actionChange'])->middleware('GenericMiddleware:usuario/cambiar');
 Route::get('usuario/estado/{idUser}',[BackUserController::class,'actionChangeStatus'])->middleware('GenericMiddleware:usuario/estado');
 Route::post('usuario/rol',[BackUserController::class, 'actionChangeRole'])->middleware('GenericMiddleware:usuario/rol');
+Route::get('usuario/salir',[BackUserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');
 Route::get('usuario/eliminar/{idUser}',[BackUserController::class, 'actionDelete'])->middleware('GenericMiddleware:usuario/eliminar');
-Route::match(['get','post'],'usuario/recuperar',[BackUserController::class,'actionRecuperate'])->middleware('GenericMiddleware:usuario/recuperar');
-Route::match(['get','post'],'usuario/resetear/{token}',[BackUserController::class,'actionReset'])->middleware('GenericMiddleware:usuario/resetear');
+Route::match(['get','post'],'usuario/acceder',[FrontUserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
+Route::match(['get','post'],'usuario/registrar',[FrontUserController::class,'actionRegister'])->middleware('GenericMiddleware:usuario/registrar');
+Route::match(['get', 'post'], 'usuario/editar',[FrontUserController::class, 'actionEdit'])->middleware('GenericMiddleware:usuario/editar');
+Route::post('usuario/cambiar',[FrontUserController::class, 'actionChange'])->middleware('GenericMiddleware:usuario/cambiar');
+Route::match(['get','post'],'usuario/recuperar',[FrontUserController::class,'actionRecuperate'])->middleware('GenericMiddleware:usuario/recuperar');
+Route::match(['get','post'],'usuario/resetear/{token}',[FrontUserController::class,'actionReset'])->middleware('GenericMiddleware:usuario/resetear');
 
 Route::get('tipoexamen/mostrar/{currentPage}',[BackTypeExamController::class,'actionGetAll'])->middleware('GenericMiddleware:tipoexamen/mostrar');
 Route::match(['get', 'post'], 'tipoexamen/insertar',[BackTypeExamController::class,'actionInsert'])->middleware('GenericMiddleware:tipoexamen/insertar');
@@ -74,13 +74,17 @@ Route::get('direccion/eliminar/{idSubject}',[BackDirectionController::class,'act
 Route::get('examen/mostrar/{currentPage}',[BackExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/mostrar');
 Route::match(['get', 'post'], 'examen/insertar',[BackExamController::class,'actionInsert'])->middleware('GenericMiddleware:examen/insertar');
 Route::post('examen/editar',[BackExamController::class,'actionEdit'])->middleware('GenericMiddleware:examen/editar');
-Route::get('examen/eliminar/{idSubject}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
+Route::get('examen/eliminar/{idExam}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
 Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
 Route::get('examen/estado/{idUser}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])->middleware('GenericMiddleware:examen/ver');
-
-Route::post('download/zipexam', [DownloadController::class, 'packZipFile'])->name('download.selected');
-Route::any('download/zipfile/{filename}', [DownloadController::class, 'downloadZipFile'])->name('download.zip');
 Route::post('examen/calificar',[FrontExamRatingController::class,'actionInsert'])->middleware('GenericMiddleware:examen/calificar');
 
+Route::post('download/selected', [DownloadController::class, 'packZipFile'])->name('GenericMiddleware:download/selected');
+Route::any('download/zip/{filename}', [DownloadController::class, 'downloadZipFile'])->name('GenericMiddleware:download/zip');
+
 Route::post('respuesta/insertar',[BackAnswerController::class,'actionInsert'])->middleware('GenericMiddleware:respuesta/insertar');
+
+Route::post('recurso/insertar',[BackResourceController::class,'actionInsert'])->middleware('GenericMiddleware:recurso/insertar');
+Route::get('recurso/eliminar/{idResource}',[BackResourceController::class,'actionDelete'])->middleware('GenericMiddleware:recurso/eliminar');
+Route::get('recurso/verarchivo/{idResource}',[BackResourceController::class,'actionViewResource'])->middleware('GenericMiddleware:recurso/verarchivo');

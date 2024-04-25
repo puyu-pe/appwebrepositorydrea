@@ -20,33 +20,7 @@ class AnswerController extends Controller
             {
                 DB::beginTransaction();
 
-                if ($request->has('hdIdAnswer')) {
-                    $hdIdAnswer = $request->input('hdIdAnswer');
-
-                    $isEmpty = empty($hdIdAnswer) || count(array_filter($hdIdAnswer, function($value) {
-                            return $value !== '';
-                        })) === 0;
-
-                    if ($isEmpty) {
-                        TAnswer::where('idExam', $request->input('hdIdExam'))
-                            ->where('idUser', session('idUser'))
-                            ->delete();
-                    } else {
-                        $tAnswers = TAnswer::where('idExam', $request->input('hdIdExam'))
-                            ->where('idUser', session('idUser'))
-                            ->get();
-
-                        $existingIds = $tAnswers->pluck('idAnswer')->toArray();
-                        $idsToDelete = array_diff($existingIds, $hdIdAnswer);
-                        $idsToDelete = array_filter($idsToDelete);
-
-                        if (!empty($idsToDelete)) {
-                            TAnswer::whereIn('idAnswer', $idsToDelete)->delete();
-                        }
-                    }
-                }
-
-                if ($request->has('txtValueResponseExam') && $request->has('numberValueExam')) {
+                if ($request->has('txtValueResponseExam') && $request->has('hdIdAnswer')) {
 
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
                         $idAnswer = $request->input('hdIdAnswer')[$number] ?? null;
@@ -54,7 +28,7 @@ class AnswerController extends Controller
                         if ($idAnswer) {
                             $tAnswer = TAnswer::find($idAnswer);
                             if ($tAnswer) {
-                                $tAnswer->descriptionAnswer = $valueResponse;
+                                $tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
                                 $tAnswer->save();
                             }
                         } else {
@@ -63,8 +37,8 @@ class AnswerController extends Controller
                             $tAnswer->idAnswer = uniqid();
                             $tAnswer->idExam = $request->input('hdIdExam');
                             $tAnswer->idUser = session('idUser');
-                            $tAnswer->numberAnswer = $request->input('numberValueExam')[$number];
-                            $tAnswer->descriptionAnswer = $valueResponse;
+                            $tAnswer->numberAnswer = $number + 1;
+                            $tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
 
                             $tAnswer->save();
                         }
@@ -73,7 +47,8 @@ class AnswerController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'examen/mostrar/1');
+                $previousUrl = url()->previous();
+                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], $previousUrl);
             }
 
             $tExam = TExam::find($request->input('idExam'));

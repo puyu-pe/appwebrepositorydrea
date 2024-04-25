@@ -1,5 +1,5 @@
 @extends('backoffice.layout')
-@section('title', 'Lista de tipos de exámenes')
+@section('title', 'Lista de tipos de evaluaciones')
 @section('generalBody')
 <div class="nav-tabs-custom">
     <div class="tab-content">
@@ -39,7 +39,7 @@
                                 <td class="text-center">
                                     <div class="user-panel">
                                         <div class="pull-left image text-center">
-                                            <img src="{{asset('img/logo/typeexam/'.$value->idTypeExam.'.'.$value->extensionImageType.'?x='.$value->updated_at)}}">
+                                            <img src="{{asset('storage/typeexam/'.$value->idTypeExam.'.'.$value->extensionImageType.'?x='.$value->updated_at)}}">
                                         </div>
                                     </div>
                                 </td>

@@ -2,7 +2,7 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <img src="{{Session::get('avatarExtension')=='' ?
                       asset('img/userlogo.png') :
-                      asset('img/logo/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}" class="user-image" alt="User Image">
+                      asset('storage/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}" class="user-image" alt="User Image">
         <span class="hidden-xs">{{Session::get('firstName').' '.Session::get('surName')}}</span>
     </a>
     <ul class="dropdown-menu">
@@ -10,7 +10,7 @@
       <li class="user-header" style="background-color: #000000;">
         <img src="{{Session::get('avatarExtension')=='' ?
                       asset('img/userlogo.png') :
-                      asset('img/logo/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}" class="img-circle" alt="User Image">
+                      asset('storage/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}" class="img-circle" alt="User Image">
         <p>
           {{Session::get('firstName').' '.Session::get('surName')}}
           <small>{{Session::get('email')}}</small>

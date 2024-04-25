@@ -26,10 +26,9 @@
                     <h4 class="it-footer-title">Evaluaciones</h4>
                     <div class="it-footer-list">
                         <ul>
-                            <li><a href="#"><i class="fa-regular fa-angle-right"></i>ERA</a></li>
-                            <li><a href="#"><i class="fa-regular fa-angle-right"></i>ECE</a></li>
-                            <li><a href="#"><i class="fa-regular fa-angle-right"></i>LLECE</a></li>
-                            <li><a href="#"><i class="fa-regular fa-angle-right"></i>EM</a></li>
+                            @foreach ($menuTypeExamItem as $item)
+                                <li><a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}"><i class="fa-regular fa-angle-right"></i>{{strtoupper($item->acronymTypeExam)}}</a></li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

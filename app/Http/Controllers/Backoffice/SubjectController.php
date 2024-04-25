@@ -29,17 +29,9 @@ class SubjectController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/mostrar/1');
                 }
 
-                $tSubjectExists=TSubject::whereRaw('compareFind(concat(nameSubject), ?, 77)=1',[trim($request->input('txtNameSubject'))])->exists();
-
-                if($tSubjectExists==true)
-                {
-                    return PlatformHelper::redirectError(['Esta materia ya fue registrada.'], 'curso/mostrar/1');
-                }
-
                 $tSubject=new TSubject();
 
                 $tSubject->idSubject=uniqid();
-
                 $tSubject->nameSubject=trim($request->input('txtNameSubject'));
 
                 $tSubject->save();
@@ -76,17 +68,9 @@ class SubjectController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/mostrar/1');
                 }
 
-                $tSubjectExists=TSubject::whereRaw('compareFind(concat(nameSubject), ?, 77)=1 AND idSubject!=?',[trim($request->input('txtNameSubject')), $request->input('hdIdSubject')])->exists();
-
-                if($tSubjectExists==true)
-                {
-                    return PlatformHelper::redirectError(['Esta materia ya fue registrada, pruebe con otro nombre.'], 'curso/mostrar/1');
-                }
-
                 $tSubject=TSubject::find($request->input('hdIdSubject'));
 
                 $tSubject->nameSubject=trim($request->input('txtNameSubject'));
-
                 $tSubject->save();
 
                 DB::commit();

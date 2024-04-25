@@ -128,33 +128,15 @@ $(function()
                     message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
                 }
             }
-        }
-    }));
-
-    $('#dvExamResponse').formValidation(objectValidate(
-    {
-        numberResponse:
-        {
-            validators:
-            {
-                regexp:
-                {
-                    message: '<b style="color: red;">Ingrese un valor válido.</b>',
-                    regexp: /^[0-9]{1,3}$/
-                },
-                notEmpty:
-                {
-                    message: '<b style="color: red;">Este campo es requerido.</b>'
-                }
-            }
         },
-        txtDescriptionResponse:
+        fileTableResource:
         {
             validators:
             {
-                notEmpty:
+                file:
                 {
-                    message: '<b style="color: red;">Este campo es requerido.</b>'
+                    message: '<b style="color: red;">Solo se permite formato "pdf".</b>',
+                    extension: 'pdf'
                 }
             }
         }
@@ -186,90 +168,19 @@ $(function()
     });
 });
 
-function addElementConcept()
+function addElementConcept(number)
 {
-    var isValid=null;
-
-    $('#dvExamResponse').data('formValidation').resetForm();
-    $('#dvExamResponse').data('formValidation').validate();
-
-    isValid=$('#dvExamResponse').data('formValidation').isValid();
-
-    if(!isValid)
-    {
-        return;
-    }
-
-    if (confirmExam($('#numberResponse').val())){
-        return false;
-    }
-
-    if (validateTotalResponse()){
-        return false;
-    }
-
-    var rowNumber=$('#tblResponseExam > tbody > tr').length+1;
-    let number_question = parseInt($('#numberResponse').val());
-
     var htmlTemp=
     `<tr>
         <td class="text-center tblNumber">
-            <input type="number" id="numberValueExam`+rowNumber+`" name="numberValueExam[]" min="1" value="`+number_question+`" class="form-control" form="frmInsertExam" readonly>
+            <div>`+number+`</div>
         </td>
         <td>
-            <input type="text" id="txtValueResponseExam`+rowNumber+`" name="txtValueResponseExam[]" value="`+$('#txtDescriptionResponse').val()+`" class="form-control" form="frmInsertExam">
-        </td>
-        <td class="text-center">
-            <span class="btn btn-default btn-sm glyphicon glyphicon-remove" data-toggle="tooltip" title="Quitar" data-placement="left" onclick="removeTableRowResponse(this);"></span>
+            <input type="text" id="txtValueResponseExam`+number+`" name="txtValueResponseExam[]" class="form-control" value="" form="frmInsertExam">
         </td>
     </tr>`;
 
     $('#tblResponseExam > tbody').append(htmlTemp);
-
-    $('#numberResponse').val(number_question + 1);
-    $('#txtDescriptionResponse').val('');
-
-    $('[data-toggle="tooltip"]').tooltip();
-}
-
-function removeTableRowResponse(component)
-{
-    $(component).parent().parent().remove();
-
-    $('#tblResponseExam > tbody > tr').each((index, element) =>
-    {
-        $($(element).find('> td > input[name="numberValueExam[]"]')[0]).attr('id', 'numberValueExam'+(index+1));
-        $($(element).find('> td > input[name="txtValueResponseExam[]"]')[0]).attr('id', 'txtValueResponseExam'+(index+1));
-    });
-}
-
-function confirmExam(number)
-{
-    let status = false;
-    $('#tblResponseExam > tbody > tr').each((index, element) =>
-    {
-        let number_exists = $($(element).find('> td > input[name="numberValueExam[]"]')[0]).val();
-
-        if (number === number_exists){
-            errorNote('Error', 'Ingrese un n° de pregunta que no esté en los registros');
-            status = true;
-        }
-    });
-
-    return status;
-}
-
-function validateTotalResponse()
-{
-    let status = false;
-    let total = parseInt($('#txtResponseExamPermit').val());
-    let rowNumber=$('#tblResponseExam > tbody > tr').length+1;
-
-    if (rowNumber>total){
-        errorNote('Error', 'Solo se permite ingresar un total de ' + total + (total> 1 ? ' respuestas' : ' respuesta'));
-        status = true;
-    }
-    return status;
 }
 
 function showButtonResponse(value)
@@ -286,19 +197,33 @@ function showButtonResponse(value)
     }
 }
 
+function generateQuestion(total){
+    let total_answer = parseInt(total);
+    let total_answer_table =  parseInt($('#tblResponseExam > tbody > tr').length);
+
+    if (total_answer !== total_answer_table){
+        for (let i= 0; i< total_answer ; i++){
+            addElementConcept(i+1);
+        }
+    }
+}
+
 function resetQuestion(){
     $('table#tblResponseExam tbody').empty();
-    $('#numberResponse').val(1);
-    $('#txtDescriptionResponse').val('');
 }
 
 function openModal(){
-    if ($('#txtResponseExamPermit').val() !== '')
+    let total_answer_permit = parseInt($('input#txtResponseExamPermit').val());
+
+    if ($('#txtResponseExamPermit').val() !== '' && total_answer_permit>0)
     {
+        let total_answer = $('input#txtResponseExamPermit').val();
+        generateQuestion(total_answer);
+
         $('#txtResponseExamPermit').prop('readonly', true);
         $('#modalAccess').modal('show');
     }else {
-        warningNote('Advertencia', 'Ingrese la cantidad de preguntas de la evaluación');
+        warningNote('Advertencia', 'Ingrese un valor correcto para el n° de preguntas de la evaluación');
     }
 }
 
@@ -316,21 +241,25 @@ function validRegister()
 }
 
 function validateNotEmptyResponse(){
-    let status = false;
+    let total_not_empty_response = 0;
+    let status_response = false;
+    let total_answer_table =  parseInt($('#tblResponseExam > tbody > tr').length);
+    console.log(total_answer_table);
     $('#tblResponseExam > tbody > tr').each((index, element) =>
     {
-        let number_response = $($(element).find('> td > input[name="numberValueExam[]"]')[0]).val();
         let value_description = $($(element).find('> td > input[name="txtValueResponseExam[]"]')[0]).val();
 
-        if (number_response === '' || value_description === ''){
-            status = true;
-        }
+        if (value_description !== '')
+            total_not_empty_response++;
     });
 
-    if (status)
-        errorNote('No se pudo proceder', 'No pueden estar las respuestas en vacio');
+    if (total_answer_table > 0 && total_not_empty_response <= 0)
+        status_response = true;
 
-    return status;
+    if (status_response)
+        errorNote('No se pudo proceder', 'Registre al menos 1 respuesta en el cuestionario');
+
+    return status_response;
 }
 
 function sendInsertExam()

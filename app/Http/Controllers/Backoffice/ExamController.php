@@ -7,6 +7,7 @@ use App\Helper\PlatformHelper;
 use App\Models\TAnswer;
 use App\Models\TDirection;
 use App\Models\TDocument;
+use App\Models\TResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -50,7 +51,8 @@ class ExamController extends Controller
 	public function actionInsert(Request $request)
 	{
 		if ($_POST) {
-			try {
+            try
+            {
 				DB::beginTransaction();
 
 				$this->_so->mo->listMessage = (new ExamValidation())->validationInsert($request);
@@ -90,6 +92,7 @@ class ExamController extends Controller
 				$tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
 				$tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
 				$tExam->register_answer = $request->input('selectRegisterAnswer');
+				$tExam->dateExam = date('Y-m-d');
 
 				$tExam->save();
 
@@ -120,15 +123,50 @@ class ExamController extends Controller
 				$imageData = $imagick->getImageBlob();
 				Storage::disk('exam-img')->put($tExam->idExam . '.jpg', $imageData);
 
-				if ($request->has('txtValueResponseExam') && $request->has('numberValueExam')) {
+                if ($request->hasFile('fileTableResource'))
+                {
+                    $tResource = new TResource();
+
+                    $tResource->idResource = uniqid();
+                    $tResource->idExam = $tExam->idExam;
+                    $tResource->namecompleteResource = 'Tabla especificacion '.$tExam->nameExam;
+                    $tResource->type = TResource::TYPE_RESOURCE['TABLE'];
+                    $tResource->extension = strtolower($request->file('fileTableResource')->getClientOriginalExtension());
+
+                    $tResource->save();
+
+                    $filename = $tResource->idResource . '.' . $tResource->extension;
+                    $request->file('fileTableResource')->move(storage_path('/app/public/resource/'), $filename);
+                }
+
+                if ($request->hasFile('fileResource'))
+                {
+                    $files = $request->file('fileResource');
+                    foreach ($files as $key => $file) {
+                        $tResource = new TResource();
+
+                        $tResource->idResource = uniqid();
+                        $tResource->idExam = $tExam->idExam;
+                        $tResource->namecompleteResource = 'Material ' . date('Y-m-d_H:i:s') . '_' . ($key+1) . ' ' . $tExam->nameExam;
+                        $tResource->type = TResource::TYPE_RESOURCE['MATERIAL'];
+                        $tResource->extension = strtolower($file->getClientOriginalExtension());
+
+                        $tResource->save();
+
+                        $filename = $tResource->idResource . '.' . $tResource->extension;
+                        $file->move(storage_path('/app/public/resource/'), $filename);
+                    }
+                }
+
+				if ($request->has('txtValueResponseExam')) {
 					foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
 						$tAnswer = new TAnswer();
 
 						$tAnswer->idAnswer = uniqid();
 						$tAnswer->idExam = $tExam->idExam;
 						$tAnswer->idUser = session('idUser');
-						$tAnswer->numberAnswer =  $request->input('numberValueExam')[$number];
-						$tAnswer->descriptionAnswer = $valueResponse;
+						$tAnswer->numberAnswer =  $number + 1;
+						$tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
 
 						$tAnswer->save();
 					}
@@ -215,7 +253,7 @@ class ExamController extends Controller
 
 					$directoryFiles = storage_path('app/file/exam/' . $tExam->idExam . '.' . $tExam->extensionExam);
 
-					if ($tExam->extensionExam != '' && file_exists($directoryFiles) == true) {
+					if ($tExam->extensionExam != '' && file_exists($directoryFiles)) {
 						$direccionLink = storage_path('app/file/exam/' . $tExam->idExam . '.' . $tExam->extensionExam);
 
 						unlink($direccionLink);
@@ -243,6 +281,43 @@ class ExamController extends Controller
 					$imageData = $imagick->getImageBlob();
 					Storage::disk('exam-img')->put($tExam->idExam . '.jpg', $imageData);
 				}
+
+                if ($request->hasFile('fileTableResource'))
+                {
+                    $tResourceTable = TResource::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TResource::TYPE_RESOURCE['TABLE']])->first();
+
+                    if (!$tResourceTable)
+                    {
+                        $tResource = new TResource();
+
+                        $tResource->idResource = uniqid();
+                        $tResource->idExam = $tExam->idExam;
+                        $tResource->namecompleteResource = 'Tabla de especificacion '.$tExam->nameExam;
+                        $tResource->type = TResource::TYPE_RESOURCE['TABLE'];
+                        $tResource->extension = strtolower($request->file('fileTableResource')->getClientOriginalExtension());
+
+                        $tResource->save();
+
+                        $filename = $tResource->idResource . '.' . $tResource->extension;
+                        $request->file('fileTableResource')->move(storage_path('/app/public/resource/'), $filename);
+                    }
+                    else
+                    {
+                        $directoryResource = storage_path('app/public/resource/' . $tResourceTable->idResource . '.' . $tResourceTable->extension);
+
+                        if ($tResourceTable->extension != '' && file_exists($directoryResource))
+                            unlink($directoryResource);
+
+                        $tResourceTable->namecompleteResource = 'Tabla de especificacion '.$tExam->nameExam;
+                        $tResourceTable->extension = strtolower($request->file('fileTableResource')->getClientOriginalExtension());
+                        $tResourceTable->updated_at = date('Y-m-d H:i:s');
+
+                        $tResourceTable->save();
+
+                        $filename = $tResourceTable->idResource . '.' . $tResourceTable->extension;
+                        $request->file('fileTableResource')->move(storage_path('/app/public/resource/'), $filename);
+                    }
+                }
 
 				DB::commit();
 
@@ -338,7 +413,7 @@ class ExamController extends Controller
 
 			$directoryFiles = storage_path('app/file/exam/' . $tExam->idExam . '.' . $tExam->extensionExam);
 
-			if ($tExam->extensionExam != '' && file_exists($directoryFiles) == true) {
+			if ($tExam->extensionExam != '' && file_exists($directoryFiles)){
 				unlink($directoryFiles);
 			}
 
@@ -348,6 +423,18 @@ class ExamController extends Controller
 			}
 
 			DB::delete('delete from texam where idExam = ?', [$idExam]);
+            $tResource = TResource::where('idExam', $idExam)->get();
+            if ($tResource){
+                foreach ($tResource as $resource)
+                {
+                    $directoryFiles = storage_path('app/public/resource/' . $resource->idResource . '.' . $tExam->extension);
+
+                    if ($tExam->extension != '' && file_exists($directoryFiles)) {
+                        unlink($directoryFiles);
+                    }
+                }
+                TResource::where('idExam', $idExam)->delete();
+            }
 
 			return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
 		} catch (\Exception $e) {

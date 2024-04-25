@@ -18,11 +18,11 @@
                             <div class="it-signup-wrap">
                                 <h4 class="it-signup-title">Acceder</h4>
                                 <div class="it-signup-input-wrap">
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Correo *">
                                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                                     </div>
-                                    <div class="it-signup-input mb-20 form-group has-feedback">
+                                    <div class="mb-20 form-group has-feedback">
                                         <input type="password" id="passPassword" name="passPassword"  placeholder="Contraseña *" onkeyup="onKeyUpPassPassword(event);">
                                     </div>
                                 </div>
@@ -55,5 +55,5 @@
     <script src="{{asset('js/codideepHelpers.js')}}"></script>
     <script src="{{asset('assets/backoffice/plugins/formvalidation/formValidation.min.js')}}"></script>
     <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
-    <script src="{{asset('assets/backoffice/viewResources/user/login.js')}}?x={{env('CACHE_LAST_UPDATE')}}"></script>
+    <script src="{{asset('assets/frontoffice/viewResources/user/login.js')}}?x={{env('CACHE_LAST_UPDATE')}}"></script>
 @endsection

@@ -31,7 +31,7 @@
     <div class="it-course-area it-course-style-2 it-course-style-5 p-relative pt-50 pb-100">
         <div class="container">
             <div class="row">
-                <div id="divSearch" class="col-4">
+                <div id="divSearch" class="col-12">
                     <div class="it-sv-details-sidebar-search mb-55">
                         <input id="txtSearch" type="text" placeholder="Información para búsqueda (Enter)"
                                value="{{ $filtersData->searchParameter }}">
@@ -40,70 +40,63 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-8">
-                    <input type="hidden" id="hdAcronymExam" value="{{$acronymTypeExam}}">
-                    <div class="row">
-                        @if ($acronymTypeExam != 'all')
-                            <div class="col-3" style="display: none;">
-                                <div class="postbox__select">
-                                    <select id="slcTypes">
-                                        <option value="{{$acronymTypeExam}}" selected>{{ strtoupper($acronymTypeExam)}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        @else
-                            <div class="col-3">
-                                <div class="postbox__select">
-                                    <select id="slcTypes">
-                                        <option value="all">Todos los tipos</option>
-                                        @foreach ($selectFilters['types'] as $type)
-                                        <option value="{{ $type->acronymTypeExam }}"
-                                                {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
-                                            {{ strtoupper($type->acronymTypeExam)}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
-                            <div class="postbox__select">
-                                <select id="slcGrades">
-                                    <option value="all">Todos los grados</option>
-                                    @foreach ($selectFilters['grades'] as $grade)
-                                        <option value="{{ $grade->idGrade }}"
-                                            {{ $filtersData->grade == $grade->idGrade ? 'selected' : '' }}>
-                                            {{ $grade->nameGrade . ' - ' . $grade->numberGrade }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <input type="hidden" id="hdAcronymExam" value="{{$acronymTypeExam}}">
+                @if ($acronymTypeExam != 'all')
+                    <div class="col-md-3" style="display: none;">
+                        <div class="postbox__select">
+                            <select id="slcTypes">
+                                <option value="{{$acronymTypeExam}}" selected>{{ strtoupper($acronymTypeExam)}}</option>
+                            </select>
                         </div>
-
-                        <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
-                            <div class="postbox__select">
-                                <select id="slcSubjects">
-                                    <option value="all">Todos los cursos</option>
-                                    @foreach ($selectFilters['subjects'] as $grade)
-                                        <option value="{{ $grade->idSubject }}"
-                                            {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
-                                            {{ $grade->nameSubject }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                    </div>
+                @else
+                    <div class="col-3">
+                        <div class="postbox__select">
+                            <select id="slcTypes">
+                                <option value="all">Todos los tipos</option>
+                                @foreach ($selectFilters['types'] as $type)
+                                <option value="{{ $type->acronymTypeExam }}"
+                                        {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
+                                    {{ strtoupper($type->acronymTypeExam)}}</option>
+                                @endforeach
+                            </select>
                         </div>
-
-                        <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
-                            <div class="postbox__select">
-                                <select id="slcYears">
-                                    <option value="all">Todos los años</option>
-                                    @foreach ($selectFilters['years'] as $year)
-                                        <option value="{{ $year->yearExam }}"
-                                            {{ $filtersData->year == $year->yearExam ? 'selected' : '' }}>
-                                            {{ $year->yearExam }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                    </div>
+                @endif
+                <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
+                    <div class="postbox__select">
+                        <select id="slcGrades">
+                            <option value="all">Todos los grados</option>
+                            @foreach ($selectFilters['grades'] as $grade)
+                            <option value="{{ $grade->idGrade }}"
+                                    {{ $filtersData->grade == $grade->idGrade ? 'selected' : '' }}>
+                                {{ $grade->nameGrade . ' - ' . $grade->numberGrade }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
+                    <div class="postbox__select">
+                        <select id="slcSubjects">
+                            <option value="all">Todos los cursos</option>
+                            @foreach ($selectFilters['subjects'] as $grade)
+                            <option value="{{ $grade->idSubject }}"
+                                    {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
+                                {{ $grade->nameSubject }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
+                    <div class="postbox__select">
+                        <select id="slcYears">
+                            <option value="all">Todos los años</option>
+                            @foreach ($selectFilters['years'] as $year)
+                            <option value="{{ $year->yearExam }}"
+                                    {{ $filtersData->year == $year->yearExam ? 'selected' : '' }}>
+                                {{ $year->yearExam }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
@@ -172,7 +165,7 @@
             </div>
             <div class="row">
                 <div class="col-4">
-                    <input type="hidden" id="downloadUrl" value="{{ route('download.selected') }}">
+                    <input type="hidden" id="downloadUrl" value="{{ url('download/selected') }}">
                     <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
                     <button id="downloadBtn" style="display:none;" class="btn btn-primary btn-success">
                         <i class="fa fa-download"></i>
