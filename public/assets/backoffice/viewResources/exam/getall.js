@@ -1,5 +1,6 @@
 'use strict';
 
+var selectionMode = '';
 $(function () {
     $('#divSearch').formValidation(objectValidate(
         {
@@ -36,10 +37,10 @@ $(function () {
             type: "POST",
             data: {
                 _token: $("#csrf_token").val(),
+                mode: 'checked',
                 ids: selectedValues
             },
             success: function (response) {
-                console.log(response);
                 window.open(response.downloadUrl, '_blank');
             }
         });
