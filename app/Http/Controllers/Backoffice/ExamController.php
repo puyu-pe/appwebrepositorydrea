@@ -147,7 +147,7 @@ class ExamController extends Controller
 
                         $tResource->idResource = uniqid();
                         $tResource->idExam = $tExam->idExam;
-                        $tResource->namecompleteResource = 'Material ' . date('Y-m-d_H:i:s') . '_' . ($key+1) . ' ' . $tExam->nameExam;
+                        $tResource->namecompleteResource = 'Material ' . date('Y-m-d_H:i:s') . ' ' . ($key+1) . ' ' . $tExam->nameExam;
                         $tResource->type = TResource::TYPE_RESOURCE['MATERIAL'];
                         $tResource->extension = strtolower($file->getClientOriginalExtension());
 

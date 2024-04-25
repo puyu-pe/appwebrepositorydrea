@@ -6,8 +6,7 @@ use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;
 use App\Models\TContact;
 use App\Models\TExam;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use App\Models\TResource;
 use ZipArchive;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -46,20 +45,28 @@ class GeneralController extends Controller
 
     public function actionDownloadExam(ResponseFactory $responseFactory)
     {
-        try {
+        try
+        {
             $db_date = date('Y-m-d_H-i-s');
 
             $zip = new ZipArchive();
 
-            $zip_name = 'backup_exam_' . $db_date . '.zip';
+            $zip_name = 'backup_file_' . $db_date . '.zip';
             $zip_directory = storage_path('/' . $zip_name);
             $zip->open($zip_directory, ZipArchive::CREATE || ZipArchive::OVERWRITE);
             $files = TExam::all();
+            $resources = TResource::all();
 
             foreach ($files as $file) {
                 $filename = $file->idExam . '.' . $file->extensionExam;
-                $zip->addFile(storage_path('app/file/exam/' . $filename), $file->yearExam . '-' . $file->nameExam . '.' . $file->extensionExam);
+                $zip->addFile(storage_path('app/file/exam/' . $filename), 'exam/'.$file->idExam . '.' . $file->extensionExam);
             }
+
+            foreach ($resources as $resource) {
+                $filename_resource = $resource->idResource . '.' . $resource->extension;
+                $zip->addFile(storage_path('app/public/resource/' . $filename_resource), 'resource/'.$resource->idResource . '.' . $resource->extension);
+            }
+
             $zip->close();
 
             return $responseFactory->download(storage_path() . '/' . $zip_name, $zip_name)->deleteFileAfterSend(true);

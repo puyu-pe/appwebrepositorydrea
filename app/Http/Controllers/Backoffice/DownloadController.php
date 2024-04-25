@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Models\TExam;
+use App\Models\TResource;
 use App\Models\TTypeExam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -60,7 +61,16 @@ class DownloadController extends Controller
         if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
             foreach ($files as $file) {
                 $filename = $file->idExam . '.' . $file->extensionExam;
-                $zip->addFile(storage_path('app/file/exam/' . $filename), $file->nameExam . '.' . $file->extensionExam);
+                $zip->addFile(storage_path('app/file/exam/' . $filename), 'evaluaciones/'.$this->formatFileName($file->nameExam) . '.' . $file->extensionExam);
+
+                $tResources = TResource::where('idExam', $file->idExam)->get();
+                if ($tResources)
+                {
+                    foreach ($tResources as $tResource){
+                        $file_resource = $tResource->idResource. '.' .$tResource->extension;
+                        $zip->addFile(storage_path('app/public/resource/' . $file_resource), 'recursos/'.$this->formatFileName($tResource->namecompleteResource) . '.' . $tResource->extension);
+                    }
+                }
             }
             $zip->close();
 
@@ -82,5 +92,9 @@ class DownloadController extends Controller
         } else {
             return response()->json(['error' => 'Archivo no encontrado: ' . $filename], 404);
         }
+    }
+
+    private function formatFileName($filename){
+        return preg_replace(['/ /', '/[\/\\\\]/', '/\./'], ['_', '', ''], $filename);
     }
 }
