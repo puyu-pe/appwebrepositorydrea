@@ -24,7 +24,9 @@
                 <table id="tableGrade" class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-center">Denominación del grado</th>
+                            <th class="text-center">Descripción del grado</th>
+                            <th class="text-center">Nivel</th>
+                            <th class="text-center">Código</th>
                             <th class="text-center">Fecha de registro</th>
                             <th class="text-center">Hora de registro</th>
                             <th class="text-center"></th>
@@ -34,7 +36,13 @@
                         @foreach($listTGrade as $value)
                             <tr>
                                 <td class="text-center">
-                                    <div>{{$value->numberGrade.'° de '.$value->nameGrade}}</div>
+                                    <div>{{$value->descriptionGrade}}</div>
+                                </td>
+                                <td class="text-center">
+                                    <div>{{$value->nameGrade}}</div>
+                                </td>
+                                <td class="text-center">
+                                    <div>{{$value->codeGrade}}</div>
                                 </td>
                                 <td class="text-center">
                                     <div>{{date('d-m-Y', strtotime($value->created_at))}}</div>

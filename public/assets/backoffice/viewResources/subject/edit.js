@@ -11,6 +11,16 @@
                     message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
                 }
             }
+        },
+        txtCodeSubject:
+        {
+            validators:
+            {
+                notEmpty:
+                {
+                    message:'<b style="color: red;">Este Campo es Obligatorio.</b>'
+                }
+            }
         }
     }));
 

@@ -1,15 +1,20 @@
 <form id="frmEditGrade" action="{{url('grado/editar')}}" method="post">
     <div class="row">
         <div class="form-group col-md-4">
-            <label for="txtNumberGrade">N° del grado*</label>
-            <input type="number" id="txtNumberGrade" name="txtNumberGrade" min="1" max="6" value="{{$tGrade->numberGrade}}" class="form-control" autocomplete="off">
+            <label for="txtDescriptionGrade">Decripción*</label>
+            <input type="text" id="txtDescriptionGrade" name="txtDescriptionGrade" value="{{$tGrade->descriptionGrade}}" class="form-control" autocomplete="off">
         </div>
-        <div class="form-group col-md-8">
-            <label for="selectNameGrade">Nombre completo del curso*</label>
+        <div class="form-group col-md-4">
+            <label for="selectNameGrade">Grado académico*</label>
             <select name="selectNameGrade" id="selectNameGrade" style="width: 100%" class="form-control">
                 <option value="Primaria" {{$tGrade->nameGrade=='Primaria' ? 'selected' : ''}}>Primaria</option>
                 <option value="Secundaria" {{$tGrade->nameGrade=='Secundaria' ? 'selected' : ''}}>Secundaria</option>
+                <option value="Inicial" {{$tGrade->nameGrade=='Inicial' ? 'selected' : ''}}>Inicial</option>
             </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="txtCodeGrade">Código*</label>
+            <input type="text" id="txtCodeGrade" name="txtCodeGrade" class="form-control" autocomplete="off" value="{{$tGrade->codeGrade}}">
         </div>
     </div>
     <hr>

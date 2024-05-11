@@ -1,8 +1,12 @@
 <form id="frmInsertSubject" action="{{url('curso/insertar')}}" method="post">
     <div class="row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-9">
             <label for="txtNameSubject">Nombre completo del curso*</label>
             <input type="text" id="txtNameSubject" name="txtNameSubject" class="form-control" autocomplete="off">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="txtCodeSubject">Código de curso*</label>
+            <input type="text" id="txtCodeSubject" name="txtCodeSubject" class="form-control" autocomplete="off">
         </div>
     </div>
     <hr>

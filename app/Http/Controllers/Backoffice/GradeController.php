@@ -29,19 +29,20 @@ class GradeController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'grado/mostrar/1');
                 }
 
-                $tGradeExists=TGrade::whereRaw('nameGrade=? AND numberGrade=?',[$request->input('selectNameGrade'), $request->input('txtNumberGrade')])->exists();
+                $tGradeExists=TGrade::whereRaw('codeGrade = ?',[$request->input('txtCodeGrade')])->exists();
 
-                if($tGradeExists==true)
+                if($tGradeExists)
                 {
-                    return PlatformHelper::redirectError(['Este grado ya fue registrado.'], 'grado/mostrar/1');
+                    return PlatformHelper::redirectError(['Ya existe un grado registrado con este codigo, ingrese otro.'], 'grado/mostrar/1');
                 }
 
                 $tGrade=new TGrade();
 
                 $tGrade->idGrade=uniqid();
 
-                $tGrade->nameGrade=$request->input('selectNameGrade');
-                $tGrade->numberGrade=$request->input('txtNumberGrade');
+                $tGrade->nameGrade = $request->input('selectNameGrade');
+                $tGrade->descriptionGrade = $request->input('txtDescriptionGrade');
+                $tGrade->codeGrade = $request->input('txtCodeGrade');
 
                 $tGrade->save();
 
@@ -77,17 +78,18 @@ class GradeController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'grado/mostrar/1');
                 }
 
-                $tGradeExists=TGrade::whereRaw('idGrade!=? AND nameGrade=? AND numberGrade=?',[$request->input('hdIdGrade'), $request->input('selectNameGrade'), $request->input('txtNumberGrade')])->exists();
+                $tGradeExists=TGrade::whereRaw('idGrade != ? AND codeGrade = ?',[$request->input('hdIdGrade'), $request->input('txtCodeGrade')])->exists();
 
-                if($tGradeExists==true)
+                if($tGradeExists)
                 {
-                    return PlatformHelper::redirectError(['Este grado ya fue registrado, intenté cambiar el nombre o número.'], 'grado/mostrar/1');
+                    return PlatformHelper::redirectError(['Ya existe un grado registrado con este codigo, ingrese otro.'], 'grado/mostrar/1');
                 }
 
                 $tGrade=TGrade::find($request->input('hdIdGrade'));
 
-                $tGrade->nameGrade=$request->input('selectNameGrade');
-                $tGrade->numberGrade=$request->input('txtNumberGrade');
+                $tGrade->nameGrade = $request->input('selectNameGrade');
+                $tGrade->descriptionGrade = $request->input('txtDescriptionGrade');
+                $tGrade->codeGrade = $request->input('txtCodeGrade');
 
                 $tGrade->save();
 
@@ -144,7 +146,7 @@ class GradeController extends Controller
     {
         $searchParameter=$request->has('searchParameter') ? $request->input('searchParameter') : '';
 
-        $paginate=PlatformHelper::preparePaginate(TGrade::whereRaw('compareFind(concat(nameGrade, numberGrade), ?, 77)=1',[$searchParameter])
+        $paginate=PlatformHelper::preparePaginate(TGrade::whereRaw('compareFind(concat(nameGrade, descriptionGrade, codeGrade), ?, 77)=1',[$searchParameter])
         ->orderby('created_at', 'desc'), 7, $currentPage);
 
         return view('backoffice/grade/getall',

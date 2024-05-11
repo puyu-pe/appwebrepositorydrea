@@ -12,16 +12,18 @@ class GradeValidation
         $validator=Validator::make(
         [
             'nameGrade' => $request->input('selectNameGrade'),
-            'numberGrade' => $request->input('txtNumberGrade')
+            'descriptionGrade' => $request->input('txtDescriptionGrade'),
+            'codeGrade' => $request->input('txtCodeGrade')
         ],
         [
             'nameGrade' => ['required'],
-            'numberGrade' => ['required','regex:/^[1-6]{1}$/']
+            'descriptionGrade' => ['required'],
+            'codeGrade' => ['required']
         ],
         [
             'nameGrade.required' => 'El campo "nameGrade" es requerido.',
-            'numberGrade.required' => 'El campo "numberGrade" es requerido.',
-            'numberGrade.regex' => 'El campo "numberGrade" no cumple con el formato correspondiente.'
+            'descriptionGrade.required' => 'El campo "descriptionGrade" es requerido.',
+            'codeGrade.required' => 'El campo "codeGrade" es requerido.'
         ]);
 
         if($validator->fails())
@@ -42,16 +44,18 @@ class GradeValidation
         $validator=Validator::make(
         [
             'nameGrade' => $request->input('selectNameGrade'),
-            'numberGrade' => $request->input('txtNumberGrade')
+            'descriptionGrade' => $request->input('txtDescriptionGrade'),
+            'codeGrade' => $request->input('txtCodeGrade')
         ],
         [
             'nameGrade' => ['required'],
-            'numberGrade' => ['required','regex:/^[1-6]{1}$/']
+            'descriptionGrade' => ['required'],
+            'codeGrade' => ['required']
         ],
         [
             'nameGrade.required' => 'El campo "nameGrade" es requerido.',
-            'numberGrade.required' => 'El campo "numberGrade" es requerido.',
-            'numberGrade.regex' => 'El campo "numberGrade" no cumple con el formato correspondiente.'
+            'descriptionGrade.required' => 'El campo "descriptionGrade" es requerido.',
+            'codeGrade.required' => 'El campo "codeGrade" es requerido.'
         ]);
 
         if($validator->fails())
@@ -67,5 +71,3 @@ class GradeValidation
         return $this->globalMessage;
     }
 }
-
-?>

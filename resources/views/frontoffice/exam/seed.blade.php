@@ -229,20 +229,27 @@
 
 
     <!-- Modal -->
-    <div class="modal" id="mdlAnswerRegister" data-backdrop="" tabindex="-1">
-        <div class="modal-dialog">
+    <div class="modal fade" id="mdlAnswerRegister" tabindex="-1" role="dialog"  aria-labelledby="mdlAnswerRegister" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="mdlAnswerRegisterLabel">Registro de respuestas a la evaluación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                        @include('backoffice.answer.insert', [
+                    <div class="row">
+                        <div class="col-md-8">
+                            <iframe src="{{ url('examen/verarchivo/' . $tExam->idExam) }}?x={{ $tExam->updated_at }}#toolbar=0"
+                                    frameborder="0" allowfullscreen style="height: 100%; width: 100%; border: none;"></iframe>
+                        </div>
+                        <div class="col-md-4">
+                            @include('backoffice.answer.insert', [
                             'tExam' => $tExam,
                             'tAnswer' => $tAnswer,
                             'maxNumberAnswer' => $tExam->number_question,
-                        ])
-{{--                    </div>--}}
+                            ])
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

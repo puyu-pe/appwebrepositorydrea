@@ -29,10 +29,16 @@ class SubjectController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/mostrar/1');
                 }
 
+                $tSubjectCodeExists=TSubject::whereRaw('codeSubject=?', [trim($request->input('txtCodeSubject'))])->exists();
+
+                if($tSubjectCodeExists)
+                    return PlatformHelper::redirectError(['Intente registrar otro código.'], 'curso/mostrar/1');
+
                 $tSubject=new TSubject();
 
-                $tSubject->idSubject=uniqid();
-                $tSubject->nameSubject=trim($request->input('txtNameSubject'));
+                $tSubject->idSubject = uniqid();
+                $tSubject->nameSubject = trim($request->input('txtNameSubject'));
+                $tSubject->codeSubject = trim($request->input('txtCodeSubject'));
 
                 $tSubject->save();
 
@@ -68,9 +74,17 @@ class SubjectController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/mostrar/1');
                 }
 
+                $tSubjectCodeExists=TSubject::whereRaw('codeSubject = ? AND idSubject != ?',
+                    [trim($request->input('txtCodeSubject')), $request->input('hdIdSubject')])->exists();
+
+                if($tSubjectCodeExists)
+                    return PlatformHelper::redirectError(['Intente registrar otro código.'], 'curso/mostrar/1');
+
                 $tSubject=TSubject::find($request->input('hdIdSubject'));
 
-                $tSubject->nameSubject=trim($request->input('txtNameSubject'));
+                $tSubject->nameSubject = trim($request->input('txtNameSubject'));
+                $tSubject->codeSubject = trim($request->input('txtCodeSubject'));
+
                 $tSubject->save();
 
                 DB::commit();
