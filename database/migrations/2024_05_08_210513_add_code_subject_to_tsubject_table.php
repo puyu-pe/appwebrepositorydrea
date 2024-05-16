@@ -14,7 +14,7 @@ class AddCodeSubjectToTsubjectTable extends Migration
     public function up()
     {
         Schema::table('tsubject', function (Blueprint $table) {
-            $table->string('codeSubject', 10)->nullable()->after('numberGrade');
+            $table->string('codeSubject', 10)->nullable()->after('nameSubject');
         });
     }
 
