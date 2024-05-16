@@ -29,22 +29,19 @@ class TypeExamController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'tipoexamen/mostrar/1');
                 }
 
-                $tTypeExamAcronym=TTypeExam::whereRaw('acronymTypeExam=?', [trim($request->input('txtAcronymTypeExam'))])->exists();
+                $tTypeExamAcronym = TTypeExam::whereRaw('acronymTypeExam=?', [trim($request->input('txtAcronymTypeExam'))])->exists();
 
-                if($tTypeExamAcronym==true)
-                {
+                if($tTypeExamAcronym)
                     return PlatformHelper::redirectError(['Intente registrar otro tipo de siglas.'], 'tipoexamen/mostrar/1');
-
-                }
 
                 $tTypeExam=new TTypeExam();
 
-                $tTypeExam->idTypeExam=uniqid();
+                $tTypeExam->idTypeExam = uniqid();
 
-                $tTypeExam->nameTypeExam=trim($request->input('txtNameTypeExam'));
-                $tTypeExam->acronymTypeExam=trim($request->input('txtAcronymTypeExam'));
-                $tTypeExam->descriptionTypeExam=trim($request->input('txtDescriptionTypeExam'));
-                $tTypeExam->extensionImageType=strtolower($request->file('fileTypeExamLogo')->getClientOriginalExtension());
+                $tTypeExam->nameTypeExam = trim($request->input('txtNameTypeExam'));
+                $tTypeExam->acronymTypeExam = trim($request->input('txtAcronymTypeExam'));
+                $tTypeExam->descriptionTypeExam = trim($request->input('txtDescriptionTypeExam'));
+                $tTypeExam->extensionImageType = strtolower($request->file('fileTypeExamLogo')->getClientOriginalExtension());
 
                 $tTypeExam->save();
 
@@ -82,6 +79,12 @@ class TypeExamController extends Controller
                     return PlatformHelper::redirectError($this->_so->mo->listMessage, 'tipoexamen/mostrar/1');
                 }
 
+                $tTypeExamAcronym = TTypeExam::whereRaw('acronymTypeExam=? AND idTypeExam != ?',
+                    [trim($request->input('txtAcronymTypeExam')), $request->input('hdIdTypeExam')])->exists();
+
+                if($tTypeExamAcronym)
+                    return PlatformHelper::redirectError(['Intente registrar otro tipo de siglas.'], 'tipoexamen/mostrar/1');
+
                 $tTypeExam=TTypeExam::find($request->input('hdIdTypeExam'));
 
                 $tTypeExam->nameTypeExam = trim($request->input('txtNameTypeExam'));
@@ -95,15 +98,13 @@ class TypeExamController extends Controller
                 {
                     $tTypeExam=TTypeExam::find($tTypeExam->idTypeExam);
 
-                    $direccionLink= storage_path('app/public/typeexam/'.$tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
+                    $direccionLink = storage_path('app/public/typeexam/'.$tTypeExam->idTypeExam.'.'.$tTypeExam->extensionImageType);
 
-                    if($tTypeExam->extensionImageType!='' && file_exists($direccionLink))
-                    {
+                    if($tTypeExam->extensionImageType != '' && file_exists($direccionLink))
                         unlink($direccionLink);
-                    }
 
-                    $tTypeExam->extensionImageType=strtolower($request->file('fileTypeExamLogo')->getClientOriginalExtension());
-                    $tTypeExam->updated_at=date('Y-m-d H:i:s');
+                    $tTypeExam->extensionImageType = strtolower($request->file('fileTypeExamLogo')->getClientOriginalExtension());
+                    $tTypeExam->updated_at = date('Y-m-d H:i:s');
 
                     $tTypeExam->save();
 

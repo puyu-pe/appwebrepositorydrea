@@ -10,21 +10,14 @@
                             <h3 class="it-breadcrumb-title">
                                 {{ 'Lista de evaluaciones' }}
                             </h3>
-                            @if ($acronymTypeExam != 'all')
+                            @if ($codeGrade != 'all')
                                 <h4 class="it-breadcrumb-title"
-                                    style="font-size: 40px"> {{$tTypeExam->nameTypeExam }}</h4>
+                                    style="font-size: 40px"> {{$tGrade->descriptionGrade}}</h4>
                             @else
                                 <h4 class="it-breadcrumb-title"
-                                    style="font-size: 40px">Todos los tipos</h4>
+                                    style="font-size: 40px">Todos los grados</h4>
                             @endif
                         </div>
-                        {{-- <div class="it-breadcrumb-list-wrap">
-                            <div class="it-breadcrumb-list">
-                                <span><a href="index.html">home</a></span>
-                                <span class="dvdr">//</span>
-                                <span>COURSE 02</span>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -43,56 +36,56 @@
                         </button>
                     </div>
                 </div>
-                <input type="hidden" id="hdAcronymExam" value="{{$acronymTypeExam}}">
+                <input type="hidden" id="hdCodeGrade" value="{{$codeGrade}}">
             </div>
             <div class="row">
-                @if ($acronymTypeExam != 'all')
+                @if ($codeGrade != 'all')
                     <div class="col-md-3" style="display: none;">
                         <div class="postbox__select">
-                            <select id="slcTypes">
-                                <option value="{{$acronymTypeExam}}" selected>{{ strtoupper($acronymTypeExam)}}</option>
+                            <select id="slcSubjects">
+                                <option value="{{$codeGrade}}" selected>{{($codeGrade)}}</option>
                             </select>
                         </div>
                     </div>
                 @else
                     <div class="col-3">
                         <div class="postbox__select">
-                            <select id="slcTypes">
-                                <option value="all">Todos los tipos</option>
-                                @foreach ($selectFilters['types'] as $type)
-                                <option value="{{ $type->acronymTypeExam }}"
-                                        {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
-                                    {{ strtoupper($type->acronymTypeExam)}}</option>
+                            <select id="slcGrades">
+                                <option value="all">Todos los grados</option>
+                                @foreach ($selectFilters['grades'] as $grade)
+                                    <option value="{{ $grade->idGrade }}"
+                                        {{ $filtersData->grade == $grade->idGrade ? 'selected' : '' }}>
+                                        {{ $grade->descriptionGrade }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 @endif
-                <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
-                    <div class="postbox__select">
-                        <select id="slcGrades">
-                            <option value="all">Todos los grados</option>
-                            @foreach ($selectFilters['grades'] as $grade)
-                            <option value="{{ $grade->idGrade }}"
-                                    {{ $filtersData->grade == $grade->idGrade ? 'selected' : '' }}>
-                                    {{ $grade->descriptionGrade }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
+                    <div class="col-{{$codeGrade == 'all' ? '3' : '4'}}">
                     <div class="postbox__select">
                         <select id="slcSubjects">
                             <option value="all">Todos los cursos</option>
                             @foreach ($selectFilters['subjects'] as $grade)
-                            <option value="{{ $grade->idSubject }}"
+                                <option value="{{ $grade->idSubject }}"
                                     {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
-                                {{ $grade->nameSubject }}</option>
+                                    {{ $grade->nameSubject }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-                <div class="col-{{$acronymTypeExam == 'all' ? '3' : '4'}}">
+                <div class="col-{{$codeGrade == 'all' ? '3' : '4'}}">
+                    <div class="postbox__select">
+                        <select id="slcTypes">
+                            <option value="all">Todos los tipos</option>
+                            @foreach ($selectFilters['types'] as $type)
+                                <option value="{{ $type->acronymTypeExam }}"
+                                    {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
+                                    {{ strtoupper($type->acronymTypeExam)}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-{{$codeGrade == 'all' ? '3' : '4'}}">
                     <div class="postbox__select">
                         <select id="slcYears">
                             <option value="all">Todos los años</option>
@@ -180,7 +173,7 @@
                 </div>
                 <div class="col-8">
                     {!! ViewHelper::renderPaginationFrontExams(
-                        'tipoexamen/'.$acronymTypeExam,
+                        'grado/'.$codeGrade,
                         $quantityPage,
                         $currentPage,
                         $filtersData,
@@ -190,5 +183,5 @@
         </div>
     </div>
     <script
-        src="{{ asset('assets/frontoffice/viewResources/typeexam/view.js?x=' . env('CACHE_LAST_UPDATE')) }}"></script>
+        src="{{ asset('assets/frontoffice/viewResources/grade/view.js?x=' . env('CACHE_LAST_UPDATE')) }}"></script>
 @endsection

@@ -11,7 +11,7 @@
                         <select name="selectTypeExam" id="selectTypeExam" style="width: 100%" class="form-control select2TypeExam" data-placeholder="Seleccione...">
                             <option value=""></option>
                             @foreach ($tTypeExam as $valueTypeExam)
-                                <option value="{{$valueTypeExam->idTypeExam}}">{{strtoupper($valueTypeExam->acronymTypeExam).' : '.$valueTypeExam->nameTypeExam}}</option>
+                                <option value="{{$valueTypeExam->idTypeExam}}" type_evaluation="{{$valueTypeExam->acronymTypeExam}}">{{strtoupper($valueTypeExam->acronymTypeExam).' : '.$valueTypeExam->nameTypeExam}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -30,7 +30,7 @@
                         <select name="selectGrade" id="selectGrade" style="width: 100%" class="form-control select2Grade" data-placeholder="Seleccione...">
                             <option value=""></option>
                             @foreach ($tGrade as $valueGrade)
-                                <option value="{{$valueGrade->idGrade}}">{{$valueGrade->numberGrade.'° de '.$valueGrade->nameGrade}}</option>
+                                <option value="{{$valueGrade->idGrade}}">{{$valueGrade->descriptionGrade}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -42,6 +42,12 @@
                                 <option value="{{$valueSubject->idSubject}}">{{$valueSubject->nameSubject}}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+                <div id="dvOther" class="row" style="display: none;">
+                    <div class="form-group col-md-6">
+                        <label for="txtDescriptionOtherEvaluation">Nombre de la evaluación</label>
+                        <input type="text" id="txtDescriptionOtherEvaluation" name="txtDescriptionOtherEvaluation" class="form-control">
                     </div>
                 </div>
                 <div class="row">

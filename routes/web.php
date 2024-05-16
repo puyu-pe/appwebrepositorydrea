@@ -17,6 +17,8 @@ use App\Http\Controllers\Frontoffice\ContactController as FrontContactController
 use App\Http\Controllers\Frontoffice\TypeExamController as FrontTypeExamController;
 use App\Http\Controllers\Frontoffice\ExamController as FrontExamController;
 use App\Http\Controllers\Frontoffice\ExamRatingController as FrontExamRatingController;
+use App\Http\Controllers\Frontoffice\SubjectController as FrontSubjectController;
+use App\Http\Controllers\Frontoffice\GradeController as FrontGradeController;
 
 use App\Http\Controllers\Backoffice\DownloadController;
 
@@ -61,10 +63,14 @@ Route::match(['get', 'post'], 'curso/insertar',[BackSubjectController::class,'ac
 Route::post('curso/editar',[BackSubjectController::class,'actionEdit'])->middleware('GenericMiddleware:curso/editar');
 Route::get('curso/eliminar/{idSubject}',[BackSubjectController::class,'actionDelete'])->middleware('GenericMiddleware:curso/eliminar');
 
+Route::get('curso/{codeSubject}/{currentPage}',[FrontSubjectController::class,'actionViewSubject'])->middleware('GenericMiddleware:curso/codigo');
+
 Route::get('grado/mostrar/{currentPage}',[BackGradeController::class,'actionGetAll'])->middleware('GenericMiddleware:grado/mostrar');
 Route::match(['get', 'post'], 'grado/insertar',[BackGradeController::class,'actionInsert'])->middleware('GenericMiddleware:grado/insertar');
 Route::post('grado/editar',[BackGradeController::class,'actionEdit'])->middleware('GenericMiddleware:grado/editar');
 Route::get('grado/eliminar/{idSubject}',[BackGradeController::class,'actionDelete'])->middleware('GenericMiddleware:grado/eliminar');
+
+Route::get('grado/{codeGrade}/{currentPage}',[FrontGradeController::class,'actionViewGrade'])->middleware('GenericMiddleware:grado/codigo');
 
 Route::get('direccion/mostrar/{currentPage}',[BackDirectionController::class,'actionGetAll'])->middleware('GenericMiddleware:direccion/mostrar');
 Route::match(['get', 'post'], 'direccion/insertar',[BackDirectionController::class,'actionInsert'])->middleware('GenericMiddleware:direccion/insertar');

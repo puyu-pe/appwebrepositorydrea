@@ -25,6 +25,7 @@
                     <thead>
                         <tr>
                             <th class="text-center">Nombre del curso</th>
+                            <th class="text-center">Código</th>
                             <th class="text-center">Fecha de registro</th>
                             <th class="text-center">Hora de registro</th>
                             <th class="text-center"></th>
@@ -35,6 +36,9 @@
                             <tr>
                                 <td class="text-center">
                                     <div>{{$value->nameSubject}}</div>
+                                </td>
+                                <td class="text-center">
+                                    <div>{{$value->codeSubject}}</div>
                                 </td>
                                 <td class="text-center">
                                     <div>{{date('d-m-Y', strtotime($value->created_at))}}</div>

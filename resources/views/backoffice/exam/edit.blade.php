@@ -4,7 +4,7 @@
             <label for="selectTypeExam">Tipo de evaluación*</label>
             <select name="selectTypeExam" id="selectTypeExam" style="width: 100%" class="form-control select2TypeExam">
                 @foreach ($tTypeExam as $valueTypeExam)
-                    <option value="{{$valueTypeExam->idTypeExam}}" {{$tExam->idTypeExam==$valueTypeExam->idTypeExam ? 'selected' : ''}}>{{strtoupper($valueTypeExam->acronymTypeExam).' : '.$valueTypeExam->nameTypeExam}}</option>
+                    <option value="{{$valueTypeExam->idTypeExam}}" type_evaluation="{{$valueTypeExam->acronymTypeExam}}" {{$tExam->idTypeExam==$valueTypeExam->idTypeExam ? 'selected' : ''}}>{{strtoupper($valueTypeExam->acronymTypeExam).' : '.$valueTypeExam->nameTypeExam}}</option>
                 @endforeach
             </select>
         </div>
@@ -22,7 +22,7 @@
             <label for="selectGrade">Grado*</label>
             <select name="selectGrade" id="selectGrade" style="width: 100%" class="form-control select2Grade">
                 @foreach ($tGrade as $valueGrade)
-                    <option value="{{$valueGrade->idGrade}}" {{$tExam->idGrade==$valueGrade->idGrade ? 'selected' : ''}}>{{$valueGrade->numberGrade.'° de '.$valueGrade->nameGrade}}</option>
+                    <option value="{{$valueGrade->idGrade}}" {{$tExam->idGrade==$valueGrade->idGrade ? 'selected' : ''}}>{{$valueGrade->descriptionGrade}}</option>
                 @endforeach
             </select>
         </div>
@@ -35,6 +35,21 @@
             </select>
         </div>
     </div>
+    @if($tExam->name_type_exam)
+        <div id="dvOther" class="row">
+            <div class="form-group col-md-6">
+                <label for="txtDescriptionOtherEvaluation">Nombre de la evaluación</label>
+                <input type="text" id="txtDescriptionOtherEvaluation" name="txtDescriptionOtherEvaluation" class="form-control" value="{{$tExam->name_type_exam}}">
+            </div>
+        </div>
+    @else
+        <div id="dvOther" class="row" style="display: none;">
+            <div class="form-group col-md-6">
+                <label for="txtDescriptionOtherEvaluation">Nombre de la evaluación</label>
+                <input type="text" id="txtDescriptionOtherEvaluation" name="txtDescriptionOtherEvaluation" class="form-control">
+            </div>
+        </div>
+    @endif
     <div class="row">
         <div class="form-group col-md-2">
             <label for="txtYearExam">Año*</label>

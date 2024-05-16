@@ -62,6 +62,7 @@ class ExamController extends Controller
 
 					return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/insertar');
 				}
+
 				$status = stristr(session('roleUser'), TRole::ROLE['ADMIN']) || stristr(session('roleUser'), TRole::ROLE['SUPERVISOR']);
 
 				$tTypeExam = TTypeExam::find($request->input('selectTypeExam'));
@@ -70,8 +71,15 @@ class ExamController extends Controller
 				$tDirection = TDirection::find($request->input('selectDirectionExam'));
 				$tDocument = TDocument::whereRaw('key_document=?', ['exam'])->first();
 
+                if ($request->input('txtDescriptionOtherEvaluation') == '' && $tTypeExam->acronymTypeExam == TTypeExam::OTHER_TYPE_EXAM){
+                    return PlatformHelper::redirectError(['Ingrese el nombre de la evaluación.'], 'examen/insertar');
+                }
+
 				$tNumberExam = $tTypeExam->numberExecuteYear > 1 ? $request->input('numberEvaluationExecute') . '° ' : '';
 				$tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
+                $title_exam = $tTypeExam->acronymTypeExam != TTypeExam::OTHER_TYPE_EXAM ?
+                    $tNumberExam . 'Evaluación ' . strtoupper($tTypeExam->acronymTypeExam) :
+                    $request->input('txtDescriptionOtherEvaluation');
 
 				$tExam = new TExam();
 
@@ -82,8 +90,10 @@ class ExamController extends Controller
 				$tExam->idSubject = $request->input('selectSubject');
 				$tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
 				$tExam->codeExam = $tDocument->number_document + 1;
-				$tExam->nameExam = $tNumberExam . 'Evaluación ' . strtoupper($tTypeExam->acronymTypeExam) . $tSiteExam . ' ' . $tSubject->nameSubject . ' ' . $tGrade->numberGrade . '° ' . $tGrade->nameGrade;
+				$tExam->nameExam = $title_exam . $tSiteExam . ' ' . $tSubject->nameSubject . ' ' . $tGrade->descriptionGrade;
 				$tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
+				$tExam->name_type_exam = $request->input('txtDescriptionOtherEvaluation') != '' ?
+                    trim($request->input('txtDescriptionOtherEvaluation')) : null;
 				$tExam->totalPageExam = $request->input('txtTotalPageExam');
 				$tExam->yearExam = $request->input('txtYearExam');
 				$tExam->numberEvaluation = $request->input('numberEvaluationExecute');
@@ -201,7 +211,8 @@ class ExamController extends Controller
 	public function actionEdit(Request $request)
 	{
 		if ($request->has('hdIdExam')) {
-			try {
+			try
+            {
 				DB::beginTransaction();
 
 				$this->_so->mo->listMessage = (new ExamValidation())->validationEdit($request);
@@ -217,8 +228,15 @@ class ExamController extends Controller
 				$tGrade = TGrade::find($request->input('selectGrade'));
 				$tDirection = TDirection::find($request->input('selectDirectionExam'));
 
+                if ($request->input('txtDescriptionOtherEvaluation') == '' && $tTypeExam->acronymTypeExam == TTypeExam::OTHER_TYPE_EXAM){
+                    return PlatformHelper::redirectError(['Ingrese el nombre de la evaluación.'], 'examen/insertar');
+                }
+
 				$tNumberExam = $tTypeExam->numberExecuteYear > 1 ? $request->input('numberEvaluationExecute') . '° ' : '';
 				$tSiteExam = !$tDirection ? '' : (' ' . $tDirection->nameRegion);
+                $title_exam = $tTypeExam->acronymTypeExam != TTypeExam::OTHER_TYPE_EXAM ?
+                    $tNumberExam . 'Evaluación ' . strtoupper($tTypeExam->acronymTypeExam) :
+                    $request->input('txtDescriptionOtherEvaluation');
 
 				$tExam = TExam::find($request->input('hdIdExam'));
 
@@ -226,8 +244,10 @@ class ExamController extends Controller
 				$tExam->idGrade = $request->input('selectGrade');
 				$tExam->idSubject = $request->input('selectSubject');
 				$tExam->idDirection = $request->input('selectDirectionExam') == 'General' ? null : $request->input('selectDirectionExam');
-				$tExam->nameExam = $tNumberExam . 'Evaluación ' . strtoupper($tTypeExam->acronymTypeExam) . $tSiteExam . ' ' . $tSubject->nameSubject . ' ' . $tGrade->numberGrade . '° ' . $tGrade->nameGrade;
+				$tExam->nameExam = $title_exam . $tSiteExam . ' ' . $tSubject->nameSubject . ' ' . $tGrade->descriptionGrade;
 				$tExam->descriptionExam = trim($request->input('txtDescriptionExam'));
+                $tExam->name_type_exam = $request->input('txtDescriptionOtherEvaluation') != '' ?
+                    trim($request->input('txtDescriptionOtherEvaluation')) : null;
 				$tExam->totalPageExam = $request->input('txtTotalPageExam');
 				$tExam->yearExam = $request->input('txtYearExam');
 				$tExam->numberEvaluation = $request->input('numberEvaluationExecute');
