@@ -238,11 +238,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <iframe src="{{ url('examen/verarchivo/' . $tExam->idExam) }}?x={{ $tExam->updated_at }}#toolbar=0"
                                     frameborder="0" allowfullscreen style="height: 100%; width: 100%; border: none;"></iframe>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             @include('backoffice.answer.insert', [
                             'tExam' => $tExam,
                             'tAnswer' => $tAnswer,

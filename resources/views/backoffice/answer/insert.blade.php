@@ -6,8 +6,8 @@
             <table class="table table-bordered" id="tblResponseExam">
                 <thead>
                 <tr>
-                    <th style="width: 140px;">N° de pregunta</th>
-                    <th>Descripción de la respuesta</th>
+                    <th class="text-center">N°</th>
+                    <th>Respuesta</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,7 +59,7 @@
         <div class="form-group col-md-12 text-right">
             {{csrf_field()}}
             <input type="hidden" name="hdIdExam" id="hdIdExam" value="{{$tExam->idExam}}">
-            <input type="button" class="btn btn-dark pull-left col-4" data-dismiss="modal" data-bs-dismiss="modal" value="Cerrar ventana">
+            <input type="button" class="btn btn-dark pull-left col-3" data-dismiss="modal" data-bs-dismiss="modal" value="Cerrar">
             <input type="button" class="btn btn-primary col-3" value="Guardar" onclick="sendInsertAnswer();" style="float: right">
         </div>
     </div>
