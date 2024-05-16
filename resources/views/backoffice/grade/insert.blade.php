@@ -1,16 +1,21 @@
 <form id="frmInsertGrade" action="{{url('grado/insertar')}}" method="post">
     <div class="row">
-        <div class="form-group col-md-6">
-            <label for="txtNumberGrade">N° del grado*</label>
-            <input type="number" id="txtNumberGrade" name="txtNumberGrade" min="1" max="6" class="form-control" autocomplete="off">
+        <div class="form-group col-md-4">
+            <label for="txtDescriptionGrade">Decripción*</label>
+            <input type="text" id="txtDescriptionGrade" name="txtDescriptionGrade" class="form-control" autocomplete="off">
         </div>
-        <div class="form-group col-md-6">
-            <label for="selectNameGrade">Nombre completo del curso*</label>
+        <div class="form-group col-md-4">
+            <label for="selectNameGrade">Grado académico*</label>
             <select name="selectNameGrade" id="selectNameGrade" style="width: 100%" class="form-control">
-                <option value="">Seleccione...</option>
+                <option value="" selected disabled>Seleccione...</option>
                 <option value="Primaria">Primaria</option>
                 <option value="Secundaria">Secundaria</option>
+                <option value="Inicial">Inicial</option>
             </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="txtCodeGrade">Código*</label>
+            <input type="text" id="txtCodeGrade" name="txtCodeGrade" class="form-control" autocomplete="off">
         </div>
     </div>
     <hr>

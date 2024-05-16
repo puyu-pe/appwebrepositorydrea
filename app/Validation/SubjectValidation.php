@@ -11,13 +11,16 @@ class SubjectValidation
     {
         $validator=Validator::make(
         [
-            'nameSubject' => trim($request->input('txtNameSubject'))
+            'nameSubject' => trim($request->input('txtNameSubject')),
+            'codeSubject' => trim($request->input('txtCodeSubject'))
         ],
         [
-            'nameSubject' => ['required']
+            'nameSubject' => ['required'],
+            'codeSubject' => ['required']
         ],
         [
-            'nameSubject.required' => 'El campo "nameTypeExam" es requerido.'
+            'nameSubject.required' => 'El campo "nameSubject" es requerido.',
+            'codeSubject.required' => 'El campo "codeSubject" es requerido.'
         ]);
 
         if($validator->fails())
@@ -37,13 +40,16 @@ class SubjectValidation
     {
         $validator=Validator::make(
         [
-            'nameSubject' => trim($request->input('txtNameSubject'))
+            'nameSubject' => trim($request->input('txtNameSubject')),
+            'codeSubject' => trim($request->input('txtCodeSubject'))
         ],
         [
-            'nameSubject' => ['required']
+            'nameSubject' => ['required'],
+            'codeSubject' => ['required']
         ],
         [
-            'nameSubject.required' => 'El campo "nameTypeExam" es requerido.'
+            'nameSubject.required' => 'El campo "nameSubject" es requerido.',
+            'codeSubject.required' => 'El campo "codeSubject" es requerido.'
         ]);
 
         if($validator->fails())
@@ -59,5 +65,3 @@ class SubjectValidation
         return $this->globalMessage;
     }
 }
-
-?>

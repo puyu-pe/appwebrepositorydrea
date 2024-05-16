@@ -18,7 +18,7 @@ class GeneralController extends Controller
 {
     public function actionWelcome()
     {
-        $tTypeExam = TTypeExam::all();
+        $tTypeExam = TTypeExam::tTypeExamFront();
         $topExams = TExam::with(['tTypeExam', 'tUserExam.tUser', 'tDirection'])
             ->whereHas('tUserExam', function ($query) {
                 $query->where('typeFunctionExam', 'Registro');

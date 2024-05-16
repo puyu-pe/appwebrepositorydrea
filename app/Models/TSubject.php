@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class TSubject extends Model
 {
@@ -14,6 +15,16 @@ class TSubject extends Model
     public function tExam()
     {
         return $this->hasMany('App\Models\TExam', 'idSubject');
+    }
+
+    public static function tSubjectExamFront(){
+        $tSubject = TSubject::select('tsubject.idSubject', 'tsubject.nameSubject', 'tsubject.codeSubject', DB::raw('COUNT(texam.idExam) as exam_count'))
+            ->join('texam', 'tsubject.idSubject', '=', 'texam.idSubject')
+            ->where('texam.stateExam', TExam::STATUS['PUBLIC'])
+            ->groupBy('tsubject.idSubject', 'tsubject.nameSubject', 'tsubject.codeSubject')
+            ->get();
+
+        return $tSubject;
     }
 }
 ?>

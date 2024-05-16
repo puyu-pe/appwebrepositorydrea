@@ -9,6 +9,8 @@ class GenericMiddleware
     public function handle($request, Closure $next, ...$params)
     {
         $acronymTypeExam = $request->route()->parameter('acronymTypeExam');
+        $codeSubjectExam = $request->route()->parameter('codeSubject');
+        $codeGradeExam = $request->route()->parameter('codeGrade');
 
         $urlAccess=false;
         $allowUrl=
@@ -39,17 +41,19 @@ class GenericMiddleware
             ['Administrador,Supervisor', 'tipoexamen/insertar', null, null],
             ['Administrador,Supervisor', 'tipoexamen/editar', null, null],
             ['Administrador', 'tipoexamen/eliminar', null, null],
-            ['Público', 'tipoexamen/acroninmo', 'mTypeExam', $acronymTypeExam != null ? 'm'.strtoupper($acronymTypeExam) : null],
+            ['Público', 'tipoexamen/acroninmo', 'mTypeExam', $acronymTypeExam != null ? 'm'.strtoupper($acronymTypeExam.'TYPE') : null],
 
             ['Administrador,Supervisor', 'curso/mostrar', 'mPrincipal', 'mGetAllSubject'],
             ['Administrador,Supervisor', 'curso/insertar', null, null],
             ['Administrador,Supervisor', 'curso/editar', null, null],
             ['Administrador', 'curso/eliminar', null, null],
+            ['Público', 'curso/codigo', 'mSubject', $codeSubjectExam != null ? 'm'.strtoupper($codeSubjectExam.'SUBJECT') : null],
 
             ['Administrador,Supervisor', 'grado/mostrar', 'mPrincipal', 'mGetAllGrade'],
             ['Administrador,Supervisor', 'grado/insertar', null, null],
             ['Administrador,Supervisor', 'grado/editar', null, null],
             ['Administrador', 'grado/eliminar', null, null],
+            ['Público', 'grado/codigo', 'mGrade', $codeGradeExam != null ? 'm'.strtoupper($codeGradeExam.'GRADE') : null],
 
             ['Administrador,Supervisor', 'direccion/mostrar', 'mPrincipal', 'mGetAllDirection'],
             ['Administrador,Supervisor', 'direccion/insertar', null, null],

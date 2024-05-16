@@ -13,9 +13,9 @@ use App\Models\TSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TypeExamController extends Controller
+class SubjectController extends Controller
 {
-    public function actionViewTypeExam(Request $request, $acronymTypeExam, $currentPage)
+    public function actionViewSubject(Request $request, $codeSubject, $currentPage)
     {
         $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
         $type = $request->has('type') ? $request->input('type') : 'all';
@@ -23,18 +23,18 @@ class TypeExamController extends Controller
         $subject = $request->has('subject') ? $request->input('subject') : 'all';
         $year = $request->has('year') ? $request->input('year') : 'all';
 
-        $tTypeExam = $acronymTypeExam != 'all' ? TTypeExam::whereRaw('acronymTypeExam=?', [$acronymTypeExam])->first() : null;
+        $tSubject = $codeSubject != 'all' ? TSubject::whereRaw('codeSubject =?', [$codeSubject])->first() : null;
 
-        if ($acronymTypeExam != 'all' && $type != 'all')
-            $tTypeExam =  TTypeExam::whereRaw('acronymTypeExam=?', [$type])->first();
+        if ($codeSubject != 'all' && $type != 'all')
+            $tSubject =  TSubject::whereRaw('codeSubject =?', [$type])->first();
 
         $examsQuery = TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])
             ->whereRaw(
                 'compareFind(concat(codeExam, nameExam, descriptionExam), ?, 77) = 1 ' .
                 'AND stateExam = "' . TExam::STATUS['PUBLIC'] . '"' .
-                ($tTypeExam != null ? 'AND idTypeExam="' . $tTypeExam->idTypeExam . '"' : '') .
+                ($tSubject != null ? 'AND idSubject="' . $tSubject->idSubject . '"' : '') .
                 ($grade != 'all' ? 'AND idGrade="' . $grade . '"' : '') .
-                ($subject != 'all' ? 'AND idSubject="' . $subject . '"' : '') .
+                ($type != 'all' ? 'AND idTypeExam="' . $type . '"' : '') .
                 ($year != 'all' ? 'AND yearExam="' . $year . '"' : ''),
                 [
                     $searchParameter
@@ -58,15 +58,15 @@ class TypeExamController extends Controller
         ];
 
         return view(
-            'frontoffice/typeexam/view',
+            'frontoffice/subject/view',
             [
-                'tTypeExam' => $tTypeExam,
+                'tSubject' => $tSubject,
                 'listTExam' => $paginate['listRow'],
                 'currentPage' => $paginate['currentPage'],
                 'quantityPage' => $paginate['quantityPage'],
                 'filtersData' => $filtersData,
                 'selectFilters' => $selectFilters,
-                'acronymTypeExam' => $acronymTypeExam
+                'codeSubject' => $codeSubject
             ]
         );
     }
