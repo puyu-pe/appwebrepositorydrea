@@ -142,6 +142,14 @@ $(function()
         }
     }));
 
+    $('select#selectTypeExam').on('change', function (e)
+    {
+        let selectedOption = $(this).find('option:selected');
+        let acronym = selectedOption.attr('type_evaluation');
+
+        showDivNameOtherExam(acronym);
+    });
+
     $('.select2TypeExam').select2();
     $('.select2DirectionExam').select2();
     $('.select2Subject').select2();
@@ -167,6 +175,18 @@ $(function()
         placeholder: 'Agregar datos...'
     });
 });
+
+
+function showDivNameOtherExam (acronym)
+{
+    if (acronym === 'other'){
+        $('div#dvOther').show();
+        $('input#txtDescriptionOtherEvaluation').val('');
+    }else {
+        $('div#dvOther').hide();
+        $('input#txtDescriptionOtherEvaluation').val('');
+    }
+}
 
 function addElementConcept(number)
 {
@@ -262,6 +282,19 @@ function validateNotEmptyResponse(){
     return status_response;
 }
 
+function verify_select_other()
+{
+    let acronym = $('select#selectTypeExam').find('option:selected').attr('type_evaluation');
+    let name_other_exam = $('input#txtDescriptionOtherEvaluation').val();
+
+    if (acronym === 'other' && name_other_exam === ''){
+        errorNote('No se pudo proceder', 'Ingrese el nombre de la evaluación');
+        return true;
+    }
+
+    return false;
+}
+
 function sendInsertExam()
 {
     var isValid=null;
@@ -270,6 +303,9 @@ function sendInsertExam()
     $('#frmInsertExam').data('formValidation').validate();
 
     isValid=$('#frmInsertExam').data('formValidation').isValid();
+
+    if (verify_select_other())
+        return;
 
     if(!isValid)
     {

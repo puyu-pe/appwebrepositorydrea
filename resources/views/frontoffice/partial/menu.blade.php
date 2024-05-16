@@ -24,8 +24,8 @@
                                             @foreach ($menuTypeExamItem as $item)
                                             <li id="{{'m'.strtoupper($item->acronymTypeExam)}}"
                                                 class="{{Session::get('subMenu')=='m'.strtoupper($item->acronymTypeExam).'TYPE' ? 'active' : ''}}">
-                                                <a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}">Evaluaciones
-                                                    {{strtoupper($item->acronymTypeExam)}}</a></li>
+                                                <a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}">
+                                                    {{$item->acronymTypeExam != 'other' ? 'Evaluaciones '.strtoupper($item->acronymTypeExam) : 'Otros'}}</a></li>
                                             @endforeach
                                         </ul>
                                     </li>

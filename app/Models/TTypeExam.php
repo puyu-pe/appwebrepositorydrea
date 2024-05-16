@@ -12,6 +12,8 @@ class TTypeExam extends Model
     public $incrementing=false;
     public $timestamps=true;
 
+    public const OTHER_TYPE_EXAM = 'other';
+
     public function tExam()
     {
         return $this->hasMany('App\Models\TExam', 'idTypeExam');
@@ -19,10 +21,10 @@ class TTypeExam extends Model
 
     public static function tTypeExamFront(){
         $tTypeExam = TTypeExam::select('ttypeexam.idTypeExam', 'ttypeexam.acronymTypeExam',
-            'ttypeexam.nameTypeExam', 'ttypeexam.descriptionTypeExam', DB::raw('COUNT(texam.idExam) as exam_count'))
+            'ttypeexam.nameTypeExam', 'ttypeexam.descriptionTypeExam', 'ttypeexam.extensionImageType', 'ttypeexam.updated_at', DB::raw('COUNT(texam.idExam) as exam_count'))
             ->join('texam', 'ttypeexam.idTypeExam', '=', 'texam.idTypeExam')
             ->where('texam.stateExam', TExam::STATUS['PUBLIC'])
-            ->groupBy('ttypeexam.idTypeExam', 'ttypeexam.acronymTypeExam', 'ttypeexam.nameTypeExam', 'ttypeexam.descriptionTypeExam')
+            ->groupBy('ttypeexam.idTypeExam', 'ttypeexam.acronymTypeExam', 'ttypeexam.nameTypeExam', 'ttypeexam.descriptionTypeExam', 'ttypeexam.extensionImageType', 'ttypeexam.updated_at')
             ->get();
 
         return $tTypeExam;
