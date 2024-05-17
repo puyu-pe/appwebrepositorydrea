@@ -11,6 +11,12 @@ class TAnswer extends Model
     public $incrementing=false;
     public $timestamps=true;
 
+    public const TYPE = [
+        'CORRECT' => 'correct',
+        'VERIFY' => 'verify',
+        'REVIEWED' => 'reviewed'
+    ];
+
     public function tExam()
     {
         return $this->belongsTo('App\Models\TExam', 'idExam');
@@ -20,5 +26,9 @@ class TAnswer extends Model
     {
         return $this->belongsTo('App\Models\TUser', 'idUser');
     }
+
+    public function tAnswerDetail()
+    {
+        return $this->hasMany('App\Models\TAnswer', 'idAnswer');
+    }
 }
-?>

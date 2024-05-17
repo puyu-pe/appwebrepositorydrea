@@ -28,7 +28,7 @@ class UpdateTableTanswer extends Migration
             $table->char('idAnswer', 13);
             $table->integer('numberAnswer')->unsigned();
             $table->text('descriptionAnswer');
-            $table->boolean('is_correct');
+            $table->boolean('is_correct')->nullable();
             $table->timestamps();
         });
     }

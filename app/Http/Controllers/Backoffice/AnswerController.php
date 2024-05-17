@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
+use App\Models\TAnswerDetail;
 use App\Models\TExam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,27 +21,46 @@ class AnswerController extends Controller
             {
                 DB::beginTransaction();
 
-                if ($request->has('txtValueResponseExam') && $request->has('hdIdAnswer')) {
+                if ($request->has('txtValueResponseExam') && $request->has('hdIdAnswer'))
+                {
 
-                    foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
-                        $idAnswer = $request->input('hdIdAnswer')[$number] ?? null;
+                    $idAnswer = $request->input('hdIdAnswer') ?? null;
 
-                        if ($idAnswer) {
-                            $tAnswer = TAnswer::find($idAnswer);
-                            if ($tAnswer) {
-                                $tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
-                                $tAnswer->save();
+                    if (!$idAnswer)
+                    {
+                        $tAnswer = new TAnswer();
+                        $tAnswer->idAnswer = uniqid();
+                        $tAnswer->idExam = $request->input('hdIdExam');
+                        $tAnswer->idUser = session('idUser');
+                        $tAnswer->type = TAnswer::TYPE['CORRECT'];
+
+                        $tAnswer->save();
+
+                        $idAnswer = $tAnswer->idAnswer;
+                    }
+
+                    foreach ($request->input('txtValueResponseExam') as $number => $valueResponse)
+                    {
+                        $idAnswerDetail = $request->input('hdIdAnswerDetail')[$number] ?? null;
+
+                        if ($idAnswerDetail)
+                        {
+                            $tAnswerDetail = TAnswerDetail::find($idAnswerDetail);
+
+                            if ($tAnswerDetail) {
+                                $tAnswerDetail->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
+                                $tAnswerDetail->save();
                             }
-                        } else {
-                            $tAnswer = new TAnswer();
-
-                            $tAnswer->idAnswer = uniqid();
-                            $tAnswer->idExam = $request->input('hdIdExam');
-                            $tAnswer->idUser = session('idUser');
-                            $tAnswer->numberAnswer = $number + 1;
-                            $tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
-
-                            $tAnswer->save();
+                        }
+                        else
+                        {
+                            $tAnswerDetail = new TAnswerDetail();
+                            $tAnswerDetail->idAnswerDetail = uniqid();
+                            $tAnswerDetail->idAnswer = $idAnswer;
+                            $tAnswerDetail->numberAnswer = $number + 1;
+                            $tAnswerDetail->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
+                            $tAnswerDetail->is_correct = null;
+                            $tAnswerDetail->save();
                         }
                     }
                 }
@@ -52,24 +72,25 @@ class AnswerController extends Controller
             }
 
             $tExam = TExam::find($request->input('idExam'));
-            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ?', [$request->input('idExam'), session('idUser')])
-                ->orderBy('numberAnswer')->get();
 
-            $maxNumberAnswer = TAnswer::where('idExam', $request->input('idExam'))
-                ->where('idUser', session('idUser'))
-                ->max('numberAnswer');
-
-
-            if($tAnswer == null)
+            if($tExam == null)
             {
                 return PlatformHelper::ajaxDataNoExists();
             }
+
+            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ? AND type = ?',
+                [$request->input('idExam'), session('idUser'), TAnswer::TYPE['CORRECT']])->first();
+            $tAnswerDetail = $tAnswer ? TAnswerDetail::whereRaw('idAnswer = ?', [$tAnswer->idAnswer])
+                ->orderBy('numberAnswer')->get() : null;
+            $maxNumberAnswerDetail = $tAnswer ? TAnswerDetail::where('idAnswer', $tAnswer->idAnswer)
+                ->max('numberAnswer') : 0;
 
             return view('backoffice/answer/insert',
             [
                 'tExam' => $tExam,
                 'tAnswer' => $tAnswer,
-                'maxNumberAnswer' => $maxNumberAnswer
+                'tAnswerDetail' => $tAnswerDetail,
+                'maxNumberAnswer' => $maxNumberAnswerDetail
             ]);
         }
         catch (\Exception $e)
