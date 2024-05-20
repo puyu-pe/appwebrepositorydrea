@@ -5,20 +5,13 @@ namespace App\Http\Controllers\Frontoffice;
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
 use App\Models\TAnswer;
-use App\Models\TDirection;
-use App\Models\TDocument;
+use App\Models\TAnswerDetail;
 use App\Models\TResource;
 use App\Models\TRole;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Helper\ExamHelper;
 
 use App\Models\TExam;
-use App\Models\TGrade;
-use App\Models\TSubject;
-use App\Models\TTypeExam;
-use App\Models\TUserExam;
-use App\Validation\ExamValidation;
 
 class ExamController extends Controller
 {
@@ -51,13 +44,14 @@ class ExamController extends Controller
             ExamHelper::incrementViewCounter($tExam);
             $rating = ExamHelper::getRatingData($tExam->idExam);
 
-
-            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ?', [$tExam->idExam, session('idUser')])
-                ->orderBy('numberAnswer')->get();
-
+            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ? AND type = ?',
+                [$tExam->idExam, session('idUser'), TAnswer::TYPE['VERIFY']])->first();
+            $tAnswerDetail = $tAnswer ? TAnswerDetail::whereRaw('idAnswer = ?', [$tAnswer->idAnswer])
+                ->orderBy('numberAnswer')->get() : null;
 
             $tAnswersGroupedByUser = TAnswer::where('idExam', $tExam->idExam)
-                ->orderBy('numberAnswer')
+                ->where('type', TAnswer::TYPE['REVIEWED'])
+                ->orderBy('created_at')
                 ->with('tuser')
                 ->get()
                 ->groupBy('idUser');
@@ -69,7 +63,8 @@ class ExamController extends Controller
                     'tResourceMaterial' => $tResourceMaterial,
                     'rating' => $rating,
                     'tAnswersGroupedByUser' => $tAnswersGroupedByUser,
-                    'tAnswer' => $tAnswer
+                    'tAnswer' => $tAnswer,
+                    'tAnswerDetail' => $tAnswerDetail
                 ]);
         } catch (\Exception $e) {
             DB::rollBack();

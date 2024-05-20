@@ -7,7 +7,7 @@
                 <thead>
                 <tr>
                     <th class="text-center">N°</th>
-                    <th>Respuesta</th>
+                    <th>Alternativa</th>
                 </tr>
                 </thead>
                 <tbody>

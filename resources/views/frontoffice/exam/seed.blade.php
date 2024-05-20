@@ -59,7 +59,7 @@
                                 @if (Session::get('idUser') && $tExam->register_answer == '1')
                                     <button class="it-btn w-80 text-center" data-bs-toggle="modal"
                                             data-bs-target="#mdlAnswerRegister">
-                                        Registro de respuestas
+                                        Solucionar evaluación
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
@@ -76,7 +76,7 @@
                                 @if($tExam->register_answer == '1')
                                     <button class="it-btn w-80 text-center" id="btnModalResponse"
                                             onclick="$('#dvAnswer').show();">
-                                        Ver respuestas
+                                        Ver usuarios que respondieron
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
@@ -233,22 +233,17 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="mdlAnswerRegisterLabel">Registro de respuestas a la evaluación</h5>
+                    <h5 class="modal-title" id="mdlAnswerRegisterLabel">Solución con respecto a la evaluación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-7">
-                            <iframe src="{{ url('examen/verarchivo/' . $tExam->idExam) }}?x={{ $tExam->updated_at }}#toolbar=0"
-                                    frameborder="0" allowfullscreen style="height: 100%; width: 100%; border: none;"></iframe>
-                        </div>
-                        <div class="col-md-5">
-                            @include('backoffice.answer.insert', [
+                        @include('frontoffice.answer.register', [
                             'tExam' => $tExam,
                             'tAnswer' => $tAnswer,
+                            'tAnswerDetail' => $tAnswerDetail,
                             'maxNumberAnswer' => $tExam->number_question,
                             ])
-                        </div>
                     </div>
                 </div>
             </div>

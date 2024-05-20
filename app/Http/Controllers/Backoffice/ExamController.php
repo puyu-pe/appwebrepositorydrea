@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
 use App\Models\TAnswer;
+use App\Models\TAnswerDetail;
 use App\Models\TDirection;
 use App\Models\TDocument;
 use App\Models\TResource;
@@ -169,16 +170,22 @@ class ExamController extends Controller
                 }
 
 				if ($request->has('txtValueResponseExam')) {
+
+                    $tAnswer = new TAnswer();
+                    $tAnswer->idAnswer = uniqid();
+                    $tAnswer->idExam = $tExam->idExam;
+                    $tAnswer->idUser = session('idUser');
+                    $tAnswer->type = TAnswer::TYPE['CORRECT'];
+                    $tAnswer->save();
+
 					foreach ($request->input('txtValueResponseExam') as $number => $valueResponse) {
-						$tAnswer = new TAnswer();
-
-						$tAnswer->idAnswer = uniqid();
-						$tAnswer->idExam = $tExam->idExam;
-						$tAnswer->idUser = session('idUser');
-						$tAnswer->numberAnswer =  $number + 1;
-						$tAnswer->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
-
-						$tAnswer->save();
+                        $tAnswerDetail = new TAnswerDetail();
+                        $tAnswerDetail->idAnswerDetail = uniqid();
+                        $tAnswerDetail->idAnswer = $tAnswer->idAnswer;
+                        $tAnswerDetail->numberAnswer = $number + 1;
+                        $tAnswerDetail->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
+                        $tAnswerDetail->is_correct = null;
+                        $tAnswerDetail->save();
 					}
 				}
 

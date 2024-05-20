@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Backoffice;
+namespace App\Http\Controllers\Frontoffice;
 
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
@@ -12,7 +12,7 @@ use App\Models\TAnswer;
 
 class AnswerController extends Controller
 {
-    public function actionInsert(Request $request)
+    public function actionRegister(Request $request)
     {
         try
         {
@@ -31,7 +31,7 @@ class AnswerController extends Controller
                         $tAnswer->idAnswer = uniqid();
                         $tAnswer->idExam = $request->input('hdIdExam');
                         $tAnswer->idUser = session('idUser');
-                        $tAnswer->type = TAnswer::TYPE['CORRECT'];
+                        $tAnswer->type = TAnswer::TYPE['VERIFY'];
 
                         $tAnswer->save();
 
@@ -84,19 +84,20 @@ class AnswerController extends Controller
             $maxNumberAnswerDetail = $tAnswer ? TAnswerDetail::where('idAnswer', $tAnswer->idAnswer)
                 ->max('numberAnswer') : 0;
 
-            return view('backoffice/answer/insert',
-            [
-                'tExam' => $tExam,
-                'tAnswer' => $tAnswer,
-                'tAnswerDetail' => $tAnswerDetail,
-                'maxNumberAnswer' => $maxNumberAnswerDetail
-            ]);
+            return view('front/answer/register',
+                [
+                    'tExam' => $tExam,
+                    'tAnswer' => $tAnswer,
+                    'tAnswerDetail' => $tAnswerDetail,
+                    'maxNumberAnswer' => $maxNumberAnswerDetail
+                ]);
         }
         catch (\Exception $e)
         {
             DB::rollBack();
+            $previousUrl = url()->previous();
 
-            return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], $previousUrl);
         }
     }
 
