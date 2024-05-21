@@ -59,7 +59,7 @@
                                 @if (Session::get('idUser') && $tExam->register_answer == '1')
                                     <button class="it-btn w-80 text-center" data-bs-toggle="modal"
                                             data-bs-target="#mdlAnswerRegister">
-                                        Solucionar evaluación
+                                        {{ ($tAnswer && $tAnswer->type == 'reviewed') ? 'Ver resultados' :'Solucionar evaluación'}}
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
@@ -173,18 +173,12 @@
                                 <div class="accordion" id="accordionExample">
                                     @foreach($tAnswersGroupedByUser as $idUser => $answers)
                                         <div class="accordion-item">
-                                            @php
-                                                $user = $answers->first()->tuser;
-                                                $firstName = $user->firstName;
-                                                $surName = $user->surName;
-                                            @endphp
-
-                                            <h2 class="accordion-header" id="heading{{$user->idUser}}">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$user->idUser}}" aria-expanded="true" aria-controls="collapse{{$user->idUser}}">
-                                                    {{ $firstName }} {{ $surName }}
+                                            <h2 class="accordion-header" id="heading{{$answers->tuser->idUser}}">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$answers->tuser->idUser}}" aria-expanded="true" aria-controls="collapse{{$answers->tuser->idUser}}">
+                                                    {{ $answers->tuser->firstName }} {{ $answers->tuser->surName }}
                                                 </button>
                                             </h2>
-                                            <div id="collapse{{$user->idUser}}" class="accordion-collapse collapse" aria-labelledby="heading{{$user->idUser}}" data-bs-parent="#accAnswers">
+                                            <div id="collapse{{$answers->tuser->idUser}}" class="accordion-collapse collapse" aria-labelledby="heading{{$answers->tuser->idUser}}" data-bs-parent="#accAnswers">
                                                 <div class="accordion-body">
                                                     <table class="table">
                                                         <thead>
@@ -194,7 +188,7 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        @foreach($answers as $tanswer_value)
+                                                        @foreach($answers->tanswerdetail as $tanswer_value)
                                                             <tr>
                                                                 <td class="text-center">
                                                                     <div>{{ $tanswer_value->numberAnswer }}</div>
@@ -233,18 +227,24 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="mdlAnswerRegisterLabel">Solución con respecto a la evaluación</h5>
+                    <h5 class="modal-title" id="mdlAnswerRegisterLabel">{{$tAnswer && $tAnswer->type == 'reviewed' ? 'Resultados' : 'Solución con respecto a la evaluación'}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        @include('frontoffice.answer.register', [
+                    @if($tAnswer && $tAnswer->type == 'reviewed')
+                        @include('frontoffice.answer.view', [
                             'tExam' => $tExam,
                             'tAnswer' => $tAnswer,
                             'tAnswerDetail' => $tAnswerDetail,
                             'maxNumberAnswer' => $tExam->number_question,
-                            ])
-                    </div>
+                        ])
+                    @else
+                        @include('frontoffice.answer.register', [
+                            'tExam' => $tExam,
+                            'tAnswer' => $tAnswer,
+                            'tAnswerDetail' => $tAnswerDetail,
+                        ])
+                    @endif
                 </div>
             </div>
         </div>

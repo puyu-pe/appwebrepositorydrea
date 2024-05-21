@@ -77,8 +77,8 @@ class AnswerController extends Controller
                 return PlatformHelper::ajaxDataNoExists();
             }
 
-            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ? AND type = ?',
-                [$request->input('idExam'), session('idUser'), TAnswer::TYPE['CORRECT']])->first();
+            $tAnswer = TAnswer::whereRaw('idExam = ? AND type = ?',
+                [$request->input('idExam'), TAnswer::TYPE['CORRECT']])->first();
             $tAnswerDetail = $tAnswer ? TAnswerDetail::whereRaw('idAnswer = ?', [$tAnswer->idAnswer])
                 ->orderBy('numberAnswer')->get() : null;
             $maxNumberAnswerDetail = $tAnswer ? TAnswerDetail::where('idAnswer', $tAnswer->idAnswer)

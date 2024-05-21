@@ -44,17 +44,16 @@ class ExamController extends Controller
             ExamHelper::incrementViewCounter($tExam);
             $rating = ExamHelper::getRatingData($tExam->idExam);
 
-            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ? AND type = ?',
-                [$tExam->idExam, session('idUser'), TAnswer::TYPE['VERIFY']])->first();
+            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ? AND type != ?',
+                [$tExam->idExam, session('idUser'), TAnswer::TYPE['CORRECT']])->first();
             $tAnswerDetail = $tAnswer ? TAnswerDetail::whereRaw('idAnswer = ?', [$tAnswer->idAnswer])
                 ->orderBy('numberAnswer')->get() : null;
 
             $tAnswersGroupedByUser = TAnswer::where('idExam', $tExam->idExam)
                 ->where('type', TAnswer::TYPE['REVIEWED'])
                 ->orderBy('created_at')
-                ->with('tuser')
-                ->get()
-                ->groupBy('idUser');
+                ->with(['tAnswerDetail', 'tUser'])
+                ->get();
 
             return view('frontoffice/exam/seed',
                 [

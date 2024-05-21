@@ -29,6 +29,6 @@ class TAnswer extends Model
 
     public function tAnswerDetail()
     {
-        return $this->hasMany('App\Models\TAnswer', 'idAnswer');
+        return $this->hasMany('App\Models\TAnswerDetail', 'idAnswer');
     }
 }

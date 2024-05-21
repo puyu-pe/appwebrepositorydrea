@@ -22,7 +22,6 @@ class AnswerController extends Controller
 
                 if ($request->has('txtValueResponseExam') && $request->has('hdIdAnswer'))
                 {
-
                     $idAnswer = $request->input('hdIdAnswer') ?? null;
 
                     if (!$idAnswer)
@@ -38,6 +37,7 @@ class AnswerController extends Controller
                         $idAnswer = $tAnswer->idAnswer;
                     }
 
+                    $total_null = 0;
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse)
                     {
                         $idAnswerDetail = $request->input('hdIdAnswerDetail')[$number] ?? null;
@@ -48,7 +48,11 @@ class AnswerController extends Controller
 
                             if ($tAnswerDetail) {
                                 $tAnswerDetail->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
+                                $tAnswerDetail->is_correct = $this->compareResponseAnswer($request->input('hdIdExam'), $tAnswerDetail->numberAnswer, $tAnswerDetail->descriptionAnswer);
                                 $tAnswerDetail->save();
+
+                                if ($tAnswerDetail->is_correct == null)
+                                    $total_null ++;
                             }
                         }
                         else
@@ -58,9 +62,18 @@ class AnswerController extends Controller
                             $tAnswerDetail->idAnswer = $idAnswer;
                             $tAnswerDetail->numberAnswer = $number + 1;
                             $tAnswerDetail->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
-                            $tAnswerDetail->is_correct = null;
+                            $tAnswerDetail->is_correct = $this->compareResponseAnswer($request->input('hdIdExam'), $tAnswerDetail->numberAnswer, $tAnswerDetail->descriptionAnswer);
                             $tAnswerDetail->save();
+
+                            if ($tAnswerDetail->is_correct == null)
+                                $total_null ++;
                         }
+                    }
+
+                    if ($total_null > 0){
+                        $tAnswerChange = TAnswer::find($idAnswer);
+                        $tAnswerChange->type = TAnswer::TYPE['REVIEWED'];
+                        $tAnswerChange->save();
                     }
                 }
 
@@ -122,5 +135,20 @@ class AnswerController extends Controller
 
             return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/mostrar/1');
         }
+    }
+
+    private function compareResponseAnswer($idExam, $numberAnswer, $response)
+    {
+        $tAnswer = TAnswer::whereRaw('idExam = ? AND type = ?', [$idExam,TAnswer::TYPE['CORRECT']])->first();
+
+        if (!$tAnswer)
+            return null;
+
+        $tAnswerDetail = TAnswerDetail::whereRaw('idAnswer = ? AND numberAnswer = ?', [$tAnswer->idAnswer, $numberAnswer])->first();
+
+        if (!$tAnswerDetail)
+            return null;
+
+        return $response == $tAnswerDetail->descriptionAnswer ? 1 : 0;
     }
 }
