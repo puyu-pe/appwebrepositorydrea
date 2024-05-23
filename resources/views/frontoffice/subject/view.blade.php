@@ -34,7 +34,8 @@
     <div class="it-course-area it-course-style-2 it-course-style-5 p-relative pt-50 pb-100">
         <div class="container">
             <div class="row">
-                <div id="divSearch" class="col-md-12">
+                <input type="hidden" id="hdCodeSubject" value="{{$codeSubject}}">
+                <div id="divSearch" class="col-md-11">
                     <div class="it-sv-details-sidebar-search mb-55">
                         <input id="txtSearch" type="text" placeholder="Información para búsqueda (Enter)"
                                value="{{ $filtersData->searchParameter }}">
@@ -43,7 +44,11 @@
                         </button>
                     </div>
                 </div>
-                <input type="hidden" id="hdCodeSubject" value="{{$codeSubject}}">
+                <div class="col-md-1">
+                    <button id="btnSearchSubject" class="it-btn btn btn-block btn-success">
+                        <span>Buscar</span>
+                    </button>
+                </div>
             </div>
             <div class="row">
                 @if ($codeSubject != 'all')

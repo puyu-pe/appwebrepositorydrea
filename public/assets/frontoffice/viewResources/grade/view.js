@@ -79,7 +79,7 @@ function checkDownloadButtonVisibility() {
     }
 }
 
-function searchTypeGrade() {
+function searchGradeExam() {
     let isValid = null;
 
     $('#divSearch').data('formValidation').resetForm();
@@ -123,26 +123,11 @@ function _initElements() {
 function _intiDefaultEvents() {
     inpSearchParameter.on("keypress", function (event) {
         if (event.key === "Enter") {
-            searchTypeGrade();
+            searchGradeExam();
         }
     });
 
-    $(slcTypes).on('change', function () {
-        searchTypeGrade();
-    });
-    $(slcGrades).on('change', function () {
-        searchTypeGrade();
-    });
-
-    $(slcSubjects).on('change', function () {
-        searchTypeGrade();
-    });
-
-    $(slcYears).on('change', function () {
-        searchTypeGrade();
-    });
-
     $('#btnSearchGrade').on('click', function (){
-        searchTypeGrade();
+        searchGradeExam();
     });
 }
