@@ -59,10 +59,10 @@
                         <div class="postbox__select">
                             <select id="slcSubjects">
                                 <option value="all">Todos los cursos</option>
-                                @foreach ($selectFilters['subjects'] as $grade)
-                                    <option value="{{ $grade->idSubject }}"
-                                        {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
-                                        {{ $grade->nameSubject }}</option>
+                                @foreach ($selectFilters['subjects'] as $subject)
+                                    <option value="{{ $subject->codeSubject }}"
+                                        {{ $filtersData->subject == $subject->codeSubject ? 'selected' : '' }}>
+                                        {{ $subject->nameSubject }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -73,8 +73,8 @@
                         <select id="slcTypes">
                             <option value="all">Todos los tipos</option>
                             @foreach ($selectFilters['types'] as $type)
-                                <option value="{{ $type->acronymTypeExam }}"
-                                    {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
+                                <option value="{{ $type->idTypeExam }}"
+                                    {{ $filtersData->type == $type->idTypeExam ? 'selected' : '' }}>
                                     {{ strtoupper($type->acronymTypeExam)}}</option>
                             @endforeach
                         </select>

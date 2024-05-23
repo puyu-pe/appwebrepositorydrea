@@ -191,7 +191,7 @@ class ExamController extends Controller
 
 				DB::commit();
 
-				return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'examen/insertar');
+				return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/insertar');
 			} catch (\Exception $e) {
 				DB::rollBack();
 

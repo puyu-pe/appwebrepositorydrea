@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Models\TExam;
+use App\Models\TGrade;
 use App\Models\TResource;
+use App\Models\TSubject;
 use App\Models\TTypeExam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -29,17 +31,28 @@ class DownloadController extends Controller
             $year = $ids['year'];
 
             $tTypeExam = TTypeExam::where('acronymTypeExam', $type)->first();
+            $tGrade = TGrade::where('codeGrade', $grade)->first();
+            $tSubject = TSubject::where('codeSubject', $subject)->first();
 
             $examsQuery = TExam::where('stateExam', TExam::STATUS['PUBLIC'])
-                ->where(function ($query) use ($type, $grade, $subject, $year, $search, $tTypeExam) {
+                ->where(function ($query) use ($tSubject, $tGrade, $type, $grade, $subject, $year, $search, $tTypeExam) {
                     if ($type !== 'all') {
-                        $query->where('idTypeExam', $tTypeExam->idTypeExam);
+                        if ($tTypeExam)
+                            $query->where('idTypeExam', $tTypeExam->idTypeExam);
+                        else
+                            $query->where('idTypeExam', $type);
                     }
                     if ($grade !== 'all') {
-                        $query->where('idGrade', $grade);
+                        if ($tGrade)
+                            $query->where('idGrade', $tGrade->idGrade);
+                        else
+                            $query->where('idGrade', $grade);
                     }
                     if ($subject !== 'all') {
-                        $query->where('idSubject', $subject);
+                        if ($tSubject)
+                            $query->where('idSubject', $tSubject->idSubject);
+                        else
+                            $query->where('idSubject', $subject);
                     }
                     if ($year !== 'all') {
                         $query->where('yearExam', $year);
