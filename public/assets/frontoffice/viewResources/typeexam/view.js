@@ -127,18 +127,7 @@ function _intiDefaultEvents() {
         }
     });
 
-    $(slcTypes).on('change', function () {
-        searchTypeExam();
-    });
-    $(slcGrades).on('change', function () {
-        searchTypeExam();
-    });
-
-    $(slcSubjects).on('change', function () {
-        searchTypeExam();
-    });
-
-    $(slcYears).on('change', function () {
+    $('#btnSearchType').on('click', function (){
         searchTypeExam();
     });
 }

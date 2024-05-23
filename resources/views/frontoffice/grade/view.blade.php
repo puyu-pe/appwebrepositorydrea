@@ -27,7 +27,8 @@
     <div class="it-course-area it-course-style-2 it-course-style-5 p-relative pt-50 pb-100">
         <div class="container">
             <div class="row">
-                <div id="divSearch" class="col-md-12">
+                <input type="hidden" id="hdCodeGrade" value="{{$codeGrade}}">
+                <div id="divSearch" class="col-md-11">
                     <div class="it-sv-details-sidebar-search mb-55">
                         <input id="txtSearch" type="text" placeholder="Información para búsqueda (Enter)"
                                value="{{ $filtersData->searchParameter }}">
@@ -36,13 +37,17 @@
                         </button>
                     </div>
                 </div>
-                <input type="hidden" id="hdCodeGrade" value="{{$codeGrade}}">
+                <div class="col-md-1">
+                    <button id="btnSearchGrade" class="it-btn btn btn-block btn-success">
+                        <span>Buscar</span>
+                    </button>
+                </div>
             </div>
             <div class="row">
                 @if ($codeGrade != 'all')
                     <div class="col-md-3" style="display: none;">
                         <div class="postbox__select">
-                            <select id="slcSubjects">
+                            <select id="slcGrades">
                                 <option value="{{$codeGrade}}" selected>{{($codeGrade)}}</option>
                             </select>
                         </div>
@@ -53,8 +58,8 @@
                             <select id="slcGrades">
                                 <option value="all">Todos los grados</option>
                                 @foreach ($selectFilters['grades'] as $grade)
-                                    <option value="{{ $grade->idGrade }}"
-                                        {{ $filtersData->grade == $grade->idGrade ? 'selected' : '' }}>
+                                    <option value="{{ $grade->codeGrade }}"
+                                        {{ $filtersData->grade == $grade->codeGrade ? 'selected' : '' }}>
                                         {{ $grade->descriptionGrade }}</option>
                                 @endforeach
                             </select>
@@ -65,10 +70,10 @@
                     <div class="postbox__select">
                         <select id="slcSubjects">
                             <option value="all">Todos los cursos</option>
-                            @foreach ($selectFilters['subjects'] as $grade)
-                                <option value="{{ $grade->idSubject }}"
-                                    {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
-                                    {{ $grade->nameSubject }}</option>
+                            @foreach ($selectFilters['subjects'] as $subject)
+                                <option value="{{ $subject->idSubject }}"
+                                    {{ $filtersData->subject == $subject->idSubject ? 'selected' : '' }}>
+                                    {{ $subject->nameSubject }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -78,8 +83,8 @@
                         <select id="slcTypes">
                             <option value="all">Todos los tipos</option>
                             @foreach ($selectFilters['types'] as $type)
-                                <option value="{{ $type->acronymTypeExam }}"
-                                    {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
+                                <option value="{{ $type->idTypeExam }}"
+                                    {{ $filtersData->type == $type->idTypeExam ? 'selected' : '' }}>
                                     {{ strtoupper($type->acronymTypeExam)}}</option>
                             @endforeach
                         </select>

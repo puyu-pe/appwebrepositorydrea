@@ -20,7 +20,7 @@
                                         <ul class="it-submenu submenu">
                                             <li id="mALL"
                                                 class="{{Session::get('subMenu')=='mALLTYPE' ? 'active' : ''}}">
-                                                <a href="{{url('tipoexamen/all/1')}}">Todos</a></li>
+                                                <a href="{{url('tipoexamen/all/1')}}">General</a></li>
                                             @foreach ($menuTypeExamItem as $item)
                                             <li id="{{'m'.strtoupper($item->acronymTypeExam)}}"
                                                 class="{{Session::get('subMenu')=='m'.strtoupper($item->acronymTypeExam).'TYPE' ? 'active' : ''}}">
@@ -33,9 +33,6 @@
                                         class="has-dropdown {{Session::get('menu')=='mSubject' ? 'active' : ''}}">
                                         <a href="#">Cursos</a>
                                         <ul class="it-submenu submenu">
-                                            <li id="mALL"
-                                                class="{{Session::get('subMenu')=='mALLSUBJECT' ? 'active' : ''}}">
-                                                <a href="{{url('curso/all/1')}}">Todos</a></li>
                                             @foreach ($menuSubjectItem as $item_subject)
                                                 <li id="{{'m'.strtoupper($item_subject->codeSubject)}}"
                                                     class="{{Session::get('subMenu')=='m'.strtoupper($item_subject->codeSubject).'SUBJECT' ? 'active' : ''}}">
@@ -48,9 +45,6 @@
                                         class="has-dropdown {{Session::get('menu')=='mGrade' ? 'active' : ''}}">
                                         <a href="#">Grados</a>
                                         <ul class="it-submenu submenu">
-                                            <li id="mALL"
-                                                class="{{Session::get('subMenu')=='mALLGRADE' ? 'active' : ''}}">
-                                                <a href="{{url('grado/all/1')}}">Todos</a></li>
                                             @foreach ($menuGradeItem as $item_grade)
                                                 <li id="{{'m'.strtoupper($item_grade->codeGrade)}}"
                                                     class="{{Session::get('subMenu')=='m'.strtoupper($item_grade->codeGrade).'GRADE' ? 'active' : ''}}">
