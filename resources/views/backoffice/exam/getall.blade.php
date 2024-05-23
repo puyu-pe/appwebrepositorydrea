@@ -103,7 +103,7 @@
                                     @if ($value->register_answer == 1)
                                         <span class="btn btn-info btn-xs glyphicon glyphicon-list" data-toggle="tooltip"
                                               title="Registrar respuestas" data-placement="left"
-                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Registrar respuestas (Máximo {{$value->number_question > 1 ? $value->number_question.' respuestas)' : $value->number_question.' respuesta)'}}', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('respuesta/insertar')}}', 'POST', null, null, false, true);"></span>
+                                              onclick="ajaxDialog('divGeneralContainer', 'modal-xs', 'Registrar respuestas de la evaluación', {_token: '{{csrf_token()}}', idExam: '{{$value->idExam}}'}, '{{url('respuesta/insertar')}}', 'POST', null, null, false, true);"></span>
                                     @endif
                                     @if(stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor'))
                                         <span class="btn btn-default btn-xs glyphicon glyphicon-eye-{{$value->stateExam == 'Publico' ? 'close' : 'open'}}" data-toggle="tooltip" title="{{$value->stateExam== 'Publico' ? 'Ocultar evaluacion' : 'Publicar evaluación'}}" data-placement="left" onclick="confirmDialog(function(){ $('#modalLoading').modal('show'); window.location.href='{{url('examen/estado/'.$value->idExam)}}'; });"></span>

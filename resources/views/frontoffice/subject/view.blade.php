@@ -34,7 +34,8 @@
     <div class="it-course-area it-course-style-2 it-course-style-5 p-relative pt-50 pb-100">
         <div class="container">
             <div class="row">
-                <div id="divSearch" class="col-md-12">
+                <input type="hidden" id="hdCodeSubject" value="{{$codeSubject}}">
+                <div id="divSearch" class="col-md-11">
                     <div class="it-sv-details-sidebar-search mb-55">
                         <input id="txtSearch" type="text" placeholder="Información para búsqueda (Enter)"
                                value="{{ $filtersData->searchParameter }}">
@@ -43,7 +44,11 @@
                         </button>
                     </div>
                 </div>
-                <input type="hidden" id="hdCodeSubject" value="{{$codeSubject}}">
+                <div class="col-md-1">
+                    <button id="btnSearchSubject" class="it-btn btn btn-block btn-success">
+                        <span>Buscar</span>
+                    </button>
+                </div>
             </div>
             <div class="row">
                 @if ($codeSubject != 'all')
@@ -59,10 +64,10 @@
                         <div class="postbox__select">
                             <select id="slcSubjects">
                                 <option value="all">Todos los cursos</option>
-                                @foreach ($selectFilters['subjects'] as $grade)
-                                    <option value="{{ $grade->idSubject }}"
-                                        {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
-                                        {{ $grade->nameSubject }}</option>
+                                @foreach ($selectFilters['subjects'] as $subject)
+                                    <option value="{{ $subject->codeSubject }}"
+                                        {{ $filtersData->subject == $subject->codeSubject ? 'selected' : '' }}>
+                                        {{ $subject->nameSubject }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -73,8 +78,8 @@
                         <select id="slcTypes">
                             <option value="all">Todos los tipos</option>
                             @foreach ($selectFilters['types'] as $type)
-                                <option value="{{ $type->acronymTypeExam }}"
-                                    {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
+                                <option value="{{ $type->idTypeExam }}"
+                                    {{ $filtersData->type == $type->idTypeExam ? 'selected' : '' }}>
                                     {{ strtoupper($type->acronymTypeExam)}}</option>
                             @endforeach
                         </select>

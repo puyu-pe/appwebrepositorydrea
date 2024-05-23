@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Backoffice;
+namespace App\Http\Controllers\Frontoffice;
 
 use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
@@ -12,7 +12,7 @@ use App\Models\TAnswer;
 
 class AnswerController extends Controller
 {
-    public function actionInsert(Request $request)
+    public function actionRegister(Request $request)
     {
         try
         {
@@ -22,7 +22,6 @@ class AnswerController extends Controller
 
                 if ($request->has('txtValueResponseExam') && $request->has('hdIdAnswer'))
                 {
-
                     $idAnswer = $request->input('hdIdAnswer') ?? null;
 
                     if (!$idAnswer)
@@ -31,13 +30,14 @@ class AnswerController extends Controller
                         $tAnswer->idAnswer = uniqid();
                         $tAnswer->idExam = $request->input('hdIdExam');
                         $tAnswer->idUser = session('idUser');
-                        $tAnswer->type = TAnswer::TYPE['CORRECT'];
+                        $tAnswer->type = TAnswer::TYPE['VERIFY'];
 
                         $tAnswer->save();
 
                         $idAnswer = $tAnswer->idAnswer;
                     }
 
+                    $total_null = 0;
                     foreach ($request->input('txtValueResponseExam') as $number => $valueResponse)
                     {
                         $idAnswerDetail = $request->input('hdIdAnswerDetail')[$number] ?? null;
@@ -48,7 +48,11 @@ class AnswerController extends Controller
 
                             if ($tAnswerDetail) {
                                 $tAnswerDetail->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
+                                $tAnswerDetail->is_correct = $this->compareResponseAnswer($request->input('hdIdExam'), $tAnswerDetail->numberAnswer, $tAnswerDetail->descriptionAnswer);
                                 $tAnswerDetail->save();
+
+                                if ($tAnswerDetail->is_correct == null)
+                                    $total_null ++;
                             }
                         }
                         else
@@ -58,9 +62,18 @@ class AnswerController extends Controller
                             $tAnswerDetail->idAnswer = $idAnswer;
                             $tAnswerDetail->numberAnswer = $number + 1;
                             $tAnswerDetail->descriptionAnswer = $valueResponse == '' ? '' : $valueResponse;
-                            $tAnswerDetail->is_correct = null;
+                            $tAnswerDetail->is_correct = $this->compareResponseAnswer($request->input('hdIdExam'), $tAnswerDetail->numberAnswer, $tAnswerDetail->descriptionAnswer);
                             $tAnswerDetail->save();
+
+                            if ($tAnswerDetail->is_correct == null)
+                                $total_null ++;
                         }
+                    }
+
+                    if ($total_null > 0){
+                        $tAnswerChange = TAnswer::find($idAnswer);
+                        $tAnswerChange->type = TAnswer::TYPE['REVIEWED'];
+                        $tAnswerChange->save();
                     }
                 }
 
@@ -77,26 +90,27 @@ class AnswerController extends Controller
                 return PlatformHelper::ajaxDataNoExists();
             }
 
-            $tAnswer = TAnswer::whereRaw('idExam = ? AND type = ?',
-                [$request->input('idExam'), TAnswer::TYPE['CORRECT']])->first();
+            $tAnswer = TAnswer::whereRaw('idExam = ? AND idUser = ? AND type = ?',
+                [$request->input('idExam'), session('idUser'), TAnswer::TYPE['CORRECT']])->first();
             $tAnswerDetail = $tAnswer ? TAnswerDetail::whereRaw('idAnswer = ?', [$tAnswer->idAnswer])
                 ->orderBy('numberAnswer')->get() : null;
             $maxNumberAnswerDetail = $tAnswer ? TAnswerDetail::where('idAnswer', $tAnswer->idAnswer)
                 ->max('numberAnswer') : 0;
 
-            return view('backoffice/answer/insert',
-            [
-                'tExam' => $tExam,
-                'tAnswer' => $tAnswer,
-                'tAnswerDetail' => $tAnswerDetail,
-                'maxNumberAnswer' => $maxNumberAnswerDetail
-            ]);
+            return view('front/answer/register',
+                [
+                    'tExam' => $tExam,
+                    'tAnswer' => $tAnswer,
+                    'tAnswerDetail' => $tAnswerDetail,
+                    'maxNumberAnswer' => $maxNumberAnswerDetail
+                ]);
         }
         catch (\Exception $e)
         {
             DB::rollBack();
+            $previousUrl = url()->previous();
 
-            return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], $previousUrl);
         }
     }
 
@@ -121,5 +135,20 @@ class AnswerController extends Controller
 
             return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/mostrar/1');
         }
+    }
+
+    private function compareResponseAnswer($idExam, $numberAnswer, $response)
+    {
+        $tAnswer = TAnswer::whereRaw('idExam = ? AND type = ?', [$idExam,TAnswer::TYPE['CORRECT']])->first();
+
+        if (!$tAnswer)
+            return null;
+
+        $tAnswerDetail = TAnswerDetail::whereRaw('idAnswer = ? AND numberAnswer = ?', [$tAnswer->idAnswer, $numberAnswer])->first();
+
+        if (!$tAnswerDetail)
+            return null;
+
+        return $response == $tAnswerDetail->descriptionAnswer ? 1 : 0;
     }
 }

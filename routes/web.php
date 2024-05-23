@@ -19,6 +19,7 @@ use App\Http\Controllers\Frontoffice\ExamController as FrontExamController;
 use App\Http\Controllers\Frontoffice\ExamRatingController as FrontExamRatingController;
 use App\Http\Controllers\Frontoffice\SubjectController as FrontSubjectController;
 use App\Http\Controllers\Frontoffice\GradeController as FrontGradeController;
+use App\Http\Controllers\Frontoffice\AnswerController as FrontAnswerController;
 
 use App\Http\Controllers\Backoffice\DownloadController;
 
@@ -90,6 +91,7 @@ Route::post('download/selected', [DownloadController::class, 'packZipFile'])->na
 Route::any('download/zip/{filename}', [DownloadController::class, 'downloadZipFile'])->name('GenericMiddleware:download/zip');
 
 Route::post('respuesta/insertar',[BackAnswerController::class,'actionInsert'])->middleware('GenericMiddleware:respuesta/insertar');
+Route::post('respuesta/registrar',[FrontAnswerController::class,'actionRegister'])->middleware('GenericMiddleware:respuesta/registrar');
 
 Route::post('recurso/insertar',[BackResourceController::class,'actionInsert'])->middleware('GenericMiddleware:recurso/insertar');
 Route::get('recurso/eliminar/{idResource}',[BackResourceController::class,'actionDelete'])->middleware('GenericMiddleware:recurso/eliminar');

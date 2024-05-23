@@ -124,7 +124,7 @@
                                     <thead>
                                     <tr>
                                         <th style="width: 120px;">N° de pregunta</th>
-                                        <th>Descripción de la respuesta</th>
+                                        <th>Alternativa</th>
                                     </tr>
                                     </thead>
                                     <tbody>

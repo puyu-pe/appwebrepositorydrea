@@ -25,8 +25,8 @@ class GradeController extends Controller
 
         $tGrade = $codeGrade != 'all' ? TGrade::whereRaw('codeGrade =?', [$codeGrade])->first() : null;
 
-        if ($codeGrade != 'all' && $type != 'all')
-            $tGrade =  TGrade::whereRaw('codeGrade =?', [$type])->first();
+        if ($codeGrade != 'all' && $grade != 'all')
+            $tGrade =  TGrade::whereRaw('codeGrade =?', [$grade])->first();
 
         $examsQuery = TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])
             ->whereRaw(

@@ -25,8 +25,8 @@ class SubjectController extends Controller
 
         $tSubject = $codeSubject != 'all' ? TSubject::whereRaw('codeSubject =?', [$codeSubject])->first() : null;
 
-        if ($codeSubject != 'all' && $type != 'all')
-            $tSubject =  TSubject::whereRaw('codeSubject =?', [$type])->first();
+        if ($codeSubject != 'all' && $subject != 'all')
+            $tSubject =  TSubject::whereRaw('codeSubject =?', [$subject])->first();
 
         $examsQuery = TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])
             ->whereRaw(
