@@ -80,12 +80,22 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-9">
             <label for="selectKeywordExam">Palabras clave*</label>
             <select name="selectKeywordExam[]" id="selectKeywordExam" class="form-control select2ExamKeyword" multiple style="width: 100%;">
                 @foreach(explode('__7SEPARATOR7__',$tExam->keywordExam) as $value)
                     <option value="{{$value}}" selected>{{$value}}</option>
                 @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="selectTypeAnswerExam">Alternativas de evaluación</label>
+            <select name="selectTypeAnswerExam[]" id="selectTypeAnswerExam" class="form-control select2TypeAnswerExam" multiple style="width: 100%;">
+                @if($tExam->keyTypeAnswer != '')
+                    @foreach(explode('__7SEPARATOR7__',$tExam->keyTypeAnswer) as $value_answer)
+                        <option value="{{$value_answer}}" selected>{{$value_answer}}</option>
+                    @endforeach
+                @endif
             </select>
         </div>
     </div>

@@ -103,6 +103,8 @@ class ExamController extends Controller
 				$tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
 				$tExam->extensionExam = strtolower($request->file('fileExamExtension')->getClientOriginalExtension());
 				$tExam->register_answer = $request->input('selectRegisterAnswer');
+                $tExam->keyTypeAnswer = $request->input('selectTypeAnswerExam') ?
+                    implode('__7SEPARATOR7__', $request->input('selectTypeAnswerExam')) : '';
 				$tExam->dateExam = date('Y-m-d');
 
 				$tExam->save();
@@ -261,6 +263,11 @@ class ExamController extends Controller
 				$tExam->number_question = $request->input('selectRegisterAnswer') == TExam::REGISTER_RESPONSE['NO'] ? 0 : $request->input('txtResponseExamPermit');
 				$tExam->keywordExam = implode('__7SEPARATOR7__', $request->input('selectKeywordExam'));
 				$tExam->register_answer = $request->input('selectRegisterAnswer');
+                $tExam->keyTypeAnswer = $request->input('selectTypeAnswerExam') ?
+                    implode('__7SEPARATOR7__', $request->input('selectTypeAnswerExam')) : '';
+
+                if ($tExam->dateExam)
+                    $tExam->dateExam = date('Y-m-d');
 
 				$tExam->save();
 

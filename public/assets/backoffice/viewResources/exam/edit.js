@@ -170,6 +170,26 @@ $(function()
             },
         placeholder: 'Agregar datos...'
     });
+    $('.select2TypeAnswerExam').select2(
+    {
+        tags: true,
+        language:
+            {
+                noResults : function()
+                {
+                    return 'No se encontraron resultados.';
+                },
+                searching : function()
+                {
+                    return 'Buscando...';
+                },
+                inputTooShort : function()
+                {
+                    return 'Por favor ingrese 3 o más caracteres';
+                }
+            },
+        placeholder: 'Agregue alternativas a usar...'
+    });
 });
 
 function showDivNameOtherExam (acronym)

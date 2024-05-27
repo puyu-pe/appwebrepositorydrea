@@ -11,45 +11,71 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if($tAnswerDetail)
-                    @foreach($tAnswerDetail as $key => $tanswer_value)
-                        <tr>
-                            <input type="hidden" id="hdIdAnswerDetail{{$tanswer_value->numberAnswer}}" name="hdIdAnswerDetail[]" value="{{$tanswer_value->idAnswerDetail}}">
-                            <td class="text-center">
-                                <div>{{$tanswer_value->numberAnswer}}</div>
-                            </td>
-                            <td>
-                                <input type="text" id="txtValueResponseExam{{$tanswer_value->numberAnswer}}" name="txtValueResponseExam[]" value="{{$tanswer_value->descriptionAnswer}}" class="form-control">
-                            </td>
-                        </tr>
-                    @endforeach
-                    @if($maxNumberAnswer<$tExam->number_question)
-                        @for($i = $maxNumberAnswer+1; $i <= $tExam->number_question; $i++)
+                    @if($tAnswerDetail)
+                        @foreach($tAnswerDetail as $key => $tanswer_value)
                             <tr>
-                                <input type="hidden" id="hdIdAnswerDetail{{$i}}" name="hdIdAnswerDetail[]" value="">
+                                <input type="hidden" id="hdIdAnswerDetail{{$tanswer_value->numberAnswer}}" name="hdIdAnswerDetail[]" value="{{$tanswer_value->idAnswerDetail}}">
                                 <td class="text-center">
-                                    <div>{{$i}}</div>
+                                    <div>{{$tanswer_value->numberAnswer}}</div>
                                 </td>
                                 <td>
-                                    <input type="text" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" value="" class="form-control">
+                                    @if($tExam->keyTypeAnswer != '')
+                                        <select class="form-control" id="txtValueResponseExam{{$tanswer_value->numberAnswer}}" name="txtValueResponseExam[]" style="width: 100%;">
+                                            <option value="" disabled>Seleccione ...</option>
+                                            @foreach(explode('__7SEPARATOR7__',$tExam->keyTypeAnswer) as $value_answer)
+                                                <option value="{{$value_answer}}" {{$tanswer_value->descriptionAnswer == $value_answer ? 'selected' : ''}}>{{$value_answer}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <input type="text" id="txtValueResponseExam{{$tanswer_value->numberAnswer}}" name="txtValueResponseExam[]" value="{{$tanswer_value->descriptionAnswer}}" class="form-control">
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                        @if($maxNumberAnswer<$tExam->number_question)
+                            @for($i = $maxNumberAnswer+1; $i <= $tExam->number_question; $i++)
+                                <tr>
+                                    <input type="hidden" id="hdIdAnswerDetail{{$i}}" name="hdIdAnswerDetail[]" value="">
+                                    <td class="text-center">
+                                        <div>{{$i}}</div>
+                                    </td>
+                                    <td>
+                                        @if($tExam->keyTypeAnswer != '')
+                                            <select class="form-control" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" style="width: 100%;">
+                                                <option value="" selected disabled>Seleccione ...</option>
+                                                @foreach(explode('__7SEPARATOR7__',$tExam->keyTypeAnswer) as $value_answer)
+                                                    <option value="{{$value_answer}}">{{$value_answer}}</option>
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <input type="text" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" value="" class="form-control">
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endfor
+                        @endif
+                    @else
+                        @for($i = 0; $i < $tExam->number_question; $i++)
+                            <tr>
+                                <input type="hidden" id="hdIdAnswerDetail{{$i+1}}" name="hdIdAnswerDetail[]" value="">
+                                <td class="text-center">
+                                    <div>{{$i+1}}</div>
+                                </td>
+                                <td>
+                                    @if($tExam->keyTypeAnswer != '')
+                                        <select class="form-control" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" style="width: 100%;">
+                                            <option value="" selected disabled>Seleccione ...</option>
+                                            @foreach(explode('__7SEPARATOR7__',$tExam->keyTypeAnswer) as $value_answer)
+                                                <option value="{{$value_answer}}">{{$value_answer}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <input type="text" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" value="" class="form-control">
+                                    @endif
                                 </td>
                             </tr>
                         @endfor
                     @endif
-                @else
-                    @for($i = 0; $i < $tExam->number_question; $i++)
-                        <tr>
-                            <input type="hidden" id="hdIdAnswerDetail{{$i+1}}" name="hdIdAnswerDetail[]" value="">
-                            <td class="text-center">
-                                <div>{{$i+1}}</div>
-                            </td>
-                            <td>
-                                <input type="text" id="txtValueResponseExam{{$i+1}}" name="txtValueResponseExam[]"
-                                       value="" class="form-control">
-                            </td>
-                        </tr>
-                    @endfor
-                @endif
                 </tbody>
             </table>
         </div>
