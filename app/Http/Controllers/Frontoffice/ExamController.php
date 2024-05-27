@@ -53,6 +53,9 @@ class ExamController extends Controller
                 ->where('type', TAnswer::TYPE['REVIEWED'])
                 ->orderBy('created_at')
                 ->with(['tAnswerDetail', 'tUser'])
+                ->withSum(['tanswerdetail as correct_answers_sum' => function ($query) {
+                    $query->where('is_correct', 1);
+                }], 'is_correct')
                 ->get();
 
             return view('frontoffice/exam/seed',

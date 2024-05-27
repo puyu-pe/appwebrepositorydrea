@@ -56,40 +56,18 @@
                             <div class="it-evn-details-text mb-40">
                                 <h6 class="it-evn-details-title-sm pb-5">Descripción de la evaluación.</h6>
                                 <p>{{ $tExam->descriptionExam }}</p>
+                                <br>
                                 @if (Session::get('idUser') && $tExam->register_answer == '1')
                                     <button class="it-btn w-80 text-center" data-bs-toggle="modal"
                                             data-bs-target="#mdlAnswerRegister">
                                         {{ ($tAnswer && $tAnswer->type == 'reviewed') ? 'Ver resultados' :'Solucionar evaluación'}}
-                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                                  stroke-width="1.5"
-                                                  stroke-miterlimit="10" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                  stroke-miterlimit="10"
-                                                  stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
                                     </button>
                                 @endif
-
                                 @if($tExam->register_answer == '1')
-                                    <button class="it-btn w-80 text-center" id="btnModalResponse"
-                                            onclick="$('#dvAnswer').show();">
-                                        Ver usuarios que respondieron
-                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                                  stroke-width="1.5"
-                                                  stroke-miterlimit="10" stroke-linecap="round"
-                                                  stroke-linejoin="round"/>
-                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                                  stroke-miterlimit="10"
-                                                  stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
+                                    <button class="it-btn w-80 text-center" id="btnModalResponse">
+                                        Mostrar usuarios que respondieron
                                     </button>
                                 @endif
-
                             </div>
                         </div>
                     </div>
@@ -175,7 +153,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="heading{{$answers->tuser->idUser}}">
                                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$answers->tuser->idUser}}" aria-expanded="true" aria-controls="collapse{{$answers->tuser->idUser}}">
-                                                    {{ $answers->tuser->firstName }} {{ $answers->tuser->surName }}
+                                                    {{ $answers->tuser->firstName }} {{ $answers->tuser->surName }} {{' (' . $answers->correct_answers_sum. ' de' . $tExam->number_question. ')'}}
                                                 </button>
                                             </h2>
                                             <div id="collapse{{$answers->tuser->idUser}}" class="accordion-collapse collapse" aria-labelledby="heading{{$answers->tuser->idUser}}" data-bs-parent="#accAnswers">
@@ -183,21 +161,29 @@
                                                     <table class="table">
                                                         <thead>
                                                         <tr>
-                                                            <th>N° de pregunta</th>
-                                                            <th>Descripción de la respuesta</th>
+                                                            <th>N°</th>
+                                                            <th>Alternativa</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        @foreach($answers->tanswerdetail as $tanswer_value)
-                                                            <tr>
-                                                                <td class="text-center">
-                                                                    <div>{{ $tanswer_value->numberAnswer }}</div>
-                                                                </td>
-                                                                <td>
-                                                                    <div>{{ $tanswer_value->descriptionAnswer }}</div>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
+                                                            @if($tAnswer && $tAnswer->type == 'reviewed')
+                                                                @foreach($answers->tanswerdetail as $tanswer_value)
+                                                                    <tr>
+                                                                        <td>
+                                                                            <b style="font-size: 20px;">{{ $tanswer_value->numberAnswer }}</b>
+                                                                        </td>
+                                                                        <td>
+                                                                            <b style="font-size: 20px;">{{ $tanswer_value->descriptionAnswer }}</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <div>Realize el cuestionario para ver las alternativas</div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -221,9 +207,10 @@
         </div>
     </div>
 
+    <script src="{{asset('assets/frontoffice/viewResources/exam/seed.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
 
     <!-- Modal -->
-    <div class="modal fade" id="mdlAnswerRegister" tabindex="-1" role="dialog"  aria-labelledby="mdlAnswerRegister" aria-hidden="true">
+    <div class="modal fade" id="mdlAnswerRegister" tabindex="-1" role="dialog" data-toggle="modal" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">

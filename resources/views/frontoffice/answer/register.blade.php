@@ -5,17 +5,15 @@
                     frameborder="0" allowfullscreen style="height: 100%; width: 100%; border: none;"></iframe>
         </div>
         <div class="col-md-5">
-            <div style="max-height: calc(100vh - 300px); overflow-y: scroll">
-
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="tblResponseExam">
-                        <thead>
+            <div style="max-height: calc(100vh - 330px); overflow-y: scroll">
+                <table class="table table-bordered" id="tblResponseExam">
+                    <thead>
                         <tr>
                             <th class="text-center">N°</th>
                             <th>Alternativa</th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         @if($tAnswerDetail)
                             @foreach($tAnswerDetail as $key => $tanswer_value)
                                 <tr>
@@ -24,7 +22,18 @@
                                         <div>{{$tanswer_value->numberAnswer}}</div>
                                     </td>
                                     <td>
-                                        <input type="text" id="txtValueResponseExam{{$tanswer_value->numberAnswer}}" name="txtValueResponseExam[]" value="{{$tanswer_value->descriptionAnswer}}" class="form-control">
+                                        @if($tExam->keyTypeAnswer != '')
+                                            <div class="postbox__select">
+                                                <select id="txtValueResponseExam{{$tanswer_value->numberAnswer}}" name="txtValueResponseExam[]" style="width: 100%;">
+                                                    <option value="" disabled>Seleccione ...</option>
+                                                    @foreach(explode('__7SEPARATOR7__',$tExam->keyTypeAnswer) as $value_answer)
+                                                        <option value="{{$value_answer}}" {{$tanswer_value->descriptionAnswer == $value_answer ? 'selected' : ''}}>{{$value_answer}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @else
+                                            <input type="text" id="txtValueResponseExam{{$tanswer_value->numberAnswer}}" name="txtValueResponseExam[]" value="{{$tanswer_value->descriptionAnswer}}" class="form-control">
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -36,7 +45,18 @@
                                             <div>{{$i}}</div>
                                         </td>
                                         <td>
-                                            <input type="text" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" value="" class="form-control">
+                                            @if($tExam->keyTypeAnswer != '')
+                                                <div class="postbox__select">
+                                                    <select id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" style="width: 100%;">
+                                                        <option value="" selected disabled>Seleccione ...</option>
+                                                        @foreach(explode('__7SEPARATOR7__',$tExam->keyTypeAnswer) as $value_answer)
+                                                            <option value="{{$value_answer}}">{{$value_answer}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @else
+                                                <input type="text" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" value="" class="form-control">
+                                            @endif
                                         </td>
                                     </tr>
                                 @endfor
@@ -49,15 +69,24 @@
                                         <div>{{$i+1}}</div>
                                     </td>
                                     <td>
-                                        <input type="text" id="txtValueResponseExam{{$i+1}}" name="txtValueResponseExam[]"
-                                               value="" class="form-control">
+                                        @if($tExam->keyTypeAnswer != '')
+                                            <div class="postbox__select">
+                                                <select id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" style="width: 100%;">
+                                                    <option value="" selected disabled>Seleccione ...</option>
+                                                    @foreach(explode('__7SEPARATOR7__',$tExam->keyTypeAnswer) as $value_answer)
+                                                        <option value="{{$value_answer}}">{{$value_answer}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @else
+                                            <input type="text" id="txtValueResponseExam{{$i}}" name="txtValueResponseExam[]" value="" class="form-control">
+                                        @endif
                                     </td>
                                 </tr>
                             @endfor
                         @endif
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

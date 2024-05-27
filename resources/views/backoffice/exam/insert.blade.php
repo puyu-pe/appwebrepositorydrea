@@ -81,9 +81,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-9">
                         <label for="selectKeywordExam">Palabras clave*</label>
                         <select name="selectKeywordExam[]" id="selectKeywordExam" class="form-control select2ExamKeyword" multiple style="width: 100%;"></select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="selectTypeAnswerExam">Alternativas de evaluación</label>
+                        <select name="selectTypeAnswerExam[]" id="selectTypeAnswerExam" class="form-control select2TypeAnswerExam" onchange="getSelectedValues();" multiple style="width: 100%;"></select>
                     </div>
                 </div>
                 <div class="row">

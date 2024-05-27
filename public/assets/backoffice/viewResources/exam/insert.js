@@ -174,6 +174,26 @@ $(function()
         },
         placeholder: 'Agregar datos...'
     });
+    $('.select2TypeAnswerExam').select2(
+    {
+        tags: true,
+        language:
+            {
+                noResults : function()
+                {
+                    return 'No se encontraron resultados.';
+                },
+                searching : function()
+                {
+                    return 'Buscando...';
+                },
+                inputTooShort : function()
+                {
+                    return 'Por favor ingrese 3 o más caracteres';
+                }
+            },
+        placeholder: 'Agregue alternativas a usar...'
+    });
 });
 
 
@@ -188,17 +208,41 @@ function showDivNameOtherExam (acronym)
     }
 }
 
-function addElementConcept(number)
-{
-    var htmlTemp=
-    `<tr>
-        <td class="text-center tblNumber">
-            <div>`+number+`</div>
-        </td>
-        <td>
-            <input type="text" id="txtValueResponseExam`+number+`" name="txtValueResponseExam[]" class="form-control" value="" form="frmInsertExam">
-        </td>
-    </tr>`;
+function addElementConcept(number, alternative) {
+    var htmlTemp;
+
+    if (alternative !== null) {
+        // Crear el select con las opciones
+        var selectOptions = '<option value="" disabled selected>Seleccione...</option>';
+        for (var i = 0; i < alternative.length; i++) {
+            selectOptions += '<option value="' + alternative[i] + '">' + alternative[i] + '</option>';
+        }
+
+        htmlTemp = `
+            <tr>
+                <td class="text-center tblNumber">
+                    <div>${number}</div>
+                </td>
+                <td>
+                    <select id="txtValueResponseExam${number}" name="txtValueResponseExam[]" class="form-control" form="frmInsertExam">
+                        ${selectOptions}
+                    </select>
+                </td>
+            </tr>
+        `;
+    } else {
+        // Crear el input como en el código original
+        htmlTemp = `
+            <tr>
+                <td class="text-center tblNumber">
+                    <div>${number}</div>
+                </td>
+                <td>
+                    <input type="text" id="txtValueResponseExam${number}" name="txtValueResponseExam[]" class="form-control" value="" form="frmInsertExam">
+                </td>
+            </tr>
+        `;
+    }
 
     $('#tblResponseExam > tbody').append(htmlTemp);
 }
@@ -207,23 +251,27 @@ function showButtonResponse(value)
 {
     if (value === '1'){
         $('#txtResponseExamPermit').prop('readonly', false);
+        $('#selectTypeAnswerExam').prop('disabled', false);
         $('#txtResponseExamPermit').val('');
+        $('#selectTypeAnswerExam').empty();
         $('#btnModalResponse').show();
     }else{
         resetQuestion();
         $('#txtResponseExamPermit').prop('readonly', true);
+        $('#selectTypeAnswerExam').prop('disabled', true);
         $('#txtResponseExamPermit').val('');
+        $('#selectTypeAnswerExam').empty();
         $('#btnModalResponse').hide();
     }
 }
 
-function generateQuestion(total){
+function generateQuestion(total, data){
     let total_answer = parseInt(total);
     let total_answer_table =  parseInt($('#tblResponseExam > tbody > tr').length);
 
     if (total_answer !== total_answer_table){
         for (let i= 0; i< total_answer ; i++){
-            addElementConcept(i+1);
+            addElementConcept(i+1, data);
         }
     }
 }
@@ -234,11 +282,17 @@ function resetQuestion(){
 
 function openModal(){
     let total_answer_permit = parseInt($('input#txtResponseExamPermit').val());
+    let value_answer = getSelectedValues();
+
+    if (value_answer !== null && value_answer.length <= 1){
+        warningNote('Advertencia', 'Ingrese al menos 2 alternativas');
+        return false;
+    }
 
     if ($('#txtResponseExamPermit').val() !== '' && total_answer_permit>0)
     {
         let total_answer = $('input#txtResponseExamPermit').val();
-        generateQuestion(total_answer);
+        generateQuestion(total_answer, value_answer);
 
         $('#txtResponseExamPermit').prop('readonly', true);
         $('#modalAccess').modal('show');
@@ -260,24 +314,31 @@ function validRegister()
     return status;
 }
 
-function validateNotEmptyResponse(){
-    let total_not_empty_response = 0;
+function validateNotEmptyResponse() {
+    let total_empty_response = 0;
     let status_response = false;
-    let total_answer_table =  parseInt($('#tblResponseExam > tbody > tr').length);
-    console.log(total_answer_table);
-    $('#tblResponseExam > tbody > tr').each((index, element) =>
-    {
-        let value_description = $($(element).find('> td > input[name="txtValueResponseExam[]"]')[0]).val();
+    $('#tblResponseExam > tbody > tr').each((index, element) => {
+        let $inputOrSelect = $(element).find('> td > input[name="txtValueResponseExam[]"], > td > select[name="txtValueResponseExam[]"]');
 
-        if (value_description !== '')
-            total_not_empty_response++;
+        if ($inputOrSelect.length > 0) {
+            if ($inputOrSelect.is('input')) {
+                let value_description = $inputOrSelect.val();
+                if (value_description === '') {
+                    total_empty_response++;
+                }
+            } else if ($inputOrSelect.is('select')) {
+                let selected_option = $inputOrSelect.find('option:selected').val();
+                if (!selected_option || selected_option === '') {
+                    total_empty_response++;
+                }
+            }
+        }
     });
 
-    if (total_answer_table > 0 && total_not_empty_response <= 0)
+    if (total_empty_response > 0) {
         status_response = true;
-
-    if (status_response)
-        errorNote('No se pudo proceder', 'Registre al menos 1 respuesta en el cuestionario');
+        errorNote('No se pudo proceder', 'Se debe registrar todas las alternativas');
+    }
 
     return status_response;
 }
@@ -293,6 +354,12 @@ function verify_select_other()
     }
 
     return false;
+}
+
+function getSelectedValues() {
+    const selectTypeAnswerExam = document.getElementById('selectTypeAnswerExam');
+    const selectedValues = Array.from(selectTypeAnswerExam.selectedOptions).map(option => option.value);
+    return selectedValues.length > 0 ? selectedValues : null;
 }
 
 function sendInsertExam()

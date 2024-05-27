@@ -12,17 +12,24 @@
                     <tr>
                         <th class="text-center">N°</th>
                         <th>Alternativa</th>
-                        <th></th>
+                        <th class="text-center">Estado</th>
                     </tr>
                     </thead>
                     <tbody>
                         @foreach($tAnswerDetail as $key => $tanswer_value)
-                            <tr style="color: {{$tanswer_value->is_correct == 1 ? 'green;' : 'red;'}}}">
-                                <td class="text-center">
-                                    <div>{{$tanswer_value->numberAnswer}}</div>
+                            <tr>
+                                <td class="text-center" style="color: {{$tanswer_value->is_correct == 1 ? 'green;' : 'red;'}}}">
+                                    <b style="font-size: 20px;">{{$tanswer_value->numberAnswer}}</b>
                                 </td>
-                                <td>
-                                    <div>{{$tanswer_value->descriptionAnswer}}</div>
+                                <td style="color: {{$tanswer_value->is_correct == 1 ? 'green;' : 'red;'}}}">
+                                    <b style="font-size: 20px;">{{$tanswer_value->descriptionAnswer}}</b>
+                                </td>
+                                <td class="text-center">
+                                    @if($tanswer_value->is_correct == 1)
+                                        <i class="fas fa-check" style="color: green;"></i>
+                                    @else
+                                        <i class="fas fa-times" style="color: red;"></i>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
