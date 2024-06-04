@@ -12,6 +12,7 @@
                     <tr>
                         <th class="text-center">N°</th>
                         <th>Alternativa</th>
+                        <th>Correcta</th>
                         <th class="text-center">Estado</th>
                     </tr>
                     </thead>
@@ -23,6 +24,9 @@
                                 </td>
                                 <td style="color: {{$tanswer_value->is_correct == 1 ? 'green;' : 'red;'}}}">
                                     <b style="font-size: 20px;">{{$tanswer_value->descriptionAnswer}}</b>
+                                </td>
+                                <td style="color: green">
+                                    <b style="font-size: 20px;">{{ $tanswer_value->is_correct == 1 ? '---' : $tAnswerDetailCorrect[$key]->descriptionAnswer}}</b>
                                 </td>
                                 <td class="text-center">
                                     @if($tanswer_value->is_correct == 1)

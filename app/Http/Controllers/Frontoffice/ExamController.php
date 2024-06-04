@@ -49,6 +49,10 @@ class ExamController extends Controller
             $tAnswerDetail = $tAnswer ? TAnswerDetail::whereRaw('idAnswer = ?', [$tAnswer->idAnswer])
                 ->orderBy('numberAnswer')->get() : null;
 
+            $tAnswerCorrect = TAnswer::whereRaw('idExam = ? AND type = ?', [$tExam->idExam, TAnswer::TYPE['CORRECT']])->first();
+            $tAnswerDetailCorrect = $tAnswerCorrect ? TAnswerDetail::whereRaw('idAnswer = ?', [$tAnswerCorrect->idAnswer])
+                ->orderBy('numberAnswer')->get() : null;
+
             $tAnswersGroupedByUser = TAnswer::where('idExam', $tExam->idExam)
                 ->where('type', TAnswer::TYPE['REVIEWED'])
                 ->orderBy('created_at')
@@ -66,7 +70,8 @@ class ExamController extends Controller
                     'rating' => $rating,
                     'tAnswersGroupedByUser' => $tAnswersGroupedByUser,
                     'tAnswer' => $tAnswer,
-                    'tAnswerDetail' => $tAnswerDetail
+                    'tAnswerDetail' => $tAnswerDetail,
+                    'tAnswerDetailCorrect' => $tAnswerDetailCorrect
                 ]);
         } catch (\Exception $e) {
             DB::rollBack();

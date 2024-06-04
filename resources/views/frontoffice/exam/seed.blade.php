@@ -223,6 +223,7 @@
                             'tExam' => $tExam,
                             'tAnswer' => $tAnswer,
                             'tAnswerDetail' => $tAnswerDetail,
+                            'tAnswerDetailCorrect' => $tAnswerDetailCorrect,
                             'maxNumberAnswer' => $tExam->number_question,
                         ])
                     @else
