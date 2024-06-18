@@ -86,7 +86,7 @@
                     </a>
                 </div>
                 <div class="itoffcanvas__text">
-                    <p>Plataforma web que gestiona las evaluaciones de las DRE a nivel nacional</p>
+                    <p>Plataforma web que gestiona las evaluaciones de las DRE/GRE a nivel nacional</p>
                 </div>
                 <div class="it-menu-mobile"></div>
                 <div class="itoffcanvas__info">
@@ -142,6 +142,7 @@
                 @include('frontoffice/partial/copy')
             <!-- copy-right area end -->
         </footer>
+        <div id="sfcs6p3ar6rnfg9a728tnftrqgrgwdebwgk"></div><script type="text/javascript" src="https://counter4.optistats.ovh/private/counter.js?c=s6p3ar6rnfg9a728tnftrqgrgwdebwgk&down=async" async></script><noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas para blog"><img src="https://counter4.optistats.ovh/private/contadorvisitasgratis.php?c=s6p3ar6rnfg9a728tnftrqgrgwdebwgk" border="0" title="contador de visitas para la aplicación" alt="contador de visitas para la aplicación"></a></noscript>
         <!-- JS here -->
         <script src="{{asset('assets/frontoffice/js/waypoints.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/bootstrap.bundle.min.js')}}"></script>
