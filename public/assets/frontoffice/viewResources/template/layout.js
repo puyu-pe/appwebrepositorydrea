@@ -3,12 +3,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const allElements = document.querySelectorAll('*');
     allElements.forEach(element => {
-        const style = window.getComputedStyle(element);
-        const fontSize = style.getPropertyValue('font-size');
-        const fontSizeNumber = parseFloat(fontSize);
-        const newFontSize = fontSizeNumber + 1;
+        if (element.tagName.toLowerCase() !== 'th' || element.tagName.toLowerCase() !== 'td') {
+            const style = window.getComputedStyle(element);
+            const fontSize = style.getPropertyValue('font-size');
+            const fontSizeNumber = parseFloat(fontSize);
+            const newFontSize = fontSizeNumber + 1;
 
-        element.style.fontSize = `${newFontSize}px`;
+            element.style.fontSize = `${newFontSize}px`;
+        }
     });
 });
 
