@@ -3,11 +3,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const allElements = document.querySelectorAll('*');
     allElements.forEach(element => {
-        if (element.tagName.toLowerCase() !== 'th' || element.tagName.toLowerCase() !== 'td') {
+        const tagName = element.tagName.toLowerCase();
+        if (tagName !== 'div' && tagName !== 'th' && tagName !== 'td' && tagName !== 'tr' && tagName !== 'table' && tagName !== 'thead' && tagName !== 'tbody' && tagName !== 'tfoot') {
             const style = window.getComputedStyle(element);
             const fontSize = style.getPropertyValue('font-size');
             const fontSizeNumber = parseFloat(fontSize);
-            const newFontSize = fontSizeNumber + 1;
+            const newFontSize = fontSizeNumber + 1.5;
 
             element.style.fontSize = `${newFontSize}px`;
         }

@@ -134,6 +134,8 @@
         <main>
             @yield('generalBody')
         </main>
+        <div id="sfcxj1qp6pmnh94ywf42yyx1xbhn8cbajf3">
+        </div>
         <footer>
             <!-- footer-area-start -->
                 @include('frontoffice/partial/footer')
@@ -142,8 +144,8 @@
                 @include('frontoffice/partial/copy')
             <!-- copy-right area end -->
         </footer>
-        <div id="sfcs6p3ar6rnfg9a728tnftrqgrgwdebwgk"></div><script type="text/javascript" src="https://counter4.optistats.ovh/private/counter.js?c=s6p3ar6rnfg9a728tnftrqgrgwdebwgk&down=async" async></script><noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas para blog"><img src="https://counter4.optistats.ovh/private/contadorvisitasgratis.php?c=s6p3ar6rnfg9a728tnftrqgrgwdebwgk" border="0" title="contador de visitas para la aplicación" alt="contador de visitas para la aplicación"></a></noscript>
         <!-- JS here -->
+        <script type="text/javascript" src="https://counter4.optistats.ovh/private/counter.js?c=xj1qp6pmnh94ywf42yyx1xbhn8cbajf3&down=async" async></script><noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas gratis"><img src="https://counter4.optistats.ovh/private/contadorvisitasgratis.php?c=xj1qp6pmnh94ywf42yyx1xbhn8cbajf3" border="0" title="contador de visitas gratis" alt="contador de visitas gratis"></a></noscript>
         <script src="{{asset('assets/frontoffice/js/waypoints.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/bootstrap.bundle.min.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/slick.min.js')}}"></script>

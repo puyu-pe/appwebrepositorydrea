@@ -56,7 +56,7 @@ class ExamController extends Controller
             $tAnswersGroupedByUser = TAnswer::where('idExam', $tExam->idExam)
                 ->where('type', TAnswer::TYPE['REVIEWED'])
                 ->orderBy('created_at')
-                ->with(['tAnswerDetail', 'tUser'])
+                ->with(['tAnswerDetail'])
                 ->withSum(['tanswerdetail as correct_answers_sum' => function ($query) {
                     $query->where('is_correct', 1);
                 }], 'is_correct')

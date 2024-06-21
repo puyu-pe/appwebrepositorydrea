@@ -57,7 +57,7 @@
                                 <h6 class="it-evn-details-title-sm pb-5">Descripción de la evaluación.</h6>
                                 <p>{{ $tExam->descriptionExam }}</p>
                                 <br>
-                                @if (Session::get('idUser') && $tExam->register_answer == '1')
+                                @if ($tExam->register_answer == '1')
                                     <button class="it-btn w-80 text-center" data-bs-toggle="modal"
                                             data-bs-target="#mdlAnswerRegister">
                                         {{ ($tAnswer && $tAnswer->type == 'reviewed') ? 'Ver resultados' :'Solucionar evaluación'}}
@@ -149,14 +149,14 @@
                         @if($tAnswersGroupedByUser->isNotEmpty())
                             <div class="row" id="dvAnswer" style="display: none;">
                                 <div class="accordion" id="accordionExample">
-                                    @foreach($tAnswersGroupedByUser as $idUser => $answers)
+                                    @foreach($tAnswersGroupedByUser as $answers)
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="heading{{$answers->tuser->idUser}}">
-                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{$answers->tuser->idUser}}" aria-expanded="true" aria-controls="collapse{{$answers->tuser->idUser}}">
-                                                    {{ $answers->tuser->firstName }} {{ $answers->tuser->surName }} {{' (' . $answers->correct_answers_sum. ' de' . $tExam->number_question. ')'}}
+                                            <h2 class="accordion-header" id="heading-{{$answers->idUser != null ? $answers->idUser : $answers->idAnswer}}">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{$answers->idUser != null ? $answers->idUser : $answers->idAnswer}}" aria-expanded="true" aria-controls="collapse-{{$answers->idUser != null ? $answers->idUser : $answers->idAnswer}}">
+                                                    {{ $answers->firstName }} {{ $answers->surName }} {{' (' . $answers->correct_answers_sum. ' de ' . $tExam->number_question. ')'}}
                                                 </button>
                                             </h2>
-                                            <div id="collapse{{$answers->tuser->idUser}}" class="accordion-collapse collapse" aria-labelledby="heading{{$answers->tuser->idUser}}" data-bs-parent="#accAnswers">
+                                            <div id="collapse-{{$answers->idUser != null ? $answers->idUser : $answers->idAnswer}}" class="accordion-collapse collapse" aria-labelledby="heading-{{$answers->idUser != null ? $answers->idUser : $answers->idAnswer}}" data-bs-parent="#accAnswers">
                                                 <div class="accordion-body">
                                                     <table class="table">
                                                         <thead>
@@ -180,7 +180,7 @@
                                                             @else
                                                                 <tr>
                                                                     <td colspan="2">
-                                                                        <div>Realize el cuestionario para ver las alternativas</div>
+                                                                        <div>Inicie sesión para ver las alternativas</div>
                                                                     </td>
                                                                 </tr>
                                                             @endif
@@ -206,9 +206,6 @@
             </div>
         </div>
     </div>
-
-    <script src="{{asset('assets/frontoffice/viewResources/exam/seed.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
-
     <!-- Modal -->
     <div class="modal fade" id="mdlAnswerRegister" tabindex="-1" role="dialog" data-toggle="modal" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -237,4 +234,5 @@
             </div>
         </div>
     </div>
+    <script src="{{asset('assets/frontoffice/viewResources/exam/seed.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
 @endsection

@@ -70,7 +70,7 @@ class GenericMiddleware
             ['Público', 'examen/calificar', null, null],
 
             ['Administrador,Supervisor,Registrador', 'respuesta/insertar', null, null],
-            ['Administrador,Supervisor,Registrador,Normal', 'respuesta/registrar', null, null],
+            ['Público', 'respuesta/registrar', null, null],
 
             ['Público', 'donwload/selected', null, null],
             ['Público', 'donwload/zip', null, null],

@@ -177,6 +177,9 @@ class ExamController extends Controller
                     $tAnswer->idAnswer = uniqid();
                     $tAnswer->idExam = $tExam->idExam;
                     $tAnswer->idUser = session('idUser');
+                    $tAnswer->firstName = session('firstName');
+                    $tAnswer->surName = session('surName');
+                    $tAnswer->dni = session('numberDni');
                     $tAnswer->type = TAnswer::TYPE['CORRECT'];
                     $tAnswer->save();
 
