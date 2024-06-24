@@ -86,7 +86,7 @@
                     </a>
                 </div>
                 <div class="itoffcanvas__text">
-                    <p>Plataforma web que gestiona las evaluaciones de las DRE a nivel nacional</p>
+                    <p>Plataforma web que gestiona las evaluaciones de las DRE/GRE a nivel nacional</p>
                 </div>
                 <div class="it-menu-mobile"></div>
                 <div class="itoffcanvas__info">
@@ -134,6 +134,8 @@
         <main>
             @yield('generalBody')
         </main>
+        <div id="sfcxj1qp6pmnh94ywf42yyx1xbhn8cbajf3">
+        </div>
         <footer>
             <!-- footer-area-start -->
                 @include('frontoffice/partial/footer')
@@ -143,6 +145,7 @@
             <!-- copy-right area end -->
         </footer>
         <!-- JS here -->
+        <script type="text/javascript" src="https://counter4.optistats.ovh/private/counter.js?c=xj1qp6pmnh94ywf42yyx1xbhn8cbajf3&down=async" async></script><noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas gratis"><img src="https://counter4.optistats.ovh/private/contadorvisitasgratis.php?c=xj1qp6pmnh94ywf42yyx1xbhn8cbajf3" border="0" title="contador de visitas gratis" alt="contador de visitas gratis"></a></noscript>
         <script src="{{asset('assets/frontoffice/js/waypoints.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/bootstrap.bundle.min.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/slick.min.js')}}"></script>

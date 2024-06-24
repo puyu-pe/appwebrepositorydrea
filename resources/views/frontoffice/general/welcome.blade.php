@@ -22,14 +22,14 @@
                 <div class="col-xl-6 col-lg-7">
                     <div class="it-hero-3-title-wrap it-hero-3-ptb">
                         <div class="it-hero-3-title-box">
-                            <h1 class="it-hero-3-title">Bienvenido al repositorio web de <span>Evaluaciones</span></h1>
-                            <p>Un sitio que se encargar de gestionar <br>
-                                las evaluaciones que las DRE realiza a nivel nacional.</p>
+                            <h1 class="it-hero-3-title" style="text-transform: none;">Bienvenido al repositorio web de <span>Evaluaciones</span></h1>
+                            <p style="font-size: 20px;">Un sitio que se encargar de gestionar <br>
+                                las evaluaciones que las DRE/GRE realiza a nivel nacional.</p>
                         </div>
                         <div class="it-hero-3-btn-box d-flex align-items-center">
                             <a class="it-btn-white" href="{{ url('tipoexamen/all/1') }}">
                                 <span>
-                                    Buscar Evaluación
+                                    Buscar evaluación
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"

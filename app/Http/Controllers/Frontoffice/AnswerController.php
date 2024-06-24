@@ -5,10 +5,12 @@ use App\Http\Controllers\Controller;
 use App\Helper\PlatformHelper;
 use App\Models\TAnswerDetail;
 use App\Models\TExam;
+use App\Validation\AnswerValidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\TAnswer;
+use Illuminate\Support\Facades\Session;
 
 class AnswerController extends Controller
 {
@@ -20,16 +22,43 @@ class AnswerController extends Controller
             {
                 DB::beginTransaction();
 
-                if ($request->has('txtValueResponseExam') && $request->has('hdIdAnswer'))
+                if ($request->has('txtValueResponseExam'))
                 {
-                    $idAnswer = $request->input('hdIdAnswer') ?? null;
+                    $idAnswer = $request->has('hdIdAnswer') ? $request->input('hdIdAnswer') : null;
 
                     if (!$idAnswer)
                     {
+                       $this->_so->mo->listMessage = (new AnswerValidation())->validationInsert($request);
+
+                        if ($this->_so->mo->existsMessage()) {
+                            DB::rollBack();
+
+                            return PlatformHelper::redirectError($this->_so->mo->listMessage, url()->previous());
+                        }
+
+                        if ($request->input('txtNumberDni') != '' )
+                        {
+                            $tAnswerDniExists = TAnswer::whereRaw('dni = ? AND type != ?', [
+                                $request->input('txtNumberDni'), TAnswer::TYPE['CORRECT']])->exists();
+
+                            if ($tAnswerDniExists)
+                                return PlatformHelper::redirectError(['Ya se realizó el cuestionario con el dni registrado.'], url()->previous());
+                        }
+
+                        $tAnswerNameExists = TAnswer::whereRaw('firstName LIKE ? AND surName = ? AND type != ?', [
+                            $request->input('txtFirstName'), $request->input('txtSurName'),  TAnswer::TYPE['CORRECT']
+                        ])->exists();
+
+                        if ($tAnswerNameExists)
+                            return PlatformHelper::redirectError(['Ya se realizó un cuestionario con los nombres/apellidos registrados.'], url()->previous());
+
                         $tAnswer = new TAnswer();
                         $tAnswer->idAnswer = uniqid();
                         $tAnswer->idExam = $request->input('hdIdExam');
-                        $tAnswer->idUser = session('idUser');
+                        $tAnswer->idUser = Session::has('idUser') ? session('idUser') : null;
+                        $tAnswer->firstName = $request->input('txtFirstName');
+                        $tAnswer->surName = $request->input('txtSurName');
+                        $tAnswer->dni = $request->input('txtNumberDni') != '' ? $request->input('txtNumberDni') : '';
                         $tAnswer->type = TAnswer::TYPE['VERIFY'];
 
                         $tAnswer->save();

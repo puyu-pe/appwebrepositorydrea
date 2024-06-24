@@ -18,13 +18,6 @@
                                     style="font-size: 40px">Todos los tipos</h4>
                             @endif
                         </div>
-                        {{-- <div class="it-breadcrumb-list-wrap">
-                            <div class="it-breadcrumb-list">
-                                <span><a href="index.html">home</a></span>
-                                <span class="dvdr">//</span>
-                                <span>COURSE 02</span>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>

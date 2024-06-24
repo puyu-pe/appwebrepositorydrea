@@ -6,6 +6,48 @@
         </div>
         <div class="col-md-5">
             <div style="max-height: calc(100vh - 330px); overflow-y: scroll">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Datos generales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Nombres*
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" id="txtFirstName" name="txtFirstName" class="form-control" autocomplete="off"
+                                           value="{{Session::has('firstName')  ? Session::get('firstName') : ''}}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Apellidos*
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" id="txtSurName" name="txtSurName" class="form-control" autocomplete="off"
+                                           value="{{Session::has('surName')  ? Session::get('surName') : ''}}">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DNI
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" id="txtNumberDni" name="txtNumberDni" class="form-control" autocomplete="off"
+                                           value="{{Session::has('numberDni')  ? Session::get('numberDni') : ''}}">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <table class="table table-bordered" id="tblResponseExam">
                     <thead>
                         <tr>
@@ -101,4 +143,4 @@
         </div>
     </div>
 </form>
-<script src="{{asset('assets/backoffice/viewResources/answer/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/frontoffice/viewResources/answer/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
