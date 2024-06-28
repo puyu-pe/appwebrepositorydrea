@@ -6,6 +6,7 @@ use App\Helper\ExamHelper;
 
 use App\Helper\PlatformHelper;
 use App\Http\Controllers\Controller;
+use App\Models\TTestimony;
 use App\Models\TTypeExam;
 use App\Models\TExam;
 use RecursiveDirectoryIterator;
@@ -34,6 +35,8 @@ class GeneralController extends Controller
             ->selectRaw('COUNT(texam.idExam) as totalExam')
             ->get();
 
+        $tTotalTestimonys = TTestimony::where('is_public', TTestimony::STATE['PUBLIC'])->orderBy('created_at', 'DESC')->paginate(10);
+
         ExamHelper::getRatingAndUser($topExams);
 
         return view(
@@ -41,7 +44,8 @@ class GeneralController extends Controller
             [
                 'tTypeExam' => $tTypeExam,
                 'topExams' => $topExams,
-                'tTotalTypeExams' => $tTotalTypeExams
+                'tTotalTypeExams' => $tTotalTypeExams,
+                'tTotalTestimonys' => $tTotalTestimonys
             ]
         );
     }

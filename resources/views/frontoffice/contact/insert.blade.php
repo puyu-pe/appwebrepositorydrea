@@ -72,9 +72,6 @@
                                 </ul>
                             </div>
                             <div class="it-contact__bottom-box d-flex align-items-center justify-content-between">
-                                <div class="it-contact__scrool smooth">
-                                    <a href="#it-newsletter"><i class="fa-solid fa-arrow-down"></i>Customer Care</a>
-                                </div>
                                 <div class="it-footer-social">
                                     <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
                                     <a href="#"><i class="fa-brands fa-instagram"></i></a>

@@ -20,6 +20,7 @@ use App\Http\Controllers\Frontoffice\ExamRatingController as FrontExamRatingCont
 use App\Http\Controllers\Frontoffice\SubjectController as FrontSubjectController;
 use App\Http\Controllers\Frontoffice\GradeController as FrontGradeController;
 use App\Http\Controllers\Frontoffice\AnswerController as FrontAnswerController;
+use App\Http\Controllers\Frontoffice\TestimonyController as FrontTestimonyController;
 
 use App\Http\Controllers\Backoffice\DownloadController;
 
@@ -39,6 +40,8 @@ Route::get('sistema/descargar',[BackGeneralOffice::class, 'actionDownloadExam'])
 Route::match(['get','post'],'general/contacto',[FrontContactController::class,'actionInsert'])->middleware('GenericMiddleware:general/contacto');
 Route::get('contacto/mostrar/{currentPage}',[BackContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/mostrar');
 Route::post('contacto/responder',[BackContactController::class,'actionReply'])->middleware('GenericMiddleware:contacto/responder');
+
+Route::match(['get','post'],'general/opinion',[FrontTestimonyController::class,'actionInsert'])->middleware('GenericMiddleware:general/opinion');
 
 Route::get('usuario/mostrar/{currentPage}',[BackUserController::class,'actionGetAll'])->middleware('GenericMiddleware:usuario/mostrar');
 Route::get('usuario/estado/{idUser}',[BackUserController::class,'actionChangeStatus'])->middleware('GenericMiddleware:usuario/estado');

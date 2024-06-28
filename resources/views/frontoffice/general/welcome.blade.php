@@ -381,90 +381,26 @@
                                 </div>
                                 <div class="swiper-container it-testimonial-3-active">
                                     <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div class="it-testimonial-3-item">
-                                                <div class="it-testimonial-3-content">
-                                                    <p>¡Estoy realmente impresionada con el servicio que ofrece este
-                                                        sitio
-                                                        web!
-                                                        Como estudiante de secundaria, siempre he luchado con la
-                                                        preparación
-                                                        para las evaluaciones,
-                                                        pero este repositorio de evaluaciones ha hecho que sea mucho más
-                                                        fácil para mí practicar y mejorar.
-                                                        La función de registro de respuestas me ha ayudado a identificar
-                                                        mis
-                                                        fortalezas y debilidades.</p>
-                                                    <div class="it-testimonial-3-author-box d-flex align-items-center">
-                                                        <div class="it-testimonial-3-avata">
-                                                            <img
-                                                                src="{{ asset('assets/frontoffice/img/avatar/avatar-3-1.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="it-testimonial-3-author-info">
-                                                            <h5>Ana García</h5>
-                                                            <span>Estudiante. Lima, Perú</span>
+                                        @foreach($tTotalTestimonys as $tTotalTestimony)
+                                            <div class="swiper-slide">
+                                                <div class="it-testimonial-3-item">
+                                                    <div class="it-testimonial-3-content">
+                                                        <p>{{$tTotalTestimony->description}}</p>
+                                                        <div class="it-testimonial-3-author-box d-flex align-items-center">
+                                                            <div class="it-testimonial-3-avata">
+                                                                <img
+                                                                    src="{{ asset('img/userlogo.png') }}"
+                                                                    alt="{{$tTotalTestimony->idTestimony}}">
+                                                            </div>
+                                                            <div class="it-testimonial-3-author-info">
+                                                                <h5>{{$tTotalTestimony->firstName . ' ' . $tTotalTestimony->surName}}</h5>
+                                                                <span>{{$tTotalTestimony->academic_level}}. {{$tTotalTestimony->place_origin}}</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="it-testimonial-3-item">
-                                                <div class="it-testimonial-3-content">
-                                                    <p>Como docente de matemáticas, siempre estoy buscando maneras de
-                                                        apoyar
-                                                        a mis estudiantes en su preparación
-                                                        para las evaluaciones. Este repositorio de evaluaciones ha sido
-                                                        una
-                                                        herramienta invaluable en mi clase.
-                                                        La variedad de evaluaciones disponibles y la capacidad de
-                                                        personalizar las preferencias de los estudiantes
-                                                        han hecho que sea mucho más fácil para ellos practicar y mejorar
-                                                        sus
-                                                        habilidades.</p>
-                                                    <div class="it-testimonial-3-author-box d-flex align-items-center">
-                                                        <div class="it-testimonial-3-avata">
-                                                            <img
-                                                                src="{{ asset('assets/frontoffice/img/avatar/avatar-2.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="it-testimonial-3-author-info">
-                                                            <h5>José Martínez</h5>
-                                                            <span>Docente. Arequipa, Perú</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="it-testimonial-3-item">
-                                                <div class="it-testimonial-3-content">
-                                                    <p>Siempre estoy buscando formas de mejorar mi rendimiento
-                                                        académico.
-                                                        Este repositorio de evaluaciones ha sido una verdadera bendición
-                                                        para mí. La interfaz fácil de usar
-                                                        y la amplia selección de evaluaciones disponibles han hecho que
-                                                        sea
-                                                        mucho más fácil para mí practicar
-                                                        y prepararme para mis exámenes. Además, la posibilidad de
-                                                        interactuar con otros estudiantes y ver sus
-                                                        respuestas me ha ayudado a aprender de diferentes enfoques y
-                                                        estrategias de resolución</p>
-                                                    <div class="it-testimonial-3-author-box d-flex align-items-center">
-                                                        <div class="it-testimonial-3-avata">
-                                                            <img
-                                                                src="{{ asset('assets/frontoffice/img/avatar/avatar-1.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="it-testimonial-3-author-info">
-                                                            <h5>Diego Flores</h5>
-                                                            <span>Estudiante. Trujillo, Perú</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="test-slider-dots"></div>

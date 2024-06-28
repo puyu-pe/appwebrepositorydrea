@@ -22,6 +22,7 @@ class GenericMiddleware
             ['Administrador,Supervisor,Registrador', 'panel', 'mDashboard', null],
 
             ['Público', 'general/contacto', 'mContact', null],
+            ['Público', 'general/opinion', 'mContact', null],
             ['Administrador,Supervisor', 'contacto/mostrar', 'mPrincipal', 'mGetAllContact'],
             ['Administrador,Supervisor', 'contacto/responder', 'mPrincipal', 'mReplyContact'],
 
