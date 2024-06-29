@@ -385,7 +385,7 @@
                                             <div class="swiper-slide">
                                                 <div class="it-testimonial-3-item">
                                                     <div class="it-testimonial-3-content">
-                                                        <p>{{$tTotalTestimony->description}}</p>
+                                                        <p>{!! $tTotalTestimony->description !!}</p>
                                                         <div class="it-testimonial-3-author-box d-flex align-items-center">
                                                             <div class="it-testimonial-3-avata">
                                                                 <img
@@ -404,6 +404,22 @@
                                     </div>
                                 </div>
                                 <div class="test-slider-dots"></div>
+                            </div>
+                            <div class="it-course-button text-start text-md-end pt-10 text-left">
+                                <a class="it-btn-theme-sm" href="{{url('general/testimonio')}}">
+                                    <span>
+                                        Deje una reseña
+                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                                  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </div>

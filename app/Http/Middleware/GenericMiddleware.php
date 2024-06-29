@@ -22,9 +22,10 @@ class GenericMiddleware
             ['Administrador,Supervisor,Registrador', 'panel', 'mDashboard', null],
 
             ['Público', 'general/contacto', 'mContact', null],
-            ['Público', 'general/opinion', 'mContact', null],
+            ['Público', 'general/testimonio', null, null],
             ['Administrador,Supervisor', 'contacto/mostrar', 'mPrincipal', 'mGetAllContact'],
-            ['Administrador,Supervisor', 'contacto/responder', 'mPrincipal', 'mReplyContact'],
+            ['Administrador,Supervisor', 'contacto/responder', null, null],
+            ['Administrador,Supervisor', 'contacto/eliminar', null, null],
 
             ['Público', 'usuario/registrar', null, null],
             ['Público', 'usuario/acceder', null, null],
@@ -79,6 +80,11 @@ class GenericMiddleware
             ['Administrador,Supervisor,Registrador', 'recurso/insertar', null, null],
             ['Administrador,Supervisor,Registrador', 'recurso/eliminar', null, null],
             ['Público', 'recurso/verarchivo', null, null],
+
+            ['Administrador,Supervisor', 'testimonio/mostrar', 'mPrincipal', 'mGetAllTestimony'],
+            ['Administrador,Supervisor', 'testimonio/estado', null, null],
+            ['Administrador,Supervisor', 'testimonio/eliminar', null, null],
+            ['Administrador,Supervisor', 'testimonio/editar', null, null],
         ];
 
         $myMainRole=Session::get('mainRole', '');

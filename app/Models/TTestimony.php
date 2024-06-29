@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class TTestimony extends Model
 {
     protected $table='ttestimony';
-    protected $primaryKey='idContact';
+    protected $primaryKey='idTestimony';
     protected $keyType='string';
     public $incrementing=false;
     public $timestamps=true;

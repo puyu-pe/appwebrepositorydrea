@@ -10,6 +10,7 @@ use App\Http\Controllers\Backoffice\TypeExamController as BackTypeExamController
 use App\Http\Controllers\Backoffice\ExamController as BackExamController;
 use App\Http\Controllers\Backoffice\AnswerController as BackAnswerController;
 use App\Http\Controllers\Backoffice\ResourceController as BackResourceController;
+use App\Http\Controllers\Backoffice\TestimonyController as BackTestimonyController;
 
 use App\Http\Controllers\Frontoffice\GeneralController as FrontGeneralOffice;
 use App\Http\Controllers\Frontoffice\UserController as FrontUserController;
@@ -40,8 +41,7 @@ Route::get('sistema/descargar',[BackGeneralOffice::class, 'actionDownloadExam'])
 Route::match(['get','post'],'general/contacto',[FrontContactController::class,'actionInsert'])->middleware('GenericMiddleware:general/contacto');
 Route::get('contacto/mostrar/{currentPage}',[BackContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/mostrar');
 Route::post('contacto/responder',[BackContactController::class,'actionReply'])->middleware('GenericMiddleware:contacto/responder');
-
-Route::match(['get','post'],'general/opinion',[FrontTestimonyController::class,'actionInsert'])->middleware('GenericMiddleware:general/opinion');
+Route::get('contacto/eliminar/{idContact}',[BackContactController::class,'actionDelete'])->middleware('GenericMiddleware:contacto/eliminar');
 
 Route::get('usuario/mostrar/{currentPage}',[BackUserController::class,'actionGetAll'])->middleware('GenericMiddleware:usuario/mostrar');
 Route::get('usuario/estado/{idUser}',[BackUserController::class,'actionChangeStatus'])->middleware('GenericMiddleware:usuario/estado');
@@ -99,3 +99,9 @@ Route::post('respuesta/registrar',[FrontAnswerController::class,'actionRegister'
 Route::post('recurso/insertar',[BackResourceController::class,'actionInsert'])->middleware('GenericMiddleware:recurso/insertar');
 Route::get('recurso/eliminar/{idResource}',[BackResourceController::class,'actionDelete'])->middleware('GenericMiddleware:recurso/eliminar');
 Route::get('recurso/verarchivo/{idResource}',[BackResourceController::class,'actionViewResource'])->middleware('GenericMiddleware:recurso/verarchivo');
+
+Route::match(['get','post'],'general/testimonio',[FrontTestimonyController::class,'actionInsert'])->middleware('GenericMiddleware:general/testimonio');
+Route::get('testimonio/mostrar/{currentPage}',[BackTestimonyController::class,'actionGetAll'])->middleware('GenericMiddleware:testimonio/mostrar');
+Route::get('testimonio/estado/{idTestimony}',[BackTestimonyController::class,'actionChangeState'])->middleware('GenericMiddleware:testimonio/estado');
+Route::get('testimonio/eliminar/{idTestimony}',[BackTestimonyController::class,'actionDelete'])->middleware('GenericMiddleware:testimonio/eliminar');
+Route::post('testimonio/editar',[BackTestimonyController::class,'actionEdit'])->middleware('GenericMiddleware:testimonio/editar');

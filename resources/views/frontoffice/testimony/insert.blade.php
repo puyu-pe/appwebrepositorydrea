@@ -10,7 +10,7 @@
                 <div class="col-md-12">
                     <div class="it-breadcrumb-content z-index-3 text-center">
                         <div class="it-breadcrumb-title-box">
-                            <h3 class="it-breadcrumb-title">Opiniones</h3>
+                            <h3 class="it-breadcrumb-title">Reseñas</h3>
                         </div>
                     </div>
                 </div>
@@ -28,12 +28,12 @@
                     <div class="col-xl-3"></div>
                     <div class="col-xl-9">
                         <div class="it-contact__form-box">
-                            <form id="frmTestimony" action="{{url('general/opinion')}}" method="post">
+                            <form id="frmTestimony" action="{{url('general/testimonio')}}" method="post">
                                 <div class="row">
                                     <div class="it-contact__right-box">
                                         <div class="it-contact__section-box pb-20">
-                                            <h4 class="it-contact__title pb-15">Registre su opinión</h4>
-                                            <p>Estamos para mejorar, ¡no dudes en dejar una sugerencia al repositorio!</p>
+                                            <h4 class="it-contact__title pb-15">Dejanos una reseña</h4>
+                                            <p>Estamos para mejorar, ¡no dudes en dejar una reseña, sugerencia o demás para el repositorio!</p>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-25">

@@ -31,7 +31,7 @@
             </p>
             <label for="txtMessage">Responder: </label>
             <textarea id="txtMessage" name="txtMessage" class="form-control" autocomplete="off" placeholder="Mensaje"
-                      id="" cols="30" rows="10"
+                      cols="30" rows="10"
             {{$tContact->statusContact == 1 ? 'readonly' : ''}}
             >{{$tContact->replyContact}}</textarea>
         </div>

@@ -47,6 +47,7 @@
                 <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de evaluaciones</a></li>
                 @if(stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor'))
                     <li id="mGetAllContact" class="{{Session::get('subMenu')=='mGetAllContact' ? 'active' : ''}}"><a href="{{url('contacto/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de mensajes</a></li>
+                    <li id="mGetAllTestimony" class="{{Session::get('subMenu')=='mGetAllTestimony' ? 'active' : ''}}"><a href="{{url('testimonio/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de reseñas</a></li>
                 @endif
             </ul>
         </li>
