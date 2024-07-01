@@ -31,7 +31,7 @@
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
                                     <div class="mb-20 form-group has-feedback">
-                                        <input type="email" id="txtEmail" name="txtEmail"  placeholder="Correo *">
+                                        <input type="text" id="txtEmail" name="txtEmail"  placeholder="Correo electrónico *">
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
                                     <div class="mb-20 form-group has-feedback">
