@@ -213,6 +213,16 @@ primary key(idContact)
 
 insert into tdocument values('5ece4797eaf5e', 'exam', 0, 1, now(), now());
 
-
-
-
+create table ttestimony
+(
+idTestimony char(13) not null,
+description text not null,
+firstName varchar(200) not null,
+surName varchar(200) not null,
+academic_level varchar(100) not null,
+place_origin varchar(200) not null,
+is_public tinyint not null,
+created_at datetime not null,
+updated_at datetime not null,
+primary key(idTestimony)
+) engine=innodb;

@@ -19,7 +19,7 @@
                                 <h4 class="it-signup-title">Acceder</h4>
                                 <div class="it-signup-input-wrap">
                                     <div class="mb-20 form-group has-feedback">
-                                        <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Correo *">
+                                        <input type="text" class="form-control" id="txtEmail" name="txtEmail" placeholder="Correo *">
                                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                                     </div>
                                     <div class="mb-20 form-group has-feedback">

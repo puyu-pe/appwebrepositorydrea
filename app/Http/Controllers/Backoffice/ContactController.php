@@ -81,4 +81,21 @@ class ContactController extends Controller
                 'tContact' => $tContact,
             ]);
     }
+
+    public function actionDelete($idContact)
+    {
+        try
+        {
+            $tContact = TContact::find($idContact);
+
+            if ($tContact)
+                $tContact->delete();
+
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'contacto/mostrar/1');
+        }
+        catch(\Exception $e)
+        {
+            return PlatformHelper::redirectError([$e->getMessage()], 'contacto/mostrar/1');
+        }
+    }
 }

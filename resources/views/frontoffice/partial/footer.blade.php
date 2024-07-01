@@ -13,12 +13,6 @@
                             permitiéndoles practicar y prepararse de manera efectiva
                         </p>
                     </div>
-                    <div class="it-footer-social">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                    </div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-50">
@@ -27,7 +21,7 @@
                     <div class="it-footer-list">
                         <ul>
                             @foreach ($menuTypeExamItem as $item)
-                                <li><a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}"><i class="fa-regular fa-angle-right"></i>{{strtoupper($item->acronymTypeExam)}}</a></li>
+                                <li><a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}"><i class="fa-regular fa-angle-right"></i>{{strtoupper($item->acronymTypeExam != 'other' ? $item->acronymTypeExam : 'otros')}}</a></li>
                             @endforeach
                         </ul>
                     </div>
