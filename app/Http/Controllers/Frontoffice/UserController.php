@@ -324,9 +324,9 @@ class UserController extends Controller
 
                 $tResetPassword->save();
 
-                $this->sendLinkReset($tUser->email, $tResetPassword->idResetPassword);
-
                 DB::commit();
+
+                $this->sendLinkReset($tUser->email, $tResetPassword->idResetPassword);
 
                 return PlatformHelper::redirectCorrect(['Se le envio el link de recuperación al correo mencionado.'], 'usuario/acceder');
             } catch (\Exception $e) {
