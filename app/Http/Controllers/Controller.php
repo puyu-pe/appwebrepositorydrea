@@ -35,4 +35,21 @@ class Controller extends BaseController
 
         $this->_currentDate=date('Y-m-d H:i:s');
     }
+
+    protected function resolvePublicFilterEntity($modelClass, $publicColumn, $primaryKey, $value, $defaultValue='all')
+    {
+        if($value===null || $value==='' || $value==$defaultValue)
+        {
+            return null;
+        }
+
+        return $modelClass::where($publicColumn, $value)
+            ->orWhere($primaryKey, $value)
+            ->first();
+    }
+
+    protected function resolveTypeExamFilterEntity($value, $defaultValue='all')
+    {
+        return $this->resolvePublicFilterEntity(TTypeExam::class, 'acronymTypeExam', 'idTypeExam', $value, $defaultValue);
+    }
 }

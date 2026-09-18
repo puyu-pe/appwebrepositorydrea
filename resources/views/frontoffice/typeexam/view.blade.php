@@ -11,10 +11,10 @@
                                 {{ 'Lista de evaluaciones' }}
                             </h3>
                             @if ($acronymTypeExam != 'all')
-                                <h4 class="it-breadcrumb-title"
-                                    style="font-size: 40px"> {{$tTypeExam->nameTypeExam }}</h4>
+                                 <h4 class="it-breadcrumb-title"
+                                    style="font-size: 40px"> {{$tTypeExam->nameTypeExam ?? 'Tipo no válido' }}</h4>
                             @else
-                                <h4 class="it-breadcrumb-title"
+                                 <h4 class="it-breadcrumb-title"
                                     style="font-size: 40px">Todos los tipos</h4>
                             @endif
                         </div>
@@ -48,7 +48,7 @@
                     <div class="col-md-3" style="display: none;">
                         <div class="postbox__select">
                             <select id="slcTypes">
-                                <option value="{{$acronymTypeExam}}" selected>{{ strtoupper($acronymTypeExam)}}</option>
+                                <option value="{{$filtersData->type}}" selected>{{ strtoupper($tTypeExam->acronymTypeExam ?? 'tipo no válido')}}</option>
                             </select>
                         </div>
                     </div>
@@ -56,12 +56,15 @@
                     <div class="col-3">
                         <div class="postbox__select">
                             <select id="slcTypes">
-                                <option value="all">Todos los tipos</option>
+                                <option value="all" {{ $filtersData->type == 'all' ? 'selected' : '' }}>Todos los tipos</option>
                                 @foreach ($selectFilters['types'] as $type)
                                 <option value="{{ $type->acronymTypeExam }}"
-                                        {{ $filtersData->type == $type->acronymTypeExam ? 'selected' : '' }}>
+                                        {{ in_array($filtersData->type, [$type->acronymTypeExam, $type->idTypeExam]) ? 'selected' : '' }}>
                                     {{ strtoupper($type->acronymTypeExam)}}</option>
                                 @endforeach
+                                @if ($filtersData->type != 'all' && $tTypeExam == null)
+                                <option value="{{ $filtersData->type }}" selected>Tipo no válido</option>
+                                @endif
                             </select>
                         </div>
                     </div>
@@ -71,8 +74,8 @@
                         <select id="slcGrades">
                             <option value="all">Todos los grados</option>
                             @foreach ($selectFilters['grades'] as $grade)
-                            <option value="{{ $grade->idGrade }}"
-                                    {{ $filtersData->grade == $grade->idGrade ? 'selected' : '' }}>
+                            <option value="{{ $grade->codeGrade ?? $grade->idGrade }}"
+                                    {{ $filtersData->grade == ($grade->codeGrade ?? $grade->idGrade) ? 'selected' : '' }}>
                                     {{ $grade->descriptionGrade }}</option>
                             @endforeach
                         </select>
@@ -83,8 +86,8 @@
                         <select id="slcSubjects">
                             <option value="all">Todos los cursos</option>
                             @foreach ($selectFilters['subjects'] as $grade)
-                            <option value="{{ $grade->idSubject }}"
-                                    {{ $filtersData->subject == $grade->idSubject ? 'selected' : '' }}>
+                            <option value="{{ $grade->codeSubject ?? $grade->idSubject }}"
+                                    {{ $filtersData->subject == ($grade->codeSubject ?? $grade->idSubject) ? 'selected' : '' }}>
                                 {{ $grade->nameSubject }}</option>
                             @endforeach
                         </select>
@@ -117,15 +120,17 @@
                             </label>
                         </th>
                         <th>Titulo</th>
+                        <th>Tipo de evaluación</th>
+                        <th>Curso</th>
+                        <th>Grado</th>
                         <th>Año</th>
-                        <th>Calificación</th>
                         <th>Páginas</th>
                         <th></th>
                     </tr>
 
                     @if ($listTExam->isEmpty())
                         <tr>
-                            <td colspan="6">
+                            <td colspan="8">
                                 <center>
                                     <h5 class="mt-10">No se encontraron resultados.</h5>
                                 </center>
@@ -146,15 +151,10 @@
                                     </a>
                                 </h4>
                             </td>
+                            <td>{{ $value->tTypeExam->nameTypeExam ?? '-' }}</td>
+                            <td>{{ $value->tSubject->nameSubject ?? '-' }}</td>
+                            <td>{{ $value->tGrade->descriptionGrade ?? '-' }}</td>
                             <td>{{ $value->yearExam }}</td>
-                            <td>
-                                @include('frontoffice._partials.exam_rating', [
-                                    'containerClass' => 'it-course-rating',
-                                    'qualifiable' => false,
-                                    'idExam' => $value->idExam,
-                                    'ratingAvg' => $value->rating->avg,
-                                ])
-                            </td>
                             <td>
                                 {{ $value->totalPageExam == 1 ? $value->totalPageExam . ' páginas' : $value->totalPageExam . ' páginas' }}
                             </td>

@@ -132,6 +132,51 @@ class PlatformHelper
 		return ['listRow' => $listRow, 'currentPage' => $currentPage, 'quantityPage' => $quantityPage];
 	}
 
+	public static function resolvePaginationFilterValue($routeValue, $requestValue, $defaultValue='all')
+	{
+		if($requestValue!==null && $requestValue!=='' && $requestValue!=$defaultValue)
+		{
+			return $requestValue;
+		}
+
+		if($routeValue!==null && $routeValue!=='' && $routeValue!=$defaultValue)
+		{
+			return $routeValue;
+		}
+
+		return $defaultValue;
+	}
+
+	public static function normalizePublicFilterValue($value, $entity, $publicColumn, $defaultValue='all')
+	{
+		if($value===null || $value==='' || $value==$defaultValue)
+		{
+			return $defaultValue;
+		}
+
+		if($entity!==null && isset($entity->{$publicColumn}) && $entity->{$publicColumn}!==null && $entity->{$publicColumn}!=='')
+		{
+			return $entity->{$publicColumn};
+		}
+
+		return $value;
+	}
+
+	public static function resolveInternalFilterValue($value, $entity, $primaryKey, $defaultValue='all')
+	{
+		if($value===null || $value==='' || $value==$defaultValue)
+		{
+			return $defaultValue;
+		}
+
+		if($entity!==null && isset($entity->{$primaryKey}) && $entity->{$primaryKey}!==null && $entity->{$primaryKey}!=='')
+		{
+			return $entity->{$primaryKey};
+		}
+
+		return $value;
+	}
+
 	public static function randomString($length=10)
 	{
 		$characters='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

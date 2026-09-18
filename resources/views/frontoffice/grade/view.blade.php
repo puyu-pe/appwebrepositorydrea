@@ -71,8 +71,8 @@
                         <select id="slcSubjects">
                             <option value="all">Todos los cursos</option>
                             @foreach ($selectFilters['subjects'] as $subject)
-                                <option value="{{ $subject->idSubject }}"
-                                    {{ $filtersData->subject == $subject->idSubject ? 'selected' : '' }}>
+                                <option value="{{ $subject->codeSubject ?? $subject->idSubject }}"
+                                    {{ $filtersData->subject == ($subject->codeSubject ?? $subject->idSubject) ? 'selected' : '' }}>
                                     {{ $subject->nameSubject }}</option>
                             @endforeach
                         </select>
@@ -84,7 +84,7 @@
                             <option value="all">Todos los tipos</option>
                             @foreach ($selectFilters['types'] as $type)
                                 <option value="{{ $type->idTypeExam }}"
-                                    {{ $filtersData->type == $type->idTypeExam ? 'selected' : '' }}>
+                                    {{ in_array($filtersData->type, [$type->idTypeExam, $type->acronymTypeExam]) ? 'selected' : '' }}>
                                     {{ strtoupper($type->acronymTypeExam)}}</option>
                             @endforeach
                         </select>
@@ -117,15 +117,17 @@
                             </label>
                         </th>
                         <th>Titulo</th>
+                        <th>Tipo de evaluación</th>
+                        <th>Curso</th>
+                        <th>Grado</th>
                         <th>Año</th>
-                        <th>Calificación</th>
                         <th>Páginas</th>
                         <th></th>
                     </tr>
 
                     @if ($listTExam->isEmpty())
                         <tr>
-                            <td colspan="6">
+                            <td colspan="8">
                                 <center>
                                     <h5 class="mt-10">No se encontraron resultados.</h5>
                                 </center>
@@ -146,15 +148,10 @@
                                     </a>
                                 </h4>
                             </td>
+                            <td>{{ $value->tTypeExam->nameTypeExam ?? '-' }}</td>
+                            <td>{{ $value->tSubject->nameSubject ?? '-' }}</td>
+                            <td>{{ $value->tGrade->descriptionGrade ?? '-' }}</td>
                             <td>{{ $value->yearExam }}</td>
-                            <td>
-                                @include('frontoffice._partials.exam_rating', [
-                                    'containerClass' => 'it-course-rating',
-                                    'qualifiable' => false,
-                                    'idExam' => $value->idExam,
-                                    'ratingAvg' => $value->rating->avg,
-                                ])
-                            </td>
                             <td>
                                 {{ $value->totalPageExam == 1 ? $value->totalPageExam . ' páginas' : $value->totalPageExam . ' páginas' }}
                             </td>

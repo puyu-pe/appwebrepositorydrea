@@ -17,29 +17,43 @@ class SubjectController extends Controller
 {
     public function actionViewSubject(Request $request, $codeSubject, $currentPage)
     {
-        $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
-        $type = $request->has('type') ? $request->input('type') : 'all';
-        $grade = $request->has('grade') ? $request->input('grade') : 'all';
-        $subject = $request->has('subject') ? $request->input('subject') : 'all';
-        $year = $request->has('year') ? $request->input('year') : 'all';
+        $filtersData = (object)[
+            'searchParameter' => $request->has('searchParameter') ? $request->input('searchParameter') : '',
+            'type' => $request->has('type') ? $request->input('type') : 'all',
+            'grade' => $request->has('grade') ? $request->input('grade') : 'all',
+            'subject' => PlatformHelper::resolvePaginationFilterValue($codeSubject, $request->input('subject')),
+            'year' => $request->has('year') ? $request->input('year') : 'all',
+        ];
 
-        $tSubject = $codeSubject != 'all' ? TSubject::whereRaw('codeSubject =?', [$codeSubject])->first() : null;
+        $tSubject = $this->resolvePublicFilterEntity(TSubject::class, 'codeSubject', 'idSubject', $filtersData->subject);
+        $tTypeExamFilter = $this->resolveTypeExamFilterEntity($filtersData->type);
+        $tGradeFilter = $this->resolvePublicFilterEntity(TGrade::class, 'codeGrade', 'idGrade', $filtersData->grade);
 
-        if ($codeSubject != 'all' && $subject != 'all')
-            $tSubject =  TSubject::whereRaw('codeSubject =?', [$subject])->first();
+        $filtersData->type = PlatformHelper::normalizePublicFilterValue($filtersData->type, $tTypeExamFilter, 'acronymTypeExam');
+        $filtersData->subject = PlatformHelper::normalizePublicFilterValue($filtersData->subject, $tSubject, 'codeSubject');
+        $filtersData->grade = PlatformHelper::normalizePublicFilterValue($filtersData->grade, $tGradeFilter, 'codeGrade');
 
         $examsQuery = TExam::with(['tSubject', 'tGrade', 'tTypeExam', 'tDirection'])
-            ->whereRaw(
-                'compareFind(concat(codeExam, nameExam, descriptionExam), ?, 77) = 1 ' .
-                'AND stateExam = "' . TExam::STATUS['PUBLIC'] . '"' .
-                ($tSubject != null ? 'AND idSubject="' . $tSubject->idSubject . '"' : '') .
-                ($grade != 'all' ? 'AND idGrade="' . $grade . '"' : '') .
-                ($type != 'all' ? 'AND idTypeExam="' . $type . '"' : '') .
-                ($year != 'all' ? 'AND yearExam="' . $year . '"' : ''),
-                [
-                    $searchParameter
-                ]
-            )->orderBy('created_at', 'desc');
+            ->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam), ?, 77) = 1', [$filtersData->searchParameter])
+            ->where('stateExam', TExam::STATUS['PUBLIC']);
+
+        if ($filtersData->subject != 'all') {
+            $examsQuery->where('idSubject', PlatformHelper::resolveInternalFilterValue($filtersData->subject, $tSubject, 'idSubject'));
+        }
+
+        if ($filtersData->grade != 'all') {
+            $examsQuery->where('idGrade', PlatformHelper::resolveInternalFilterValue($filtersData->grade, $tGradeFilter, 'idGrade'));
+        }
+
+        if ($filtersData->type != 'all') {
+            $examsQuery->where('idTypeExam', PlatformHelper::resolveInternalFilterValue($filtersData->type, $tTypeExamFilter, 'idTypeExam'));
+        }
+
+        if ($filtersData->year != 'all') {
+            $examsQuery->where('yearExam', $filtersData->year);
+        }
+
+        $examsQuery->orderBy('created_at', 'desc');
 
         $exams = $this->filterAndDeleteExamsWithoutFiles($examsQuery);
 
@@ -48,14 +62,6 @@ class SubjectController extends Controller
         ExamHelper::getRatingAndUser($paginate['listRow']);
 
         $selectFilters = self::getSelectFilters();
-
-        $filtersData = (object)[
-            'searchParameter' => $searchParameter,
-            'type' => $type,
-            'grade' => $grade,
-            'subject' => $subject,
-            'year' => $year,
-        ];
 
         return view(
             'frontoffice/subject/view',
