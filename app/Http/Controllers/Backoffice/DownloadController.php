@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
+use App\Helper\PlatformHelper;
 use App\Models\TExam;
 use App\Models\TGrade;
 use App\Models\TResource;
@@ -28,11 +29,11 @@ class DownloadController extends Controller
             $downloadPayload = $this->normalizeAllDownloadFilters($request->input('ids', []));
             $files = $this->resolveAllExams($downloadPayload);
         } else {
-            return response()->json(['error' => 'Invalid mode specified'], 400);
+            return PlatformHelper::jsonError(['Invalid mode specified'], 400);
         }
 
         if ($files->isEmpty()) {
-            return response()->json(['error' => 'No se encontraron archivos permitidos para descargar'], 422);
+            return PlatformHelper::jsonError(['No se encontraron archivos permitidos para descargar'], 422);
         }
 
         $zip = new ZipArchive();
@@ -63,9 +64,9 @@ class DownloadController extends Controller
 
             $this->storeZipDownloadAuthorization($request, $zipFileName, $mode, $downloadPayload, $files);
 
-            return response()->json(['downloadUrl' => url("download/zip/$zipFileName")]);
+            return PlatformHelper::jsonSuccess(['Archivo preparado correctamente.'], 200, null, ['downloadUrl' => url("download/zip/$zipFileName")]);
         } else {
-            return response()->json(['error' => 'No se pudo crear el archivo'], 500);
+            return PlatformHelper::jsonMessage(false, 'exception', ['No se pudo crear el archivo'], 500);
         }
     }
 
@@ -78,7 +79,7 @@ class DownloadController extends Controller
 
             return response()->download($filePath)->deleteFileAfterSend(true);
         } else {
-            return response()->json(['error' => 'Archivo no encontrado: ' . $filename], 404);
+            return PlatformHelper::jsonError(['Archivo no encontrado: ' . $filename], 404);
         }
     }
 

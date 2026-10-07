@@ -147,7 +147,9 @@ class DownloadControllerTest extends TestCase
 
 		$this->assertSame(422, $response->getStatusCode());
 		$this->assertSame([
-			'error' => 'No se encontraron archivos permitidos para descargar'
+			'success' => false,
+			'type' => 'error',
+			'messages' => ['No se encontraron archivos permitidos para descargar']
 		], json_decode($response->getContent(), true));
 	}
 

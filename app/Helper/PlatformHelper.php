@@ -14,6 +14,11 @@ class PlatformHelper
 {
 	public static function redirectCorrect($message, $routeRedirect)
 	{
+		if(self::expectsJsonResponse())
+		{
+			return self::jsonSuccess($message, 200, url($routeRedirect));
+		}
+
 		Session::flash('globalMessage', $message);
 		Session::flash('type', 'success');
 
@@ -22,6 +27,11 @@ class PlatformHelper
 
 	public static function redirectAlert($message, $routeRedirect)
 	{
+		if(self::expectsJsonResponse())
+		{
+			return self::jsonMessage(false, 'notice', $message, 422, url($routeRedirect));
+		}
+
 		Session::flash('globalMessage', $message);
 		Session::flash('type', 'notice');
 
@@ -30,6 +40,11 @@ class PlatformHelper
 
 	public static function redirectError($message, $routeRedirect)
 	{
+		if(self::expectsJsonResponse())
+		{
+			return self::jsonError($message, 422, url($routeRedirect));
+		}
+
 		Session::flash('globalMessage', $message);
 		Session::flash('type', 'error');
 
@@ -38,6 +53,8 @@ class PlatformHelper
 
 	public static function catchException($controller, $action, $ex, $routeRedirect)
 	{
+		$expectsJson=self::expectsJsonResponse();
+
 		try
 		{
 			throw new \Exception('Error provocado');
@@ -74,6 +91,11 @@ class PlatformHelper
 		{
 			Session::flash('globalMessage', [env('MESSAGE_EXCEPTION')]);
 			Session::flash('type', 'exception');
+		}
+
+		if($expectsJson)
+		{
+			return self::jsonMessage(false, 'exception', [env('MESSAGE_EXCEPTION')], 500, url($routeRedirect));
 		}
 
 		return redirect($routeRedirect);
@@ -118,6 +140,54 @@ class PlatformHelper
 		catch(\Exception $e){}
 
 		return $_so;
+	}
+
+	public static function expectsJsonResponse()
+	{
+		$request=request();
+
+		return $request->ajax() || $request->expectsJson() || $request->wantsJson();
+	}
+
+	public static function jsonSuccess($message, $status=200, $redirectUrl=null, $extra=[])
+	{
+		return self::jsonMessage(true, 'success', $message, $status, $redirectUrl, $extra);
+	}
+
+	public static function jsonError($message, $status=422, $redirectUrl=null, $extra=[])
+	{
+		return self::jsonMessage(false, 'error', $message, $status, $redirectUrl, $extra);
+	}
+
+	public static function jsonMessage($success, $type, $message, $status=200, $redirectUrl=null, $extra=[])
+	{
+		$payload=array_merge([
+			'success' => $success,
+			'type' => $type,
+			'messages' => self::normalizeMessages($message)
+		], $extra);
+
+		if($redirectUrl!==null)
+		{
+			$payload['redirectUrl']=$redirectUrl;
+		}
+
+		return response()->json($payload, $status);
+	}
+
+	public static function normalizeMessages($message)
+	{
+		if($message instanceof DtoMessage)
+		{
+			return $message->listMessage;
+		}
+
+		if($message===null)
+		{
+			return [];
+		}
+
+		return is_array($message) ? array_values($message) : [$message];
 	}
 
 	public static function preparePaginate($query, $rowPage, $currentPage)
@@ -207,11 +277,21 @@ class PlatformHelper
 
 	public static function ajaxDataNoExists()
 	{
+		if(self::expectsJsonResponse())
+		{
+			return self::jsonError(['No se puede procesar esta petición porque no se encontraron datos.'], 404);
+		}
+
 		echo '<div class="alert alert-danger alert-dismissible"><h4><i class="icon fa fa-ban"></i> Prohibido!</h4>No se puede procesar esta petición porque no se encontraron datos.</div>';exit;
 	}
 
 	public static function ajaxDataMessage($message)
 	{
+		if(self::expectsJsonResponse())
+		{
+			return self::jsonError([$message], 422);
+		}
+
 		echo '<div class="alert alert-danger alert-dismissible"><h4><i class="icon fa fa-ban"></i> Prohibido!</h4>'.$message.'</div>';exit;
 	}
 
