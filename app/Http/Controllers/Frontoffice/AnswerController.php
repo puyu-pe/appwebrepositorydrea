@@ -151,18 +151,18 @@ class AnswerController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/mostrar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/listar/1');
             }
 
             DB::delete('delete from tsubject where idSubject = ?', [$idSubject]);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/listar/1');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/listar/1');
         }
     }
 

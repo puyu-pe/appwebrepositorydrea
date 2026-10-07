@@ -58,27 +58,38 @@ class ViewHelper
 		return $paginationSection;
 	}
 
-	public static function renderPagination($urlPage, $quantityPage, $currentPage, $searchParameter)
+	public static function renderPagination($urlPage, $quantityPage, $currentPage, $searchParameter, $ajaxMode=false)
 	{
 		$queryString=self::buildPaginationQueryString(['searchParameter' => $searchParameter]);
+		$renderLink=function($page, $class, $content='', $extraAttribute='') use ($urlPage, $queryString, $ajaxMode)
+		{
+			$url=url($urlPage.'/'.$page).$queryString;
+
+			if($ajaxMode)
+			{
+				return '<a href="'.$url.'" class="'.$class.'" '.$extraAttribute.'>'.$content.'</a>';
+			}
+
+			return '<a onclick="_globalFunction.clickLink(\''.$url.'\');" class="'.$class.'" '.$extraAttribute.'>'.$content.'</a>';
+		};
 
 		$paginationSection = ''
 			. '<div class="divPagination">'
-			. '<span><a class="divPaginationJump" onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . (($currentPage - 1) <= 0 ? 1 : ($currentPage - 1))) . $queryString . '\');"></a></span>'
-			. '<a onclick="_globalFunction.clickLink(\'' . url($urlPage . '/1') . $queryString . '\');" class="divPaginationPageNumber" ' . (1 == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : '') . '>1</a>';
+			. '<span>'.$renderLink((($currentPage - 1) <= 0 ? 1 : ($currentPage - 1)), 'divPaginationJump').'</span>'
+			. $renderLink(1, 'divPaginationPageNumber', '1', (1 == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : ''));
 		if ($currentPage - 2 > 1) {
 			$paginationSection .= '..';
 		}
 
 		for ($i = ($currentPage - 2 <= 1 ? 2 : $currentPage - 2); $i <= ($quantityPage < ($currentPage + 2) ? $quantityPage : $currentPage + 2); $i++) {
-			$paginationSection .= '<a onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . $i) . $queryString . '\');" class="divPaginationPageNumber" ' . ($i == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : '') . '>' . $i . '</a>';
+			$paginationSection .= $renderLink($i, 'divPaginationPageNumber', $i, ($i == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : ''));
 		}
 		if ($quantityPage > ($currentPage + 2)) {
 			$paginationSection .= '..'
-				. '<a onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . $quantityPage) . $queryString . '\');" class="divPaginationPageNumber" ' . ($quantityPage == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : '') . '>' . $quantityPage . '</a>';
+				. $renderLink($quantityPage, 'divPaginationPageNumber', $quantityPage, ($quantityPage == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : ''));
 		}
 
-		$paginationSection .= '<span><a class="divPaginationJump" onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . (($currentPage + 1) > $quantityPage ? $quantityPage : ($currentPage + 1))) . $queryString . '\');"></a></span>'
+		$paginationSection .= '<span>'.$renderLink((($currentPage + 1) > $quantityPage ? $quantityPage : ($currentPage + 1)), 'divPaginationJump').'</span>'
 			. '</div>';
 
 		return $paginationSection;

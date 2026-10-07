@@ -66,5 +66,16 @@ class PaginationContractTest extends TestCase
 		$pagination=ViewHelper::renderPagination('examen/mostrar', 3, 2, 'codigo 2024');
 
 		$this->assertStringContainsString('searchParameter=codigo+2024', $pagination);
+		$this->assertStringContainsString('onclick="_globalFunction.clickLink', $pagination);
+		$this->assertStringNotContainsString('href="', $pagination);
+	}
+
+	public function test_backoffice_pagination_ajax_mode_uses_real_links_without_inline_navigation()
+	{
+		$pagination=ViewHelper::renderPagination('curso/listar', 3, 2, 'codigo 2024', true);
+
+		$this->assertStringContainsString('href="'.url('curso/listar/1').'?searchParameter=codigo+2024"', $pagination);
+		$this->assertStringContainsString('class="divPaginationPageNumber"', $pagination);
+		$this->assertStringNotContainsString('onclick="_globalFunction.clickLink', $pagination);
 	}
 }

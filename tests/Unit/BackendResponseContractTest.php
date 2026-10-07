@@ -12,7 +12,7 @@ class BackendResponseContractTest extends TestCase
 	{
 		$this->bindJsonRequest();
 
-		$response=PlatformHelper::redirectError(['El campo "codeGrade" es requerido.'], 'grado/mostrar/1');
+		$response=PlatformHelper::redirectError(['El campo "codeGrade" es requerido.'], 'grado/listar/1');
 		$payload=$response->getData(true);
 
 		$this->assertSame(422, $response->getStatusCode());
@@ -26,7 +26,7 @@ class BackendResponseContractTest extends TestCase
 	{
 		$this->bindJsonRequest();
 
-		$response=PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'grado/mostrar/1');
+		$response=PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'grado/listar/1');
 		$payload=$response->getData(true);
 
 		$this->assertSame(200, $response->getStatusCode());

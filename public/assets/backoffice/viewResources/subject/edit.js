@@ -40,5 +40,5 @@
             return;
         }
 
-        confirmDialogSend('frmEditSubject');
-    }
+		ajaxCrudSubmitForm('frmEditSubject', {reloadUrl: window.codideepBackofficeListUrl, ajaxContainerId: 'divAjaxCrudList', postReload: initSubjectListValidation});
+	}

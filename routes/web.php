@@ -62,17 +62,25 @@ Route::get('tipoexamen/eliminar/{idTypeExam}',[BackTypeExamController::class,'ac
 
 Route::get('tipoexamen/{acronymTypeExam}/{currentPage}',[FrontTypeExamController::class,'actionViewTypeExam'])->middleware('GenericMiddleware:tipoexamen/acroninmo');
 
-Route::get('curso/mostrar/{currentPage}',[BackSubjectController::class,'actionGetAll'])->middleware('GenericMiddleware:curso/mostrar');
+Route::get('curso/listar/{currentPage?}',[BackSubjectController::class,'actionGetAll'])->middleware('GenericMiddleware:curso/listar');
+Route::get('curso/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('curso/listar/'.$currentPage.(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:curso/mostrar');
 Route::match(['get', 'post'], 'curso/insertar',[BackSubjectController::class,'actionInsert'])->middleware('GenericMiddleware:curso/insertar');
 Route::post('curso/editar',[BackSubjectController::class,'actionEdit'])->middleware('GenericMiddleware:curso/editar');
-Route::get('curso/eliminar/{idSubject}',[BackSubjectController::class,'actionDelete'])->middleware('GenericMiddleware:curso/eliminar');
+Route::match(['get', 'post'], 'curso/eliminar/{idSubject}',[BackSubjectController::class,'actionDelete'])->middleware('GenericMiddleware:curso/eliminar');
 
 Route::get('curso/{codeSubject}/{currentPage}',[FrontSubjectController::class,'actionViewSubject'])->middleware('GenericMiddleware:curso/codigo');
 
-Route::get('grado/mostrar/{currentPage}',[BackGradeController::class,'actionGetAll'])->middleware('GenericMiddleware:grado/mostrar');
+Route::get('grado/listar/{currentPage?}',[BackGradeController::class,'actionGetAll'])->middleware('GenericMiddleware:grado/listar');
+Route::get('grado/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('grado/listar/'.$currentPage.(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:grado/mostrar');
 Route::match(['get', 'post'], 'grado/insertar',[BackGradeController::class,'actionInsert'])->middleware('GenericMiddleware:grado/insertar');
 Route::post('grado/editar',[BackGradeController::class,'actionEdit'])->middleware('GenericMiddleware:grado/editar');
-Route::get('grado/eliminar/{idSubject}',[BackGradeController::class,'actionDelete'])->middleware('GenericMiddleware:grado/eliminar');
+Route::match(['get', 'post'], 'grado/eliminar/{idGrade}',[BackGradeController::class,'actionDelete'])->middleware('GenericMiddleware:grado/eliminar');
 
 Route::get('grado/{codeGrade}/{currentPage}',[FrontGradeController::class,'actionViewGrade'])->middleware('GenericMiddleware:grado/codigo');
 

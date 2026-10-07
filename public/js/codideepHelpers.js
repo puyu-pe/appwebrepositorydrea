@@ -462,6 +462,172 @@ function confirmDialogSend(idFrm)
 	});
 }
 
+function ajaxCrudMessages(response)
+{
+	if(response!=null && response.messages!=null)
+	{
+		return response.messages;
+	}
+
+	if(response!=null && response.messageGlobal!=null)
+	{
+		return [response.messageGlobal];
+	}
+
+	return ['Ocurrió un error inesperado. Por favor reporte esto a la plataforma o al correo "bugreport@codideep.com". Pedimos disculpas y damos gracias por su comprensión.'];
+}
+
+function ajaxCrudNotify(response)
+{
+	var messages=ajaxCrudMessages(response).join('<br>');
+	var type=response!=null && response.type!=null ? response.type : 'error';
+
+	if(type=='success')
+	{
+		successNote('Operación correcta', messages);
+
+		return;
+	}
+
+	if(type=='notice')
+	{
+		warningNote('No se pudo proceder', messages);
+
+		return;
+	}
+
+	errorNote('No se pudo proceder', messages);
+}
+
+function ajaxCrudReload(response, options)
+{
+	var reloadUrl=options!=null && options.reloadUrl!=null ? options.reloadUrl : null;
+	var ajaxContainerId=options!=null && options.ajaxContainerId!=null ? options.ajaxContainerId : null;
+	var postReload=options!=null && options.postReload!=null ? options.postReload : null;
+
+	if(ajaxContainerId!=null)
+	{
+		ajaxCrudLoadList(reloadUrl!=null ? reloadUrl : response.redirectUrl, ajaxContainerId, postReload);
+
+		return;
+	}
+
+	window.location.href=reloadUrl!=null ? reloadUrl : (response.redirectUrl!=null ? response.redirectUrl : window.location.href);
+}
+
+function ajaxCrudLoadList(url, ajaxContainerId, postReload)
+{
+	$('#modalLoading').show();
+
+	$.ajax(
+	{
+		url: url,
+		type: 'GET',
+		cache: false
+	}).done(function(page)
+	{
+		$('#modalLoading').hide();
+		$('#'+ajaxContainerId).html(page);
+
+		if((typeof postReload)=='function')
+		{
+			postReload();
+		}
+	}).fail(function()
+	{
+		$('#modalLoading').hide();
+		errorNote('No se pudo proceder', 'Ocurrió un error inesperado al actualizar el listado.');
+	});
+}
+
+function ajaxCrudBindPagination(containerId, postReload)
+{
+	$('#'+containerId).off('click.ajaxCrudPagination', '.divPagination a[href]').on('click.ajaxCrudPagination', '.divPagination a[href]', function(event)
+	{
+		var href=$(this).attr('href');
+
+		if(href==null || href=='')
+		{
+			return;
+		}
+
+		event.preventDefault();
+		ajaxCrudLoadList(href, containerId, postReload);
+	});
+}
+
+function ajaxCrudSubmitForm(idFrm, options)
+{
+	confirmDialog(function()
+	{
+		var form=$('#'+idFrm);
+
+		$('#modalLoading').show();
+
+		$.ajax(
+		{
+			url: form.attr('action'),
+			type: form.attr('method'),
+			data: form.serialize(),
+			headers:
+			{
+				'Accept': 'application/json',
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		}).done(function(response)
+		{
+			$('#modalLoading').hide();
+			ajaxCrudNotify(response);
+
+			if(response.success)
+			{
+				form.closest('.modal').modal('hide');
+				ajaxCrudReload(response, options);
+			}
+		}).fail(function(xhr)
+		{
+			$('#modalLoading').hide();
+			ajaxCrudNotify(xhr.responseJSON);
+		});
+	});
+}
+
+function ajaxCrudDelete(url, token, options)
+{
+	confirmDialog(function()
+	{
+		$('#modalLoading').show();
+
+		$.ajax(
+		{
+			url: url,
+			type: 'POST',
+			data:
+			{
+				_token: token
+			},
+			headers:
+			{
+				'Accept': 'application/json',
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		}).done(function(response)
+		{
+			$('#modalLoading').hide();
+			ajaxCrudNotify(response);
+
+			if(response.success)
+			{
+				ajaxCrudReload(response, options);
+			}
+		}).fail(function(xhr)
+		{
+			$('#modalLoading').hide();
+			ajaxCrudNotify(xhr.responseJSON);
+		});
+	});
+}
+
 function warningNote(title, message)
 {
 	new PNotify(

@@ -26,14 +26,16 @@ class GradeController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'grado/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'grado/listar/1');
                 }
 
                 $tGradeExists=TGrade::whereRaw('codeGrade = ?',[$request->input('txtCodeGrade')])->exists();
 
                 if($tGradeExists)
                 {
-                    return PlatformHelper::redirectError(['Ya existe un grado registrado con este codigo, ingrese otro.'], 'grado/mostrar/1');
+                    DB::rollBack();
+
+                    return PlatformHelper::redirectError(['Ya existe un grado registrado con este codigo, ingrese otro.'], 'grado/listar/1');
                 }
 
                 $tGrade=new TGrade();
@@ -48,13 +50,13 @@ class GradeController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'grado/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'grado/listar/1');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'grado/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'grado/listar/1');
             }
         }
 
@@ -75,14 +77,16 @@ class GradeController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'grado/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'grado/listar/1');
                 }
 
                 $tGradeExists=TGrade::whereRaw('idGrade != ? AND codeGrade = ?',[$request->input('hdIdGrade'), $request->input('txtCodeGrade')])->exists();
 
                 if($tGradeExists)
                 {
-                    return PlatformHelper::redirectError(['Ya existe un grado registrado con este codigo, ingrese otro.'], 'grado/mostrar/1');
+                    DB::rollBack();
+
+                    return PlatformHelper::redirectError(['Ya existe un grado registrado con este codigo, ingrese otro.'], 'grado/listar/1');
                 }
 
                 $tGrade=TGrade::find($request->input('hdIdGrade'));
@@ -95,13 +99,13 @@ class GradeController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'grado/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'grado/listar/1');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'grado/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'grado/listar/1');
             }
         }
 
@@ -127,34 +131,45 @@ class GradeController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'grado/mostrar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'grado/listar/1');
             }
 
-            DB::delete('delete from tgrade where idGrade = ?', [$idGrade]);
+            $tGrade=TGrade::find($idGrade);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'grado/mostrar/1');
+            if($tGrade!=null)
+            {
+                $tGrade->delete();
+            }
+
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'grado/listar/1');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'grado/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'grado/listar/1');
         }
     }
 
-    public function actionGetAll(Request $request, $currentPage)
+    public function actionGetAll(Request $request, $currentPage=1)
     {
         $searchParameter=$request->has('searchParameter') ? $request->input('searchParameter') : '';
 
         $paginate=PlatformHelper::preparePaginate(TGrade::whereRaw('compareFind(concat(nameGrade, descriptionGrade, codeGrade), ?, 77)=1',[$searchParameter])
         ->orderby('created_at', 'desc'), 7, $currentPage);
 
-        return view('backoffice/grade/getall',
-        [
+        $viewData=[
             'listTGrade' => $paginate['listRow'],
             'currentPage' => $paginate['currentPage'],
             'quantityPage' => $paginate['quantityPage'],
             'searchParameter' => $searchParameter
-        ]);
+        ];
+
+        if($request->ajax())
+        {
+            return view('backoffice/grade/_list', $viewData);
+        }
+
+        return view('backoffice/grade/getall', $viewData);
     }
 }
