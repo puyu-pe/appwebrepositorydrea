@@ -41,16 +41,22 @@ class AnswerController extends Controller
                             $tAnswerDniExists = TAnswer::whereRaw('dni = ? AND type != ?', [
                                 $request->input('txtNumberDni'), TAnswer::TYPE['CORRECT']])->exists();
 
-                            if ($tAnswerDniExists)
+                            if ($tAnswerDniExists) {
+                                DB::rollBack();
+
                                 return PlatformHelper::redirectError(['Ya se realizó el cuestionario con el dni registrado.'], url()->previous());
+                            }
                         }
 
                         $tAnswerNameExists = TAnswer::whereRaw('firstName LIKE ? AND surName = ? AND type != ?', [
                             $request->input('txtFirstName'), $request->input('txtSurName'),  TAnswer::TYPE['CORRECT']
                         ])->exists();
 
-                        if ($tAnswerNameExists)
+                        if ($tAnswerNameExists) {
+                            DB::rollBack();
+
                             return PlatformHelper::redirectError(['Ya se realizó un cuestionario con los nombres/apellidos registrados.'], url()->previous());
+                        }
 
                         $tAnswer = new TAnswer();
                         $tAnswer->idAnswer = uniqid();
@@ -139,7 +145,7 @@ class AnswerController extends Controller
             DB::rollBack();
             $previousUrl = url()->previous();
 
-            return PlatformHelper::redirectError([$e->getMessage()], $previousUrl);
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), $previousUrl);
         }
     }
 
@@ -151,18 +157,18 @@ class AnswerController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/listar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/listar');
             }
 
             DB::delete('delete from tsubject where idSubject = ?', [$idSubject]);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/listar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/listar');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/listar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/listar');
         }
     }
 

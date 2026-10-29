@@ -35,6 +35,12 @@ $(function()
                     }
             }
     }));
+
+    $('#frmInsertAnswer').off('submit.ajaxCrud').on('submit.ajaxCrud', function(event)
+    {
+        event.preventDefault();
+        sendInsertAnswer();
+    });
 });
 
 function validateNotEmptyResponse() {
@@ -86,5 +92,10 @@ function sendInsertAnswer()
         return false;
     }
 
-    confirmDialogSend('frmInsertAnswer');
+    ajaxCrudSubmitForm('frmInsertAnswer', {
+        onSuccess: function(response, form)
+        {
+            form.closest('.modal').modal('hide');
+        }
+    });
 }

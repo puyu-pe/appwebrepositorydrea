@@ -72,5 +72,5 @@
             return;
         }
 
-        confirmDialogSend('frmEditTypeExam');
+        ajaxCrudSubmitFormData('frmEditTypeExam', {reloadUrl: window.codideepBackofficeListUrl, ajaxContainerId: 'divAjaxCrudList', postReload: initTypeExamListValidation});
     }

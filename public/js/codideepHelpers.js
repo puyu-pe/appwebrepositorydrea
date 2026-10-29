@@ -422,7 +422,7 @@ function actualDayWeek(date)
 	return new Date(date).getDay();
 }
 
-function confirmDialog(callback)
+function confirmDialog(callback, cancelCallback)
 {
 	swal(
 	{
@@ -436,6 +436,13 @@ function confirmDialog(callback)
 		if(proceed)
 		{
 			callback();
+
+			return;
+		}
+
+		if((typeof cancelCallback)=='function')
+		{
+			cancelCallback();
 		}
 	});
 }
@@ -558,9 +565,23 @@ function ajaxCrudBindPagination(containerId, postReload)
 
 function ajaxCrudSubmitForm(idFrm, options)
 {
+	var form=$('#'+idFrm);
+
+	if(form.data('ajaxCrudSubmitting'))
+	{
+		return;
+	}
+
+	form.data('ajaxCrudSubmitting', true);
+
 	confirmDialog(function()
 	{
-		var form=$('#'+idFrm);
+		var formData=form.serialize();
+
+		if(options!=null && typeof options.onBeforeSend=='function')
+		{
+			options.onBeforeSend(form);
+		}
 
 		$('#modalLoading').show();
 
@@ -568,7 +589,7 @@ function ajaxCrudSubmitForm(idFrm, options)
 		{
 			url: form.attr('action'),
 			type: form.attr('method'),
-			data: form.serialize(),
+			data: formData,
 			headers:
 			{
 				'Accept': 'application/json',
@@ -581,6 +602,13 @@ function ajaxCrudSubmitForm(idFrm, options)
 
 			if(response.success)
 			{
+				if(options!=null && typeof options.onSuccess=='function')
+				{
+					options.onSuccess(response, form);
+
+					return;
+				}
+
 				form.closest('.modal').modal('hide');
 				ajaxCrudReload(response, options);
 			}
@@ -588,7 +616,88 @@ function ajaxCrudSubmitForm(idFrm, options)
 		{
 			$('#modalLoading').hide();
 			ajaxCrudNotify(xhr.responseJSON);
+		}).always(function()
+		{
+			form.data('ajaxCrudSubmitting', false);
+
+			if(options!=null && typeof options.onComplete=='function')
+			{
+				options.onComplete(form);
+			}
 		});
+	}, function()
+	{
+		form.data('ajaxCrudSubmitting', false);
+	});
+}
+
+function ajaxCrudSubmitFormData(idFrm, options)
+{
+	var form=$('#'+idFrm);
+
+	if(form.data('ajaxCrudSubmitting'))
+	{
+		return;
+	}
+
+	form.data('ajaxCrudSubmitting', true);
+
+	confirmDialog(function()
+	{
+		var formData=new FormData(form[0]);
+
+		if(options!=null && typeof options.onBeforeSend=='function')
+		{
+			options.onBeforeSend(form);
+		}
+
+		$('#modalLoading').show();
+
+		$.ajax(
+		{
+			url: form.attr('action'),
+			type: form.attr('method'),
+			data: formData,
+			processData: false,
+			contentType: false,
+			headers:
+			{
+				'Accept': 'application/json',
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		}).done(function(response)
+		{
+			$('#modalLoading').hide();
+			ajaxCrudNotify(response);
+
+			if(response.success)
+			{
+				if(options!=null && typeof options.onSuccess=='function')
+				{
+					options.onSuccess(response, form);
+
+					return;
+				}
+
+				form.closest('.modal').modal('hide');
+				ajaxCrudReload(response, options);
+			}
+		}).fail(function(xhr)
+		{
+			$('#modalLoading').hide();
+			ajaxCrudNotify(xhr.responseJSON);
+		}).always(function()
+		{
+			form.data('ajaxCrudSubmitting', false);
+
+			if(options!=null && typeof options.onComplete=='function')
+			{
+				options.onComplete(form);
+			}
+		});
+	}, function()
+	{
+		form.data('ajaxCrudSubmitting', false);
 	});
 }
 
@@ -618,6 +727,13 @@ function ajaxCrudDelete(url, token, options)
 
 			if(response.success)
 			{
+				if(options!=null && typeof options.onSuccess=='function')
+				{
+					options.onSuccess(response);
+
+					return;
+				}
+
 				ajaxCrudReload(response, options);
 			}
 		}).fail(function(xhr)

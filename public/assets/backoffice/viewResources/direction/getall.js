@@ -2,6 +2,12 @@
 
 $(function()
 {
+    initDirectionListValidation();
+    ajaxCrudBindPagination('divAjaxCrudList', initDirectionListValidation);
+});
+
+function initDirectionListValidation()
+{
     $('#divSearch').formValidation(objectValidate(
         {
             txtSearch:
@@ -16,7 +22,7 @@ $(function()
                 }
             }
         }));
-});
+}
 
 function searchDirection(text, url, event)
 {
@@ -40,10 +46,6 @@ function searchDirection(text, url, event)
             return;
         }
 
-        $('#modalLoading').show();
-
-        $('#txtSearch').attr('disabled', 'disabled');
-
-        window.location.href=url+'?searchParameter='+text;
+        ajaxCrudLoadList(url+'?searchParameter='+encodeURIComponent(text), 'divAjaxCrudList', initDirectionListValidation);
     }
 }

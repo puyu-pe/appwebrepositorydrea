@@ -139,7 +139,9 @@ class UserController extends Controller
     {
         if($request->has('hdIdUser'))
         {
-            DB::beginTransaction();
+            try
+            {
+                DB::beginTransaction();
 
                 $this->_so->mo->listMessage=(new UserValidation())->validationEdit($request);
 
@@ -151,6 +153,13 @@ class UserController extends Controller
                 }
 
                 $tUser=TUser::find($request->input('hdIdUser'));
+
+                if(!$tUser)
+                {
+                    DB::rollBack();
+
+                    return PlatformHelper::redirectError(['No se encontró los datos del usuario.'], 'usuario/editar');
+                }
 
                 $tUser->firstName=trim($request->input('txtFirstNameUser'));
                 $tUser->surName=trim($request->input('txtSurNameUser'));
@@ -184,8 +193,34 @@ class UserController extends Controller
                 $sessionManager->put('avatarExtension', $tUser->avatarExtension);
                 $sessionManager->put('updated_at',$tUser->updated_at);
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/editar');
+                if(PlatformHelper::expectsJsonResponse())
+                {
+                    $avatarVersion=(string)$tUser->updated_at;
+                    $avatarUrl=asset('img/userlogo.png');
 
+                    if($tUser->avatarExtension!='')
+                    {
+                        $avatarPath=storage_path('app/public/user/'.$tUser->idUser.'.'.$tUser->avatarExtension);
+                        $avatarVersion=file_exists($avatarPath) ? hash_file('sha256', $avatarPath) : $avatarVersion;
+                        $avatarUrl=asset('storage/user/'.$tUser->idUser.'.'.$tUser->avatarExtension).'?v='.rawurlencode($avatarVersion);
+                    }
+
+                    return PlatformHelper::jsonSuccess(
+                        ['Operación realizada correctamente.'],
+                        200,
+                        url('usuario/editar'),
+                        ['data' => ['avatarUrl' => $avatarUrl, 'avatarVersion' => $avatarVersion]]
+                    );
+                }
+
+                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/editar');
+            }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/editar');
+            }
         }
 
         return view('frontoffice/user/edit');

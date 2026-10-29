@@ -21,6 +21,11 @@ class ViewHelper
 		return empty($queryParameters) ? '' : '?'.http_build_query($queryParameters);
 	}
 
+	private static function buildPaginationUrl($urlPage, $page, $queryString)
+	{
+		return url($urlPage.($page == 1 ? '' : '/'.$page)).$queryString;
+	}
+
 	public static function renderPaginationFrontExams($urlPage, $quantityPage, $currentPage, $filtersData)
 	{
 		$type=$filtersData->type ?? 'all';
@@ -36,23 +41,28 @@ class ViewHelper
 			'year' => ($year != '' && $year != null) ? $year : 'all'
 		], true);
 
+		$renderLink=function($page, $class, $content='', $extraAttribute='') use ($urlPage, $queryString)
+		{
+			return '<a href="'.self::buildPaginationUrl($urlPage, $page, $queryString).'" class="'.$class.'" '.$extraAttribute.'>'.$content.'</a>';
+		};
+
 		$paginationSection = ''
 			. '<div class="divPagination">'
-			. '<span><a class="divPaginationJump" onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . (($currentPage - 1) <= 0 ? 1 : ($currentPage - 1))) . $queryString . '\');"></a></span>'
-			. '<a onclick="_globalFunction.clickLink(\'' . url($urlPage . '/1') . $queryString . '\');" class="divPaginationPageNumber" ' . (1 == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : '') . '>1</a>';
+			. '<span>'.$renderLink((($currentPage - 1) <= 0 ? 1 : ($currentPage - 1)), 'divPaginationJump').'</span>'
+			. $renderLink(1, 'divPaginationPageNumber', '1', (1 == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : ''));
 		if ($currentPage - 2 > 1) {
 			$paginationSection .= '..';
 		}
 
 		for ($i = ($currentPage - 2 <= 1 ? 2 : $currentPage - 2); $i <= ($quantityPage < ($currentPage + 2) ? $quantityPage : $currentPage + 2); $i++) {
-			$paginationSection .= '<a onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . $i) . $queryString . '\');" class="divPaginationPageNumber" ' . ($i == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : '') . '>' . $i . '</a>';
+			$paginationSection .= $renderLink($i, 'divPaginationPageNumber', $i, ($i == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : ''));
 		}
 		if ($quantityPage > ($currentPage + 2)) {
 			$paginationSection .= '..'
-				. '<a onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . $quantityPage) . $queryString . '\');" class="divPaginationPageNumber" ' . ($quantityPage == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : '') . '>' . $quantityPage . '</a>';
+				. $renderLink($quantityPage, 'divPaginationPageNumber', $quantityPage, ($quantityPage == $currentPage ? 'style="background-color: #6195ce;color: #ffffff;"' : ''));
 		}
 
-		$paginationSection .= '<span><a class="divPaginationJump" onclick="_globalFunction.clickLink(\'' . url($urlPage . '/' . (($currentPage + 1) > $quantityPage ? $quantityPage : ($currentPage + 1))) . $queryString . '\');"></a></span>'
+		$paginationSection .= '<span>'.$renderLink((($currentPage + 1) > $quantityPage ? $quantityPage : ($currentPage + 1)), 'divPaginationJump').'</span>'
 			. '</div>';
 
 		return $paginationSection;
@@ -63,7 +73,7 @@ class ViewHelper
 		$queryString=self::buildPaginationQueryString(['searchParameter' => $searchParameter]);
 		$renderLink=function($page, $class, $content='', $extraAttribute='') use ($urlPage, $queryString, $ajaxMode)
 		{
-			$url=url($urlPage.'/'.$page).$queryString;
+			$url=self::buildPaginationUrl($urlPage, $page, $queryString);
 
 			if($ajaxMode)
 			{

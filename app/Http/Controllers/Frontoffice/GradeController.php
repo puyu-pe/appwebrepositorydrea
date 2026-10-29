@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class GradeController extends Controller
 {
-    public function actionViewGrade(Request $request, $codeGrade, $currentPage)
+    public function actionViewGrade(Request $request, $codeGrade, $currentPage = 1)
     {
         $filtersData = (object)[
             'searchParameter' => $request->has('searchParameter') ? $request->input('searchParameter') : '',
@@ -63,18 +63,21 @@ class GradeController extends Controller
 
         $selectFilters = self::getSelectFilters();
 
-        return view(
-            'frontoffice/grade/view',
-            [
-                'tGrade' => $tGrade,
-                'listTExam' => $paginate['listRow'],
-                'currentPage' => $paginate['currentPage'],
-                'quantityPage' => $paginate['quantityPage'],
-                'filtersData' => $filtersData,
-                'selectFilters' => $selectFilters,
-                'codeGrade' => $codeGrade
-            ]
-        );
+        $viewData = [
+            'tGrade' => $tGrade,
+            'listTExam' => $paginate['listRow'],
+            'currentPage' => $paginate['currentPage'],
+            'quantityPage' => $paginate['quantityPage'],
+            'filtersData' => $filtersData,
+            'selectFilters' => $selectFilters,
+            'codeGrade' => $codeGrade
+        ];
+
+        if ($request->ajax()) {
+            return view('frontoffice.grade._list', $viewData);
+        }
+
+        return view('frontoffice/grade/view', $viewData);
     }
 
     private function getSelectFilters()

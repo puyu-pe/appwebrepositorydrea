@@ -2,6 +2,12 @@
 
 $(function()
 {
+    initTypeExamListValidation();
+    ajaxCrudBindPagination('divAjaxCrudList', initTypeExamListValidation);
+});
+
+function initTypeExamListValidation()
+{
     $('#divSearch').formValidation(objectValidate(
         {
             txtSearch:
@@ -16,7 +22,7 @@ $(function()
                 }
             }
         }));
-});
+}
 
 function searchTypeExam(text, url, event)
 {
@@ -40,10 +46,6 @@ function searchTypeExam(text, url, event)
             return;
         }
 
-        $('#modalLoading').show();
-
-        $('#txtSearch').attr('disabled', 'disabled');
-
-        window.location.href=url+'?searchParameter='+text;
+        ajaxCrudLoadList(url+'?searchParameter='+encodeURIComponent(text), 'divAjaxCrudList', initTypeExamListValidation);
     }
 }

@@ -37,7 +37,7 @@ class FrontofficeTypeExamControllerTest extends TestCase
 
 	public function test_invalid_type_filter_returns_empty_results_without_falling_back_to_all()
 	{
-		$response = $this->get('/tipoexamen/all/1?type=missing-type');
+		$response = $this->get('/tipoexamen/all/listar?type=missing-type');
 
 		$response->assertOk();
 		$response->assertViewHas('tTypeExam', null);
@@ -54,7 +54,7 @@ class FrontofficeTypeExamControllerTest extends TestCase
 
 	public function test_legacy_type_exam_id_filter_remains_supported()
 	{
-		$response = $this->get('/tipoexamen/all/1?type=type-1');
+		$response = $this->get('/tipoexamen/all/listar?type=type-1');
 
 		$response->assertOk();
 		$response->assertViewHas('filtersData', function ($filtersData) {
@@ -63,6 +63,51 @@ class FrontofficeTypeExamControllerTest extends TestCase
 		$response->assertViewHas('listTExam', function ($listTExam) {
 			return $listTExam->pluck('idExam')->all() === ['exam-public'];
 		});
+	}
+
+	public function test_ajax_listing_returns_partial_without_full_shell()
+	{
+		$response = $this->withHeaders([
+			'X-Requested-With' => 'XMLHttpRequest'
+		])->get('/tipoexamen/all/listar?type=type-1');
+
+		$response->assertOk();
+		$response->assertViewIs('frontoffice.typeexam._list');
+		$response->assertSeeText('Public Exam');
+		$response->assertSeeText('Ver detalles');
+		$response->assertDontSee('it-breadcrumb-area', false);
+		$response->assertDontSee('assets/frontoffice/viewResources/typeexam/view.js', false);
+	}
+
+	public function test_legacy_type_exam_route_redirects_to_listar_preserving_query_string()
+	{
+		$response = $this->get('/tipoexamen/all/1?type=type-1&searchParameter=Public');
+
+		$response->assertRedirect('/tipoexamen/all/listar?type=type-1&searchParameter=Public');
+	}
+
+	public function test_listing_script_restores_popstate_without_pushing_history()
+	{
+		$script = file_get_contents(public_path('assets/frontoffice/viewResources/typeexam/view.js'));
+
+		$this->assertMatchesRegularExpression(
+			'/\$\(window\)\.on\(\s*[\'\"]popstate[\'\"]\s*,\s*function\s*\(\s*\)\s*\{\s*restoreFiltersFromLocation\(\s*\)\s*;\s*loadExamList\(\s*window\.location\.href\s*,\s*false\s*\)\s*;/s',
+			$script
+		);
+		$this->assertSame(1, preg_match(
+			'/function\s+restoreFiltersFromLocation\s*\(\s*\)\s*\{(?<body>.*?)\n\}/s',
+			$script,
+			$restoreFunction
+		));
+		foreach (['searchParameter', 'type', 'grade', 'subject', 'year'] as $parameter) {
+			$this->assertMatchesRegularExpression(
+				'/parameters\.get\(\s*[\'\"]' . preg_quote($parameter, '/') . '[\'\"]\s*\)/',
+				$restoreFunction['body']
+			);
+		}
+		$this->assertStringContainsString('function loadExamList(url, updateHistory)', $script);
+		$this->assertStringContainsString('if (updateHistory !== false) {', $script);
+		$this->assertStringContainsString("window.history.pushState({}, '', url);", $script);
 	}
 
 	private function useInMemoryDatabase()

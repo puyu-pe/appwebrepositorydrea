@@ -62,5 +62,5 @@
             return;
         }
 
-        confirmDialogSend('frmInsertDirection');
+        ajaxCrudSubmitFormData('frmInsertDirection', {reloadUrl: window.codideepBackofficeInsertReloadUrl, ajaxContainerId: 'divAjaxCrudList', postReload: initDirectionListValidation});
     }

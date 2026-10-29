@@ -39,15 +39,23 @@ Route::get('sistema/generarbackup',[BackGeneralOffice::class, 'actionBackupDatab
 Route::get('sistema/descargar',[BackGeneralOffice::class, 'actionDownloadExam'])->middleware('GenericMiddleware:sistema/descargar');
 
 Route::match(['get','post'],'general/contacto',[FrontContactController::class,'actionInsert'])->middleware('GenericMiddleware:general/contacto');
-Route::get('contacto/mostrar/{currentPage}',[BackContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/mostrar');
+Route::get('contacto/listar/{currentPage?}',[BackContactController::class,'actionGetAll'])->middleware('GenericMiddleware:contacto/listar');
+Route::get('contacto/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('contacto/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:contacto/mostrar');
 Route::post('contacto/responder',[BackContactController::class,'actionReply'])->middleware('GenericMiddleware:contacto/responder');
-Route::get('contacto/eliminar/{idContact}',[BackContactController::class,'actionDelete'])->middleware('GenericMiddleware:contacto/eliminar');
+Route::match(['get', 'post'], 'contacto/eliminar/{idContact}',[BackContactController::class,'actionDelete'])->middleware('GenericMiddleware:contacto/eliminar');
 
-Route::get('usuario/mostrar/{currentPage}',[BackUserController::class,'actionGetAll'])->middleware('GenericMiddleware:usuario/mostrar');
-Route::get('usuario/estado/{idUser}',[BackUserController::class,'actionChangeStatus'])->middleware('GenericMiddleware:usuario/estado');
+Route::get('usuario/listar/{currentPage?}',[BackUserController::class,'actionGetAll'])->middleware('GenericMiddleware:usuario/listar');
+Route::get('usuario/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('usuario/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:usuario/mostrar');
+Route::match(['get', 'post'], 'usuario/estado/{idUser}',[BackUserController::class,'actionChangeStatus'])->middleware('GenericMiddleware:usuario/estado');
 Route::post('usuario/rol',[BackUserController::class, 'actionChangeRole'])->middleware('GenericMiddleware:usuario/rol');
 Route::get('usuario/salir',[BackUserController::class,'actionLogout'])->middleware('GenericMiddleware:usuario/salir');
-Route::get('usuario/eliminar/{idUser}',[BackUserController::class, 'actionDelete'])->middleware('GenericMiddleware:usuario/eliminar');
+Route::match(['get', 'post'], 'usuario/eliminar/{idUser}',[BackUserController::class, 'actionDelete'])->middleware('GenericMiddleware:usuario/eliminar');
 Route::match(['get','post'],'usuario/acceder',[FrontUserController::class,'actionLogin'])->middleware('GenericMiddleware:usuario/acceder');
 Route::match(['get','post'],'usuario/registrar',[FrontUserController::class,'actionRegister'])->middleware('GenericMiddleware:usuario/registrar');
 Route::match(['get', 'post'], 'usuario/editar',[FrontUserController::class, 'actionEdit'])->middleware('GenericMiddleware:usuario/editar');
@@ -55,46 +63,73 @@ Route::post('usuario/cambiar',[FrontUserController::class, 'actionChange'])->mid
 Route::match(['get','post'],'usuario/recuperar',[FrontUserController::class,'actionRecuperate'])->middleware('GenericMiddleware:usuario/recuperar');
 Route::match(['get','post'],'usuario/resetear/{token}',[FrontUserController::class,'actionReset'])->middleware('GenericMiddleware:usuario/resetear');
 
-Route::get('tipoexamen/mostrar/{currentPage}',[BackTypeExamController::class,'actionGetAll'])->middleware('GenericMiddleware:tipoexamen/mostrar');
+Route::get('tipoexamen/listar/{currentPage?}',[BackTypeExamController::class,'actionGetAll'])->middleware('GenericMiddleware:tipoexamen/listar');
+Route::get('tipoexamen/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('tipoexamen/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:tipoexamen/mostrar');
 Route::match(['get', 'post'], 'tipoexamen/insertar',[BackTypeExamController::class,'actionInsert'])->middleware('GenericMiddleware:tipoexamen/insertar');
 Route::post('tipoexamen/editar',[BackTypeExamController::class,'actionEdit'])->middleware('GenericMiddleware:tipoexamen/editar');
-Route::get('tipoexamen/eliminar/{idTypeExam}',[BackTypeExamController::class,'actionDelete'])->middleware('GenericMiddleware:tipoexamen/eliminar');
+Route::match(['get', 'post'], 'tipoexamen/eliminar/{idTypeExam}',[BackTypeExamController::class,'actionDelete'])->middleware('GenericMiddleware:tipoexamen/eliminar');
 
-Route::get('tipoexamen/{acronymTypeExam}/{currentPage}',[FrontTypeExamController::class,'actionViewTypeExam'])->middleware('GenericMiddleware:tipoexamen/acroninmo');
+Route::get('tipoexamen/{acronymTypeExam}/listar/{currentPage?}',[FrontTypeExamController::class,'actionViewTypeExam'])->middleware('GenericMiddleware:tipoexamen/acroninmo/listar');
+Route::get('tipoexamen/{acronymTypeExam}/{currentPage}', function($acronymTypeExam, $currentPage)
+{
+    $queryString = request()->server->get('QUERY_STRING');
+    return redirect('tipoexamen/'.$acronymTypeExam.'/listar'.($currentPage == 1 ? '' : '/'.$currentPage).($queryString ? '?'.$queryString : ''));
+})->middleware('GenericMiddleware:tipoexamen/acroninmo');
 
 Route::get('curso/listar/{currentPage?}',[BackSubjectController::class,'actionGetAll'])->middleware('GenericMiddleware:curso/listar');
 Route::get('curso/mostrar/{currentPage}', function($currentPage)
 {
-    return redirect('curso/listar/'.$currentPage.(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+    return redirect('curso/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
 })->middleware('GenericMiddleware:curso/mostrar');
 Route::match(['get', 'post'], 'curso/insertar',[BackSubjectController::class,'actionInsert'])->middleware('GenericMiddleware:curso/insertar');
 Route::post('curso/editar',[BackSubjectController::class,'actionEdit'])->middleware('GenericMiddleware:curso/editar');
 Route::match(['get', 'post'], 'curso/eliminar/{idSubject}',[BackSubjectController::class,'actionDelete'])->middleware('GenericMiddleware:curso/eliminar');
 
-Route::get('curso/{codeSubject}/{currentPage}',[FrontSubjectController::class,'actionViewSubject'])->middleware('GenericMiddleware:curso/codigo');
+Route::get('curso/{codeSubject}/listar/{currentPage?}',[FrontSubjectController::class,'actionViewSubject'])->middleware('GenericMiddleware:curso/codigo/listar');
+Route::get('curso/{codeSubject}/{currentPage}', function($codeSubject, $currentPage)
+{
+    $queryString = request()->server->get('QUERY_STRING');
+    return redirect('curso/'.$codeSubject.'/listar'.($currentPage == 1 ? '' : '/'.$currentPage).($queryString ? '?'.$queryString : ''));
+})->middleware('GenericMiddleware:curso/codigo');
 
 Route::get('grado/listar/{currentPage?}',[BackGradeController::class,'actionGetAll'])->middleware('GenericMiddleware:grado/listar');
 Route::get('grado/mostrar/{currentPage}', function($currentPage)
 {
-    return redirect('grado/listar/'.$currentPage.(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+    return redirect('grado/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
 })->middleware('GenericMiddleware:grado/mostrar');
 Route::match(['get', 'post'], 'grado/insertar',[BackGradeController::class,'actionInsert'])->middleware('GenericMiddleware:grado/insertar');
 Route::post('grado/editar',[BackGradeController::class,'actionEdit'])->middleware('GenericMiddleware:grado/editar');
 Route::match(['get', 'post'], 'grado/eliminar/{idGrade}',[BackGradeController::class,'actionDelete'])->middleware('GenericMiddleware:grado/eliminar');
 
-Route::get('grado/{codeGrade}/{currentPage}',[FrontGradeController::class,'actionViewGrade'])->middleware('GenericMiddleware:grado/codigo');
+Route::get('grado/{codeGrade}/listar/{currentPage?}',[FrontGradeController::class,'actionViewGrade'])->middleware('GenericMiddleware:grado/codigo/listar');
+Route::get('grado/{codeGrade}/{currentPage}', function($codeGrade, $currentPage)
+{
+    $queryString = request()->server->get('QUERY_STRING');
+    return redirect('grado/'.$codeGrade.'/listar'.($currentPage == 1 ? '' : '/'.$currentPage).($queryString ? '?'.$queryString : ''));
+})->middleware('GenericMiddleware:grado/codigo');
 
-Route::get('direccion/mostrar/{currentPage}',[BackDirectionController::class,'actionGetAll'])->middleware('GenericMiddleware:direccion/mostrar');
+Route::get('direccion/listar/{currentPage?}',[BackDirectionController::class,'actionGetAll'])->middleware('GenericMiddleware:direccion/listar');
+Route::get('direccion/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('direccion/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:direccion/mostrar');
 Route::match(['get', 'post'], 'direccion/insertar',[BackDirectionController::class,'actionInsert'])->middleware('GenericMiddleware:direccion/insertar');
 Route::post('direccion/editar',[BackDirectionController::class,'actionEdit'])->middleware('GenericMiddleware:direccion/editar');
-Route::get('direccion/eliminar/{idSubject}',[BackDirectionController::class,'actionDelete'])->middleware('GenericMiddleware:direccion/eliminar');
+Route::match(['get', 'post'], 'direccion/eliminar/{idSubject}',[BackDirectionController::class,'actionDelete'])->middleware('GenericMiddleware:direccion/eliminar');
 
-Route::get('examen/mostrar/{currentPage}',[BackExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/mostrar');
+Route::get('examen/listar/{currentPage?}',[BackExamController::class,'actionGetAll'])->middleware('GenericMiddleware:examen/listar');
+Route::get('examen/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('examen/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:examen/mostrar');
 Route::match(['get', 'post'], 'examen/insertar',[BackExamController::class,'actionInsert'])->middleware('GenericMiddleware:examen/insertar');
 Route::post('examen/editar',[BackExamController::class,'actionEdit'])->middleware('GenericMiddleware:examen/editar');
-Route::get('examen/eliminar/{idExam}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
+Route::post('examen/eliminar/{idExam}',[BackExamController::class,'actionDelete'])->middleware('GenericMiddleware:examen/eliminar');
 Route::get('examen/verarchivo/{idExam}',[BackExamController::class,'actionViewExam'])->middleware('GenericMiddleware:examen/verarchivo');
-Route::get('examen/estado/{idUser}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
+Route::post('examen/estado/{idExam}',[BackExamController::class,'actionChangeState'])->middleware('GenericMiddleware:examen/estado');
 Route::get('examen/ver/{codeExam}',[FrontExamController::class,'actionGetExam'])->middleware('GenericMiddleware:examen/ver');
 Route::post('examen/calificar',[FrontExamRatingController::class,'actionInsert'])->middleware('GenericMiddleware:examen/calificar');
 
@@ -105,11 +140,15 @@ Route::post('respuesta/insertar',[BackAnswerController::class,'actionInsert'])->
 Route::post('respuesta/registrar',[FrontAnswerController::class,'actionRegister'])->middleware('GenericMiddleware:respuesta/registrar');
 
 Route::post('recurso/insertar',[BackResourceController::class,'actionInsert'])->middleware('GenericMiddleware:recurso/insertar');
-Route::get('recurso/eliminar/{idResource}',[BackResourceController::class,'actionDelete'])->middleware('GenericMiddleware:recurso/eliminar');
+Route::post('recurso/eliminar/{idResource}',[BackResourceController::class,'actionDelete'])->middleware('GenericMiddleware:recurso/eliminar');
 Route::get('recurso/verarchivo/{idResource}',[BackResourceController::class,'actionViewResource'])->middleware('GenericMiddleware:recurso/verarchivo');
 
 Route::match(['get','post'],'general/testimonio',[FrontTestimonyController::class,'actionInsert'])->middleware('GenericMiddleware:general/testimonio');
-Route::get('testimonio/mostrar/{currentPage}',[BackTestimonyController::class,'actionGetAll'])->middleware('GenericMiddleware:testimonio/mostrar');
-Route::get('testimonio/estado/{idTestimony}',[BackTestimonyController::class,'actionChangeState'])->middleware('GenericMiddleware:testimonio/estado');
-Route::get('testimonio/eliminar/{idTestimony}',[BackTestimonyController::class,'actionDelete'])->middleware('GenericMiddleware:testimonio/eliminar');
+Route::get('testimonio/listar/{currentPage?}',[BackTestimonyController::class,'actionGetAll'])->middleware('GenericMiddleware:testimonio/listar');
+Route::get('testimonio/mostrar/{currentPage}', function($currentPage)
+{
+    return redirect('testimonio/listar'.($currentPage == 1 ? '' : '/'.$currentPage).(request()->getQueryString() ? '?'.request()->getQueryString() : ''));
+})->middleware('GenericMiddleware:testimonio/mostrar');
+Route::match(['get', 'post'], 'testimonio/estado/{idTestimony}',[BackTestimonyController::class,'actionChangeState'])->middleware('GenericMiddleware:testimonio/estado');
+Route::match(['get', 'post'], 'testimonio/eliminar/{idTestimony}',[BackTestimonyController::class,'actionDelete'])->middleware('GenericMiddleware:testimonio/eliminar');
 Route::post('testimonio/editar',[BackTestimonyController::class,'actionEdit'])->middleware('GenericMiddleware:testimonio/editar');

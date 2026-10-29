@@ -25,61 +25,6 @@ $(function () {
     ));
 
 
-    $('#selectAll').change(function () {
-        var isChecked = $(this).prop('checked');
-        $('input[type="checkbox"][name="result[]"]').prop('checked', isChecked);
-        if (isChecked) {
-            savePersistedSelectionState({mode: 'all', ids: []});
-        } else {
-            clearPersistedSelections();
-        }
-
-        selectionMode = isChecked ? 'all' : '';
-        checkDownloadButtonVisibility();
-    });
-
-    $('input[type="checkbox"][name="result[]"]').change(function () {
-        var persistedState = getPersistedSelectionState();
-
-        $('#selectAll').prop('checked', false);
-        if (persistedState.mode === 'all') {
-            persistVisibleCheckedSelections();
-        } else {
-            syncSelection(this.value, $(this).prop('checked'));
-        }
-
-        selectionMode = resolveSelectionMode();
-        checkDownloadButtonVisibility();
-    });
-
-    $('#downloadBtn').click(function () {
-        var selectedValues;
-        if (selectionMode === 'all') {
-            selectedValues = {
-                search: inpSearchParameter.val(),
-                type: slcTypes.val(),
-                grade: slcGrades.val(),
-                subject: slcSubjects.val(),
-                year: slcYears.val()
-            };
-        } else {
-            selectedValues = getPersistedSelections();
-        }
-
-        $.ajax({
-            url: $("#downloadUrl").val(),
-            type: "POST",
-            data: {
-                _token: $("#csrf_token").val(),
-                mode: selectionMode === 'all' ? 'all' : 'checked',
-                ids: selectedValues
-            },
-            success: function (response) {
-                window.open(response.downloadUrl, '_blank');
-            }
-        });
-    });
-
     _initElements();
 });
 
@@ -112,7 +57,7 @@ function searchTypeExam() {
 
     $('#txtSearch').attr('disabled', 'disabled');
 
-    window.location.href = _getUrlSearch();
+    loadExamList(_getUrlSearch());
 }
 
 function _getUrlSearch() {
@@ -122,7 +67,7 @@ function _getUrlSearch() {
     const subject = slcSubjects.val();
     const year = slcYears.val();
     const acronym = $('#hdAcronymExam').val();
-    return `${window.location.origin}/tipoexamen/${acronym}/1?searchParameter=${searchParameter}&type=${typeExam}&grade=${grade}&subject=${subject}&year=${year}`;
+    return `${window.location.origin}/tipoexamen/${encodeURIComponent(acronym)}/listar?searchParameter=${encodeURIComponent(searchParameter)}&type=${encodeURIComponent(typeExam)}&grade=${encodeURIComponent(grade)}&subject=${encodeURIComponent(subject)}&year=${encodeURIComponent(year)}`;
 }
 
 function _initElements() {
@@ -133,6 +78,7 @@ function _initElements() {
     slcYears = $('#slcYears');
     selectionStorageKey = buildSelectionStorageKey();
 
+    initializeSelectionEvents();
     _intiDefaultEvents();
     rehydrateSelections();
 }
@@ -146,6 +92,112 @@ function _intiDefaultEvents() {
 
     $('#btnSearchType').on('click', function (){
         searchTypeExam();
+    });
+
+    $('#divAjaxExamList').on('click', 'a', function (event) {
+        var href = $(this).attr('href');
+
+        if (!href || href.indexOf('/tipoexamen/') === -1) {
+            return;
+        }
+
+        event.preventDefault();
+        loadExamList(href);
+    });
+
+    $(window).on('popstate', function () {
+        restoreFiltersFromLocation();
+        loadExamList(window.location.href, false);
+    });
+}
+
+function loadExamList(url, updateHistory) {
+    $('#modalLoading').show();
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (response) {
+            $('#divAjaxExamList').html(response);
+            if (updateHistory !== false) {
+                window.history.pushState({}, '', url);
+            }
+            selectionStorageKey = buildSelectionStorageKey();
+            initializeSelectionEvents();
+            rehydrateSelections();
+            $('#txtSearch').removeAttr('disabled');
+            $('#modalLoading').hide();
+        },
+        error: function () {
+            window.location.href = url;
+        }
+    });
+}
+
+function restoreFiltersFromLocation() {
+    var parameters = new URLSearchParams(window.location.search);
+
+    inpSearchParameter.val(parameters.get('searchParameter') || '');
+    slcTypes.val(parameters.get('type') || 'all');
+    slcGrades.val(parameters.get('grade') || 'all');
+    slcSubjects.val(parameters.get('subject') || 'all');
+    slcYears.val(parameters.get('year') || 'all');
+}
+
+function initializeSelectionEvents() {
+    $('#selectAll').off('change').on('change', function () {
+        var isChecked = $(this).prop('checked');
+        $('input[type="checkbox"][name="result[]"]').prop('checked', isChecked);
+        if (isChecked) {
+            savePersistedSelectionState({mode: 'all', ids: []});
+        } else {
+            clearPersistedSelections();
+        }
+
+        selectionMode = isChecked ? 'all' : '';
+        checkDownloadButtonVisibility();
+    });
+
+    $('input[type="checkbox"][name="result[]"]').off('change').on('change', function () {
+        var persistedState = getPersistedSelectionState();
+
+        $('#selectAll').prop('checked', false);
+        if (persistedState.mode === 'all') {
+            persistVisibleCheckedSelections();
+        } else {
+            syncSelection(this.value, $(this).prop('checked'));
+        }
+
+        selectionMode = resolveSelectionMode();
+        checkDownloadButtonVisibility();
+    });
+
+    $('#downloadBtn').off('click').on('click', function () {
+        var selectedValues;
+        if (selectionMode === 'all') {
+            selectedValues = {
+                search: inpSearchParameter.val(),
+                type: slcTypes.val(),
+                grade: slcGrades.val(),
+                subject: slcSubjects.val(),
+                year: slcYears.val()
+            };
+        } else {
+            selectedValues = getPersistedSelections();
+        }
+
+        $.ajax({
+            url: $("#downloadUrl").val(),
+            type: "POST",
+            data: {
+                _token: $("#csrf_token").val(),
+                mode: selectionMode === 'all' ? 'all' : 'checked',
+                ids: selectedValues
+            },
+            success: function (response) {
+                window.open(response.downloadUrl, '_blank');
+            }
+        });
     });
 }
 

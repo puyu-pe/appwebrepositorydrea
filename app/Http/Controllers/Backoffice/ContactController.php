@@ -21,20 +21,26 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
-    public function actionGetAll(Request $request, $currentPage)
+    public function actionGetAll(Request $request, $currentPage=1)
     {
         $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
 
         $paginate = PlatformHelper::preparePaginate(TContact::whereRaw('compareFind(concat(completeNameContact, emailContact, affairContact, messageContact), ?, 77)=1', [$searchParameter])
             ->orderby('created_at', 'desc'), 7, $currentPage);
 
-        return view('backoffice/contact/getall',
-            [
-                'listTContact' => $paginate['listRow'],
-                'currentPage' => $paginate['currentPage'],
-                'quantityPage' => $paginate['quantityPage'],
-                'searchParameter' => $searchParameter
-            ]);
+        $viewData=[
+            'listTContact' => $paginate['listRow'],
+            'currentPage' => $paginate['currentPage'],
+            'quantityPage' => $paginate['quantityPage'],
+            'searchParameter' => $searchParameter
+        ];
+
+        if($request->ajax())
+        {
+            return view('backoffice/contact/_list', $viewData);
+        }
+
+        return view('backoffice/contact/getall', $viewData);
     }
 
     public function actionReply(Request $request)
@@ -48,7 +54,7 @@ class ContactController extends Controller
                 if ($this->_so->mo->existsMessage()) {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'contacto/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'contacto/listar');
                 }
 
                 $tContact = TContact::find($request->input('hdIdContact'));
@@ -62,11 +68,11 @@ class ContactController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Cambios guardado correctamente.'], 'contacto/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Cambios guardado correctamente.'], 'contacto/listar');
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return PlatformHelper::redirectError([$e->getMessage()], 'contacto/mostrar/1');
+                return PlatformHelper::redirectError([$e->getMessage()], 'contacto/listar');
             }
         }
 
@@ -91,11 +97,11 @@ class ContactController extends Controller
             if ($tContact)
                 $tContact->delete();
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'contacto/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'contacto/listar');
         }
         catch(\Exception $e)
         {
-            return PlatformHelper::redirectError([$e->getMessage()], 'contacto/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], 'contacto/listar');
         }
     }
 }

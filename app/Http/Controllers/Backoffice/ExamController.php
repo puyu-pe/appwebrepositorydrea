@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExamController extends Controller
 {
-	public function actionGetAll(Request $request, $currentPage)
+	public function actionGetAll(Request $request, $currentPage=1)
 	{
 		$searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
 
@@ -38,19 +38,25 @@ class ExamController extends Controller
 				->whereRaw('compareFind(concat(codeExam, nameExam, descriptionExam, yearExam, keywordExam, stateExam, number_question, numberEvaluation), ?, 77)=1', [$searchParameter])
 				->orderby('created_at', 'desc'), 7, $currentPage);
 
-		return view(
-			'backoffice/exam/getall',
-			[
-				'listTExam' => $paginate['listRow'],
-				'currentPage' => $paginate['currentPage'],
-				'quantityPage' => $paginate['quantityPage'],
-				'searchParameter' => $searchParameter
-			]
-		);
+		$viewData=[
+			'listTExam' => $paginate['listRow'],
+			'currentPage' => $paginate['currentPage'],
+			'quantityPage' => $paginate['quantityPage'],
+			'searchParameter' => $searchParameter
+		];
+
+		if($request->ajax())
+		{
+			return view('backoffice/exam/_list', $viewData);
+		}
+
+		return view('backoffice/exam/getall', $viewData);
 	}
 
 	public function actionInsert(Request $request)
 	{
+		$routeRedirect='examen/insertar';
+
 		if ($_POST) {
             try
             {
@@ -61,7 +67,7 @@ class ExamController extends Controller
 				if ($this->_so->mo->existsMessage()) {
 					DB::rollBack();
 
-					return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/insertar');
+					return PlatformHelper::redirectError($this->_so->mo->listMessage, $routeRedirect);
 				}
 
 				$status = stristr(session('roleUser'), TRole::ROLE['ADMIN']) || stristr(session('roleUser'), TRole::ROLE['SUPERVISOR']);
@@ -73,7 +79,7 @@ class ExamController extends Controller
 				$tDocument = TDocument::whereRaw('key_document=?', ['exam'])->first();
 
                 if ($request->input('txtDescriptionOtherEvaluation') == '' && $tTypeExam->acronymTypeExam == TTypeExam::OTHER_TYPE_EXAM){
-                    return PlatformHelper::redirectError(['Ingrese el nombre de la evaluación.'], 'examen/insertar');
+                    return PlatformHelper::redirectError(['Ingrese el nombre de la evaluación.'], $routeRedirect);
                 }
 
 				$tNumberExam = $tTypeExam->numberExecuteYear > 1 ? $request->input('numberEvaluationExecute') . '° ' : '';
@@ -196,11 +202,11 @@ class ExamController extends Controller
 
 				DB::commit();
 
-				return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/insertar');
+				return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], $routeRedirect);
 			} catch (\Exception $e) {
 				DB::rollBack();
 
-				return PlatformHelper::redirectError([$e->getMessage()], 'examen/insertar');
+				return PlatformHelper::redirectError([$e->getMessage()], $routeRedirect);
 			}
 		}
 
@@ -222,6 +228,8 @@ class ExamController extends Controller
 
 	public function actionEdit(Request $request)
 	{
+		$routeRedirect='examen/listar';
+
 		if ($request->has('hdIdExam')) {
 			try
             {
@@ -232,7 +240,7 @@ class ExamController extends Controller
 				if ($this->_so->mo->existsMessage()) {
 					DB::rollBack();
 
-					return PlatformHelper::redirectError($this->_so->mo->listMessage, 'examen/mostrar/1');
+					return PlatformHelper::redirectError($this->_so->mo->listMessage, $routeRedirect);
 				}
 
 				$tTypeExam = TTypeExam::find($request->input('selectTypeExam'));
@@ -241,7 +249,7 @@ class ExamController extends Controller
 				$tDirection = TDirection::find($request->input('selectDirectionExam'));
 
                 if ($request->input('txtDescriptionOtherEvaluation') == '' && $tTypeExam->acronymTypeExam == TTypeExam::OTHER_TYPE_EXAM){
-                    return PlatformHelper::redirectError(['Ingrese el nombre de la evaluación.'], 'examen/insertar');
+                    return PlatformHelper::redirectError(['Ingrese el nombre de la evaluación.'], $routeRedirect);
                 }
 
 				$tNumberExam = $tTypeExam->numberExecuteYear > 1 ? $request->input('numberEvaluationExecute') . '° ' : '';
@@ -358,11 +366,11 @@ class ExamController extends Controller
 
 				DB::commit();
 
-				return PlatformHelper::redirectCorrect(['Cambios guardado correctamente.'], 'examen/mostrar/1');
+				return PlatformHelper::redirectCorrect(['Cambios guardado correctamente.'], $routeRedirect);
 			} catch (\Exception $e) {
 				DB::rollBack();
 
-				return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
+				return PlatformHelper::redirectError([$e->getMessage()], $routeRedirect);
 			}
 		}
 
@@ -444,8 +452,12 @@ class ExamController extends Controller
 		try {
 			$tExam = TExam::find($idExam);
 
+			if (!$tExam) {
+				return PlatformHelper::redirectError(['No se encontró la evaluación solicitada.'], 'examen/listar');
+			}
+
 			if ($tExam && $tExam->stateExam == TExam::STATUS['PUBLIC']) {
-				return PlatformHelper::redirectError(['No puede eliminar una evaluación que está publicada.'], 'examen/mostrar/1');
+				return PlatformHelper::redirectError(['No puede eliminar una evaluación que está publicada.'], 'examen/listar');
 			}
 
 			$directoryFiles = storage_path('app/file/exam/' . $tExam->idExam . '.' . $tExam->extensionExam);
@@ -473,11 +485,11 @@ class ExamController extends Controller
                 TResource::where('idExam', $idExam)->delete();
             }
 
-			return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
+			return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/listar');
 		} catch (\Exception $e) {
 			DB::rollBack();
 
-			return PlatformHelper::redirectCorrect([$e->getMessage()], 'examen/mostrar/1');
+			return PlatformHelper::redirectError([$e->getMessage()], 'examen/listar');
 		}
 	}
 
@@ -488,6 +500,12 @@ class ExamController extends Controller
 
 			$tExam = TExam::find($idExam);
 
+			if (!$tExam) {
+				DB::rollBack();
+
+				return PlatformHelper::redirectError(['No se encontró la evaluación solicitada.'], 'examen/listar');
+			}
+
 			$valueStatus = $tExam->stateExam;
 
 			$tExam->stateExam = $valueStatus == TExam::STATUS['PUBLIC'] ? TExam::STATUS['HIDDEN'] : TExam::STATUS['PUBLIC'];
@@ -496,11 +514,11 @@ class ExamController extends Controller
 
 			DB::commit();
 
-			return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
+			return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/listar');
 		} catch (\Exception $e) {
 			DB::rollBack();
 
-			return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
+			return PlatformHelper::redirectError([$e->getMessage()], 'examen/listar');
 		}
 	}
 
@@ -527,4 +545,5 @@ class ExamController extends Controller
 
 		return json_encode($tExamData);
 	}
+
 }

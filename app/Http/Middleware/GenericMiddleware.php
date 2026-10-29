@@ -23,6 +23,7 @@ class GenericMiddleware
 
             ['Público', 'general/contacto', 'mContact', null],
             ['Público', 'general/testimonio', null, null],
+            ['Administrador,Supervisor', 'contacto/listar', 'mPrincipal', 'mGetAllContact'],
             ['Administrador,Supervisor', 'contacto/mostrar', 'mPrincipal', 'mGetAllContact'],
             ['Administrador,Supervisor', 'contacto/responder', null, null],
             ['Administrador,Supervisor', 'contacto/eliminar', null, null],
@@ -33,16 +34,19 @@ class GenericMiddleware
             ['Administrador', 'usuario/estado', null , null],
             ['Administrador,Supervisor,Registrador,Normal', 'usuario/editar', null, null],
             ['Administrador,Supervisor,Registrador,Normal', 'usuario/cambiar', null, null],
+            ['Administrador', 'usuario/listar', 'mUser' , 'mGetAllUser'],
             ['Administrador', 'usuario/mostrar', 'mUser' , 'mGetAllUser'],
             ['Administrador', 'usuario/rol', null , null],
             ['Administrador', 'usuario/eliminar', null , null],
             ['Público', 'usuario/recuperar', null, null],
             ['Público', 'usuario/resetear', null, null],
 
+            ['Administrador,Supervisor', 'tipoexamen/listar', 'mPrincipal', 'mGetAllTypeExam'],
             ['Administrador,Supervisor', 'tipoexamen/mostrar', 'mPrincipal', 'mGetAllTypeExam'],
             ['Administrador,Supervisor', 'tipoexamen/insertar', null, null],
             ['Administrador,Supervisor', 'tipoexamen/editar', null, null],
             ['Administrador', 'tipoexamen/eliminar', null, null],
+            ['Público', 'tipoexamen/acroninmo/listar', 'mTypeExam', $acronymTypeExam != null ? 'm'.strtoupper($acronymTypeExam.'TYPE') : null],
             ['Público', 'tipoexamen/acroninmo', 'mTypeExam', $acronymTypeExam != null ? 'm'.strtoupper($acronymTypeExam.'TYPE') : null],
 
             ['Administrador,Supervisor', 'curso/listar', 'mPrincipal', 'mGetAllSubject'],
@@ -50,6 +54,7 @@ class GenericMiddleware
             ['Administrador,Supervisor', 'curso/insertar', null, null],
             ['Administrador,Supervisor', 'curso/editar', null, null],
             ['Administrador', 'curso/eliminar', null, null],
+            ['Público', 'curso/codigo/listar', 'mSubject', $codeSubjectExam != null ? 'm'.strtoupper($codeSubjectExam.'SUBJECT') : null],
             ['Público', 'curso/codigo', 'mSubject', $codeSubjectExam != null ? 'm'.strtoupper($codeSubjectExam.'SUBJECT') : null],
 
             ['Administrador,Supervisor', 'grado/listar', 'mPrincipal', 'mGetAllGrade'],
@@ -57,13 +62,16 @@ class GenericMiddleware
             ['Administrador,Supervisor', 'grado/insertar', null, null],
             ['Administrador,Supervisor', 'grado/editar', null, null],
             ['Administrador', 'grado/eliminar', null, null],
+            ['Público', 'grado/codigo/listar', 'mGrade', $codeGradeExam != null ? 'm'.strtoupper($codeGradeExam.'GRADE') : null],
             ['Público', 'grado/codigo', 'mGrade', $codeGradeExam != null ? 'm'.strtoupper($codeGradeExam.'GRADE') : null],
 
+            ['Administrador,Supervisor', 'direccion/listar', 'mPrincipal', 'mGetAllDirection'],
             ['Administrador,Supervisor', 'direccion/mostrar', 'mPrincipal', 'mGetAllDirection'],
             ['Administrador,Supervisor', 'direccion/insertar', null, null],
             ['Administrador,Supervisor', 'direccion/editar', null, null],
             ['Administrador', 'direccion/eliminar', null, null],
 
+            ['Administrador,Supervisor,Registrador', 'examen/listar', 'mPrincipal', 'mGetAllExam'],
             ['Administrador,Supervisor,Registrador', 'examen/mostrar', 'mPrincipal', 'mGetAllExam'],
             ['Administrador,Supervisor,Registrador', 'examen/insertar', 'mPrincipal', 'mInsertExam'],
             ['Administrador,Supervisor', 'examen/editar', null, null],
@@ -83,6 +91,7 @@ class GenericMiddleware
             ['Administrador,Supervisor,Registrador', 'recurso/eliminar', null, null],
             ['Público', 'recurso/verarchivo', null, null],
 
+            ['Administrador,Supervisor', 'testimonio/listar', 'mPrincipal', 'mGetAllTestimony'],
             ['Administrador,Supervisor', 'testimonio/mostrar', 'mPrincipal', 'mGetAllTestimony'],
             ['Administrador,Supervisor', 'testimonio/estado', null, null],
             ['Administrador,Supervisor', 'testimonio/eliminar', null, null],

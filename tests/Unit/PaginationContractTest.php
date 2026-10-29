@@ -25,7 +25,7 @@ class PaginationContractTest extends TestCase
 			'year' => '2024'
 		];
 
-		$pagination=ViewHelper::renderPaginationFrontExams('tipoexamen/all', 5, 2, $filtersData);
+		$pagination=ViewHelper::renderPaginationFrontExams('tipoexamen/all/listar', 5, 2, $filtersData);
 
 		$this->assertStringContainsString('searchParameter=matematica+2024', $pagination);
 		$this->assertStringContainsString('type=eca', $pagination);
@@ -63,7 +63,7 @@ class PaginationContractTest extends TestCase
 
 	public function test_backoffice_pagination_keeps_search_parameter_when_present()
 	{
-		$pagination=ViewHelper::renderPagination('examen/mostrar', 3, 2, 'codigo 2024');
+		$pagination=ViewHelper::renderPagination('examen/listar', 3, 2, 'codigo 2024');
 
 		$this->assertStringContainsString('searchParameter=codigo+2024', $pagination);
 		$this->assertStringContainsString('onclick="_globalFunction.clickLink', $pagination);
@@ -74,8 +74,40 @@ class PaginationContractTest extends TestCase
 	{
 		$pagination=ViewHelper::renderPagination('curso/listar', 3, 2, 'codigo 2024', true);
 
-		$this->assertStringContainsString('href="'.url('curso/listar/1').'?searchParameter=codigo+2024"', $pagination);
+		$this->assertStringContainsString('href="'.url('curso/listar').'?searchParameter=codigo+2024"', $pagination);
 		$this->assertStringContainsString('class="divPaginationPageNumber"', $pagination);
 		$this->assertStringNotContainsString('onclick="_globalFunction.clickLink', $pagination);
+	}
+
+	public function test_migrated_backoffice_ajax_pagination_uses_listar_links_without_mostrar()
+	{
+		foreach(['direccion', 'examen', 'usuario', 'contacto', 'testimonio', 'tipoexamen'] as $base)
+		{
+			$pagination=ViewHelper::renderPagination($base.'/listar', 4, 2, 'lima', true);
+
+			$this->assertStringContainsString('href="'.url($base.'/listar/2').'?searchParameter=lima"', $pagination);
+			$this->assertStringNotContainsString('/mostrar/', $pagination);
+			$this->assertStringNotContainsString('onclick="_globalFunction.clickLink', $pagination);
+		}
+	}
+
+	public function test_migrated_frontoffice_ajax_pagination_uses_listar_hrefs_without_mostrar()
+	{
+		$filtersData=(object)[
+			'searchParameter' => 'matematica',
+			'type' => 'all',
+			'grade' => 'all',
+			'subject' => 'all',
+			'year' => 'all'
+		];
+
+		foreach(['tipoexamen/all/listar', 'curso/matematica/listar', 'grado/primero/listar'] as $base)
+		{
+			$pagination=ViewHelper::renderPaginationFrontExams($base, 4, 2, $filtersData);
+
+			$this->assertStringContainsString('href="'.url($base.'/2').'?searchParameter=matematica', $pagination);
+			$this->assertStringNotContainsString('/mostrar/', $pagination);
+			$this->assertStringNotContainsString('onclick="_globalFunction.clickLink', $pagination);
+		}
 	}
 }

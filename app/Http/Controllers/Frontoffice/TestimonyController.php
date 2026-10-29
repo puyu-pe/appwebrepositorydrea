@@ -13,7 +13,7 @@ class TestimonyController extends Controller
 {
     public function actionInsert(Request $request)
     {
-        if ($_POST) {
+        if ($request->isMethod('post')) {
             try {
                 DB::beginTransaction();
 

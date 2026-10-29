@@ -4,7 +4,7 @@ $(function()
 {
     $('#frmChangeUser').formValidation(objectValidate(
         {
-            "selectRoleUser[]":
+            selectRoleUser:
             {
                 validators:
                 {
@@ -35,5 +35,5 @@ function sendFrmChangeUser()
         return;
     }
 
-    confirmDialogSend('frmChangeUser');
+    ajaxCrudSubmitForm('frmChangeUser', {reloadUrl: window.codideepBackofficeListUrl, ajaxContainerId: 'divAjaxCrudList', postReload: initUserListValidation});
 }

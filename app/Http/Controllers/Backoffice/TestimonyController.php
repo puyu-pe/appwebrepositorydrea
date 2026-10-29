@@ -11,22 +11,26 @@ use Illuminate\Support\Facades\URL;
 
 class TestimonyController extends Controller
 {
-    public function actionGetAll(Request $request, $currentPage)
+    public function actionGetAll(Request $request, $currentPage=1)
     {
         $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
 
         $paginate = PlatformHelper::preparePaginate(TTestimony::whereRaw('compareFind(concat(description, firstName, surName, academic_level, place_origin), ?, 77)=1', [$searchParameter])
             ->orderby('created_at', 'desc'), 7, $currentPage);
 
-        return view(
-            'backoffice/testimony/getall',
-            [
-                'listTestimony' => $paginate['listRow'],
-                'currentPage' => $paginate['currentPage'],
-                'quantityPage' => $paginate['quantityPage'],
-                'searchParameter' => $searchParameter
-            ]
-        );
+        $viewData=[
+            'listTestimony' => $paginate['listRow'],
+            'currentPage' => $paginate['currentPage'],
+            'quantityPage' => $paginate['quantityPage'],
+            'searchParameter' => $searchParameter
+        ];
+
+        if($request->ajax())
+        {
+            return view('backoffice/testimony/_list', $viewData);
+        }
+
+        return view('backoffice/testimony/getall', $viewData);
     }
 
     public function actionChangeState($idTestimony)
@@ -44,11 +48,11 @@ class TestimonyController extends Controller
 
             DB::commit();
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'testimonio/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'testimonio/listar');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return PlatformHelper::redirectError([$e->getMessage()], 'testimonio/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], 'testimonio/listar');
         }
     }
 
@@ -61,11 +65,11 @@ class TestimonyController extends Controller
             if ($tTestimony)
                 $tTestimony->delete();
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'testimonio/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'testimonio/listar');
         }
         catch(\Exception $e)
         {
-            return PlatformHelper::redirectError([$e->getMessage()], 'testimonio/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], 'testimonio/listar');
         }
     }
 
@@ -80,7 +84,7 @@ class TestimonyController extends Controller
                 if ($this->_so->mo->existsMessage()) {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'testimonio/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'testimonio/listar');
                 }
 
                 $tTestimony = TTestimony::find($request->input('hdIdTestimony'));
@@ -96,11 +100,11 @@ class TestimonyController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'testimonio/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'testimonio/listar');
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return PlatformHelper::redirectError([$e->getMessage()], 'testimonio/mostrar/1');
+                return PlatformHelper::redirectError([$e->getMessage()], 'testimonio/listar');
             }
         }
 

@@ -27,5 +27,5 @@ function sendFrmReplyContact() {
         return;
     }
 
-    confirmDialogSend('frmReplyContact');
+    ajaxCrudSubmitForm('frmReplyContact', {reloadUrl: window.codideepBackofficeListUrl, ajaxContainerId: 'divAjaxCrudList', postReload: initContactListValidation});
 }

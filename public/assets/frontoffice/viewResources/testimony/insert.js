@@ -46,6 +46,12 @@ $(function()
                 }
             }
         }));
+
+    $('#frmTestimony').off('submit.ajaxCrud').on('submit.ajaxCrud', function(event)
+    {
+        event.preventDefault();
+        sendFrmTestimony();
+    });
 });
 
 function sendFrmTestimony()
@@ -64,5 +70,12 @@ function sendFrmTestimony()
 		return;
 	}
 
-	confirmDialogSend('frmTestimony');
+	ajaxCrudSubmitForm('frmTestimony', {
+		onSuccess: function(response, form)
+		{
+			form[0].reset();
+			form.find('input[type=text], textarea').val('');
+			form.data('formValidation').resetForm();
+		}
+	});
 }

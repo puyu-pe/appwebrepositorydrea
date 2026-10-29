@@ -2,6 +2,12 @@
 
 $(function()
 {
+    $('#frmInsertResource').off('submit.ajaxCrud').on('submit.ajaxCrud', function(event)
+    {
+        event.preventDefault();
+        sendInsertResource();
+    });
+
     $('#frmInsertResource').formValidation(objectValidate(
         {
             "fileResource[]":
@@ -17,13 +23,10 @@ $(function()
         }));
 });
 
-function deleteResource(component, url)
+function deleteResource(component, url, token)
 {
-    $.ajax({
-        url: url,
-        type: "GET",
-        success: function (response) {
-            successNote('Correcto', response.message);
+    ajaxCrudDelete(url, token, {
+        onSuccess: function(response) {
             removeTableRowResource(component);
         }
     });
@@ -34,8 +37,13 @@ function removeTableRowResource(component) {
 
     $('#tblResponseResource > tbody > tr').each((index, element) =>
     {
-        $($(element).find('> .number')[0]).attr('text', (index+1));
+        $($(element).find('> .number > div')[0]).text(index+1);
     });
+
+    if($('#tblResponseResource > tbody > tr').length===0)
+    {
+        $('#tblResponseResource').closest('.table-responsive').remove();
+    }
 }
 
 function sendInsertResource()
@@ -54,5 +62,21 @@ function sendInsertResource()
         return;
     }
 
-    confirmDialogSend('frmInsertResource');
+    ajaxCrudSubmitFormData('frmInsertResource', {
+        onSuccess: function(response, form)
+        {
+            var reloadUrl=window.codideepBackofficeListUrl || response.redirectUrl || 'examen/listar';
+
+            form.closest('.modal').modal('hide');
+
+            if($('#divAjaxCrudList').length)
+            {
+                ajaxCrudLoadList(
+                    reloadUrl,
+                    'divAjaxCrudList',
+                    typeof initExamListAfterAjaxReload == 'function' ? initExamListAfterAjaxReload : null
+                );
+            }
+        }
+    });
 }

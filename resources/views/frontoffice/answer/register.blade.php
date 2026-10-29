@@ -139,8 +139,8 @@
             <input type="hidden" name="hdIdExam" id="hdIdExam" value="{{$tExam->idExam}}">
             <input type="hidden" name="hdIdAnswer" id="hdIdAnswer" value="{{$tAnswer ? $tAnswer->idAnswer : ''}}">
             <input type="button" class="btn btn-xs btn-dark pull-left col-md-3" data-dismiss="modal" data-bs-dismiss="modal" value="Cerrar">
-            <input type="button" class="btn btn-xs btn-primary col-md-3" value="Guardar respuestas" onclick="sendInsertAnswer();" style="float: right">
+            <button type="submit" class="btn btn-xs btn-primary col-md-3" style="float: right">Guardar respuestas</button>
         </div>
     </div>
 </form>
-<script src="{{asset('assets/frontoffice/viewResources/answer/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+<script src="{{asset('assets/frontoffice/viewResources/answer/insert.js')}}?x={{filemtime(public_path('assets/frontoffice/viewResources/answer/insert.js'))}}"></script>

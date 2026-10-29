@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
 {
-    public function actionViewSubject(Request $request, $codeSubject, $currentPage)
+    public function actionViewSubject(Request $request, $codeSubject, $currentPage = 1)
     {
         $filtersData = (object)[
             'searchParameter' => $request->has('searchParameter') ? $request->input('searchParameter') : '',
@@ -63,18 +63,21 @@ class SubjectController extends Controller
 
         $selectFilters = self::getSelectFilters();
 
-        return view(
-            'frontoffice/subject/view',
-            [
-                'tSubject' => $tSubject,
-                'listTExam' => $paginate['listRow'],
-                'currentPage' => $paginate['currentPage'],
-                'quantityPage' => $paginate['quantityPage'],
-                'filtersData' => $filtersData,
-                'selectFilters' => $selectFilters,
-                'codeSubject' => $codeSubject
-            ]
-        );
+        $viewData = [
+            'tSubject' => $tSubject,
+            'listTExam' => $paginate['listRow'],
+            'currentPage' => $paginate['currentPage'],
+            'quantityPage' => $paginate['quantityPage'],
+            'filtersData' => $filtersData,
+            'selectFilters' => $selectFilters,
+            'codeSubject' => $codeSubject
+        ];
+
+        if ($request->ajax()) {
+            return view('frontoffice.subject._list', $viewData);
+        }
+
+        return view('frontoffice/subject/view', $viewData);
     }
 
     private function getSelectFilters()

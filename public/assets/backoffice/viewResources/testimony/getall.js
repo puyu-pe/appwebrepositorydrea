@@ -1,6 +1,11 @@
 'use strict';
 
 $(function () {
+    initTestimonyListValidation();
+    ajaxCrudBindPagination('divAjaxCrudList', initTestimonyListValidation);
+});
+
+function initTestimonyListValidation() {
     $('#divSearch').formValidation(objectValidate(
         {
             txtSearch:
@@ -16,7 +21,7 @@ $(function () {
                 }
         })
     );
-});
+}
 
 function searchTestimony(text, url, event) {
     var evt = event || window.event;
@@ -37,10 +42,6 @@ function searchTestimony(text, url, event) {
             return;
         }
 
-        $('#modalLoading').show();
-
-        $('#txtSearch').attr('disabled', 'disabled');
-
-        window.location.href = url + '?searchParameter=' + text;
+        ajaxCrudLoadList(url + '?searchParameter=' + encodeURIComponent(text), 'divAjaxCrudList', initTestimonyListValidation);
     }
 }

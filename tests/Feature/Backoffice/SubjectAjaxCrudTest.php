@@ -34,7 +34,7 @@ class SubjectAjaxCrudTest extends TestCase
 				'messages' => ['Inserción realizada correctamente.']
 			])
 			->assertJsonStructure(['redirectUrl'])
-			->assertJsonPath('redirectUrl', url('curso/listar/1'));
+			->assertJsonPath('redirectUrl', url('curso/listar'));
 
 		$this->assertDatabaseHas('tsubject', [
 			'nameSubject' => 'Comunicación',
@@ -59,7 +59,7 @@ class SubjectAjaxCrudTest extends TestCase
 				]
 			])
 			->assertJsonStructure(['redirectUrl'])
-			->assertJsonPath('redirectUrl', url('curso/listar/1'));
+			->assertJsonPath('redirectUrl', url('curso/listar'));
 
 		$this->assertDatabaseMissing('tsubject', [
 			'codeSubject' => ''
@@ -77,7 +77,7 @@ class SubjectAjaxCrudTest extends TestCase
 				'messages' => ['Operación realizada correctamente.']
 			])
 			->assertJsonStructure(['redirectUrl'])
-			->assertJsonPath('redirectUrl', url('curso/listar/1'));
+			->assertJsonPath('redirectUrl', url('curso/listar'));
 
 		$this->assertDatabaseMissing('tsubject', [
 			'idSubject' => 'subject-delete'
@@ -88,6 +88,9 @@ class SubjectAjaxCrudTest extends TestCase
 	{
 		$this->get('/curso/mostrar/2?searchParameter=matematica')
 			->assertRedirect('/curso/listar/2?searchParameter=matematica');
+
+		$this->get('/curso/mostrar/1?searchParameter=matematica')
+			->assertRedirect('/curso/listar?searchParameter=matematica');
 	}
 
 	private function ajaxPost($uri, array $data)

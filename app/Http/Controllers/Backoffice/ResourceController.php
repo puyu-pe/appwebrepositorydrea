@@ -9,19 +9,35 @@ use App\Models\TRole;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ResourceController extends Controller
 {
     public function actionInsert(Request $request)
     {
+        $routeRedirect=$this->formRedirectRoute($request, 'examen/mostrar/1');
+
         try
         {
             if ($request->has('hdIdExam'))
             {
+                if (!$request->hasFile('fileResource'))
+                {
+                    return PlatformHelper::redirectError(['Debe seleccionar al menos un recurso.'], $routeRedirect);
+                }
+
                 DB::beginTransaction();
 
                 $tExam = TExam::find($request->input('hdIdExam'));
+
+                if ($tExam == null)
+                {
+                    DB::rollBack();
+
+                    return PlatformHelper::redirectError(['No se encontró la evaluación.'], $routeRedirect);
+                }
+
                 $files = $request->file('fileResource');
 
                 foreach ($files as $key => $file) {
@@ -42,7 +58,7 @@ class ResourceController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'examen/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], $routeRedirect);
             }
 
             $tExam = TExam::find($request->input('idExam'));
@@ -64,38 +80,76 @@ class ResourceController extends Controller
         {
             DB::rollBack();
 
-            return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], $routeRedirect);
         }
+    }
+
+    private function formRedirectRoute(Request $request, $legacyRoute)
+    {
+        if($request->ajax() || $request->expectsJson() || $request->wantsJson())
+        {
+            return 'examen/listar';
+        }
+
+        return $legacyRoute;
     }
 
     public function actionDelete($idResource)
     {
+        $resourcePath = null;
+        $stagedResourcePath = null;
+
         try
         {
             $tResource = TResource::find($idResource);
 
             if(!$tResource)
             {
-                return response()->json(['error' => 'Sucedió un error.'], 400);
+                return PlatformHelper::redirectError(['No se encontró el recurso solicitado.'], 'examen/listar');
             }
 
-            $directoryFiles = storage_path('app/public/resource/' . $tResource->idResource . '.' . $tResource->extension);
+            DB::beginTransaction();
 
-            if ($tResource->extensionExam != '' && file_exists($directoryFiles)){
-                unlink($directoryFiles);
+            $resourcePath = 'resource/' . $tResource->idResource . '.' . $tResource->extension;
+            $stagedResourcePath = $resourcePath . '.deleting';
+
+            if ($tResource->extension != '' && Storage::disk('public')->exists($resourcePath))
+            {
+                if (!Storage::disk('public')->move($resourcePath, $stagedResourcePath))
+                {
+                    throw new \RuntimeException('No se pudo preparar el archivo del recurso para su eliminación.');
+                }
             }
 
-            DB::delete('delete from tresource where idResource = ?', [$idResource]);
+            $tResource->delete();
 
-            return response()->json([
-                'status'  => 200,
-                'message' => 'Recurso eliminado correctamente.'
-            ]);
+            $this->commitTransaction();
         }
         catch(\Exception $e)
         {
-            abort(500);
+            DB::rollBack();
+
+            if ($resourcePath && $stagedResourcePath &&
+                Storage::disk('public')->exists($stagedResourcePath) &&
+                !Storage::disk('public')->exists($resourcePath))
+            {
+                Storage::disk('public')->move($stagedResourcePath, $resourcePath);
+            }
+
+            return PlatformHelper::redirectError([$e->getMessage()], 'examen/listar');
         }
+
+        if ($stagedResourcePath && Storage::disk('public')->exists($stagedResourcePath))
+        {
+            Storage::disk('public')->delete($stagedResourcePath);
+        }
+
+        return PlatformHelper::redirectCorrect(['Recurso eliminado correctamente.'], 'examen/listar');
+    }
+
+    protected function commitTransaction()
+    {
+        DB::commit();
     }
 
     public function actionViewResource($idResource)

@@ -31,7 +31,7 @@
                             <div>{{$value->namecompleteResource}}</div>
                         </td>
                         <td class="text-center">
-                            <span class="btn btn-default btn-sm glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar" data-placement="left" onclick="deleteResource(this, '{{url('recurso/eliminar/'.$value->idResource)}}');"></span>
+                            <span class="btn btn-default btn-sm glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar" data-placement="left" onclick="deleteResource(this, '{{url('recurso/eliminar/'.$value->idResource)}}', '{{csrf_token()}}');"></span>
                         </td>
                     </tr>
                 @endforeach

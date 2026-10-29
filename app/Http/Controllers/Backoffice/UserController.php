@@ -25,22 +25,28 @@ use function Symfony\Component\String\s;
 
 class UserController extends Controller
 {
-    public function actionGetAll(Request $request, $currentPage)
+    public function actionGetAll(Request $request, $currentPage=1)
     {
         $searchParameter = $request->has('searchParameter') ? $request->input('searchParameter') : '';
 
-        $paginate = PlatformHelper::preparePaginate(TUser::select('tuser.*', DB::raw('GROUP_CONCAT(trole.nameRole SEPARATOR \',\') as roles'))
+        $paginate = PlatformHelper::preparePaginate(TUser::select('tuser.*', DB::raw($this->roleAggregateExpression()))
             ->leftJoin('tuserrole', 'tuser.idUser', '=', 'tuserrole.idUser')
             ->leftJoin('trole', 'tuserrole.idRole', '=', 'trole.idRole')
             ->groupBy('tuser.idUser')->whereRaw('compareFind(concat(tuser.email, tuser.numberDni, tuser.firstName, tuser.surName, tuser.state), ?, 77)=1 AND tuser.idUser!=?', [$searchParameter, session('idUser')])->orderby('tuser.created_at', 'desc'), 7, $currentPage);
 
-        return view('backoffice/user/getall',
-            [
-                'listTUser' => $paginate['listRow'],
-                'currentPage' => $paginate['currentPage'],
-                'quantityPage' => $paginate['quantityPage'],
-                'searchParameter' => $searchParameter
-            ]);
+        $viewData=[
+            'listTUser' => $paginate['listRow'],
+            'currentPage' => $paginate['currentPage'],
+            'quantityPage' => $paginate['quantityPage'],
+            'searchParameter' => $searchParameter
+        ];
+
+        if($request->ajax())
+        {
+            return view('backoffice/user/_list', $viewData);
+        }
+
+        return view('backoffice/user/getall', $viewData);
     }
 
     public function actionLogout(SessionManager $sessionManager)
@@ -57,12 +63,21 @@ class UserController extends Controller
 
             $tUser = TUser::find($idUser);
 
+            if($tUser==null)
+            {
+                DB::rollBack();
+
+                return PlatformHelper::ajaxDataNoExists();
+            }
+
             $tUserRole = TUserRole::whereRaw('idUser=?', [$tUser->idUser])->exists();
 
             $valueStatus = $tUser->state;
 
             if ($valueStatus == 'Deshabilitado' && $tUserRole == false) {
-                return PlatformHelper::redirectError(['Asigne al menos un rol al usuario para poder habilitar su acceso.'], 'usuario/mostrar/1');
+                DB::rollBack();
+
+                return PlatformHelper::redirectError(['Asigne al menos un rol al usuario para poder habilitar su acceso.'], 'usuario/listar');
             }
 
             $tUser->state = $valueStatus == 'Habilitado' ? 'Deshabilitado' : 'Habilitado';
@@ -71,11 +86,11 @@ class UserController extends Controller
 
             DB::commit();
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/listar');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/listar');
         }
     }
 
@@ -83,6 +98,11 @@ class UserController extends Controller
     {
         try {
             $tUser = TUser::find($idUser);
+
+            if($tUser==null)
+            {
+                return PlatformHelper::ajaxDataNoExists();
+            }
 
             $directoryFiles = storage_path('app/public/user/' . $tUser->idUser . '.' . $tUser->avatarExtension);
 
@@ -92,12 +112,12 @@ class UserController extends Controller
 
             DB::delete('delete from tuser where idUser = ?', [$idUser]);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/listar');
         }
         catch (\Exception $e) {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/listar');
         }
     }
 
@@ -128,12 +148,12 @@ class UserController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'usuario/listar');
 
             } catch (\Exception $e) {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/listar');
             }
         }
 
@@ -151,5 +171,12 @@ class UserController extends Controller
             'tUser' => $tUser,
             'tUserRole' => $tUserRole
         ]);
+    }
+
+    private function roleAggregateExpression()
+    {
+        return DB::connection()->getDriverName()=='sqlite'
+            ? "GROUP_CONCAT(trole.nameRole, ',') as roles"
+            : "GROUP_CONCAT(trole.nameRole SEPARATOR ',') as roles";
     }
 }

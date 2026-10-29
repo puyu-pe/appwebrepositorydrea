@@ -23,7 +23,7 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li id="mGetAllUser" class="{{Session::get('subMenu')=='mGetAllUser' ? 'active' : ''}}"><a href="{{url('usuario/mostrar/1')}}"><i class="fa fa-circle-o"></i>Usuarios del sistema</a></li>
+                <li id="mGetAllUser" class="{{Session::get('subMenu')=='mGetAllUser' ? 'active' : ''}}"><a href="{{url('usuario/listar')}}"><i class="fa fa-circle-o"></i>Usuarios del sistema</a></li>
             </ul>
         </li>
     @endif
@@ -38,16 +38,16 @@
             </a>
             <ul class="treeview-menu">
                 @if(stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor'))
-                    <li id="mGetAllTypeExam" class="{{Session::get('subMenu')=='mGetAllTypeExam' ? 'active' : ''}}"><a href="{{url('tipoexamen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Tipos de evaluación</a></li>
+                    <li id="mGetAllTypeExam" class="{{Session::get('subMenu')=='mGetAllTypeExam' ? 'active' : ''}}"><a href="{{url('tipoexamen/listar')}}"><i class="fa fa-circle-o"></i>Tipos de evaluación</a></li>
                     <li id="mGetAllSubject" class="{{Session::get('subMenu')=='mGetAllSubject' ? 'active' : ''}}"><a href="{{url('curso/listar')}}"><i class="fa fa-circle-o"></i>Materias</a></li>
                     <li id="mGetAllGrade" class="{{Session::get('subMenu')=='mGetAllGrade' ? 'active' : ''}}"><a href="{{url('grado/listar')}}"><i class="fa fa-circle-o"></i>Grados académicos</a></li>
-                    <li id="mGetAllDirection" class="{{Session::get('subMenu')=='mGetAllDirection' ? 'active' : ''}}"><a href="{{url('direccion/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de DRE</a></li>
+                    <li id="mGetAllDirection" class="{{Session::get('subMenu')=='mGetAllDirection' ? 'active' : ''}}"><a href="{{url('direccion/listar')}}"><i class="fa fa-circle-o"></i>Lista de DRE</a></li>
                 @endif
                 <li id="mInsertExam" class="{{Session::get('subMenu')=='mInsertExam' ? 'active' : ''}}"><a href="{{url('examen/insertar')}}"><i class="fa fa-circle-o"></i>Registrar evaluación</a></li>
-                <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de evaluaciones</a></li>
+                <li id="mGetAllExam" class="{{Session::get('subMenu')=='mGetAllExam' ? 'active' : ''}}"><a href="{{url('examen/listar')}}"><i class="fa fa-circle-o"></i>Lista de evaluaciones</a></li>
                 @if(stristr(Session::get('roleUser'), 'Administrador') || stristr(Session::get('roleUser'), 'Supervisor'))
-                    <li id="mGetAllContact" class="{{Session::get('subMenu')=='mGetAllContact' ? 'active' : ''}}"><a href="{{url('contacto/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de mensajes</a></li>
-                    <li id="mGetAllTestimony" class="{{Session::get('subMenu')=='mGetAllTestimony' ? 'active' : ''}}"><a href="{{url('testimonio/mostrar/1')}}"><i class="fa fa-circle-o"></i>Lista de reseñas</a></li>
+                    <li id="mGetAllContact" class="{{Session::get('subMenu')=='mGetAllContact' ? 'active' : ''}}"><a href="{{url('contacto/listar')}}"><i class="fa fa-circle-o"></i>Lista de mensajes</a></li>
+                    <li id="mGetAllTestimony" class="{{Session::get('subMenu')=='mGetAllTestimony' ? 'active' : ''}}"><a href="{{url('testimonio/listar')}}"><i class="fa fa-circle-o"></i>Lista de reseñas</a></li>
                 @endif
             </ul>
         </li>

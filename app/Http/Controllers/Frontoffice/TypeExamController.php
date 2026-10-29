@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class TypeExamController extends Controller
 {
-    public function actionViewTypeExam(Request $request, $acronymTypeExam, $currentPage)
+    public function actionViewTypeExam(Request $request, $acronymTypeExam, $currentPage = 1)
     {
         $filtersData = (object)[
             'searchParameter' => $request->has('searchParameter') ? $request->input('searchParameter') : '',
@@ -63,18 +63,21 @@ class TypeExamController extends Controller
 
         $selectFilters = self::getSelectFilters();
 
-        return view(
-            'frontoffice/typeexam/view',
-            [
-                'tTypeExam' => $tTypeExam,
-                'listTExam' => $paginate['listRow'],
-                'currentPage' => $paginate['currentPage'],
-                'quantityPage' => $paginate['quantityPage'],
-                'filtersData' => $filtersData,
-                'selectFilters' => $selectFilters,
-                'acronymTypeExam' => $acronymTypeExam
-            ]
-        );
+        $viewData = [
+            'tTypeExam' => $tTypeExam,
+            'listTExam' => $paginate['listRow'],
+            'currentPage' => $paginate['currentPage'],
+            'quantityPage' => $paginate['quantityPage'],
+            'filtersData' => $filtersData,
+            'selectFilters' => $selectFilters,
+            'acronymTypeExam' => $acronymTypeExam
+        ];
+
+        if ($request->ajax()) {
+            return view('frontoffice.typeexam._list', $viewData);
+        }
+
+        return view('frontoffice/typeexam/view', $viewData);
     }
 
     private function getSelectFilters()

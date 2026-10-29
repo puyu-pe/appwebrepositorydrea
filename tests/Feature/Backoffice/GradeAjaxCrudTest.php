@@ -35,7 +35,7 @@ class GradeAjaxCrudTest extends TestCase
 				'messages' => ['Inserción realizada correctamente.']
 			])
 			->assertJsonStructure(['redirectUrl'])
-			->assertJsonPath('redirectUrl', url('grado/listar/1'));
+			->assertJsonPath('redirectUrl', url('grado/listar'));
 
 		$this->assertDatabaseHas('tgrade', [
 			'descriptionGrade' => 'Primer grado',
@@ -63,7 +63,7 @@ class GradeAjaxCrudTest extends TestCase
 				]
 			])
 			->assertJsonStructure(['redirectUrl'])
-			->assertJsonPath('redirectUrl', url('grado/listar/1'));
+			->assertJsonPath('redirectUrl', url('grado/listar'));
 
 		$this->assertDatabaseMissing('tgrade', [
 			'codeGrade' => ''
@@ -81,7 +81,7 @@ class GradeAjaxCrudTest extends TestCase
 				'messages' => ['Operación realizada correctamente.']
 			])
 			->assertJsonStructure(['redirectUrl'])
-			->assertJsonPath('redirectUrl', url('grado/listar/1'));
+			->assertJsonPath('redirectUrl', url('grado/listar'));
 
 		$this->assertDatabaseMissing('tgrade', [
 			'idGrade' => 'grade-delete'
@@ -92,6 +92,9 @@ class GradeAjaxCrudTest extends TestCase
 	{
 		$this->get('/grado/mostrar/2?searchParameter=primaria')
 			->assertRedirect('/grado/listar/2?searchParameter=primaria');
+
+		$this->get('/grado/mostrar/1?searchParameter=primaria')
+			->assertRedirect('/grado/listar?searchParameter=primaria');
 	}
 
 	private function ajaxPost($uri, array $data)

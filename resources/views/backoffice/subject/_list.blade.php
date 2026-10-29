@@ -10,7 +10,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-search"></i>
                         </div>
-                        <input type="text" id="txtSearch" name="txtSearch" class="form-control pull-right" placeholder="Información para búsqueda (Enter)" onkeyup="searchSubject(this.value, '{{url('curso/listar/1')}}', event);" value="{{$searchParameter}}" autocomplete="off" autofocus>
+                        <input type="text" id="txtSearch" name="txtSearch" class="form-control pull-right" placeholder="Información para búsqueda (Enter)" onkeyup="searchSubject(this.value, '{{url('curso/listar')}}', event);" value="{{$searchParameter}}" autocomplete="off" autofocus>
                     </div>
                 </div>
                 <div class="form-group col-md-6">
@@ -56,6 +56,6 @@
     </div>
 </div>
 <script>
-    window.codideepBackofficeInsertReloadUrl={!!json_encode(url('curso/listar/1'))!!};
+    window.codideepBackofficeInsertReloadUrl={!!json_encode(url('curso/listar'))!!};
     window.codideepBackofficeListUrl={!!json_encode(url('curso/listar/'.$currentPage).(trim($searchParameter)!='' ? '?searchParameter='.urlencode($searchParameter) : ''))!!};
 </script>
