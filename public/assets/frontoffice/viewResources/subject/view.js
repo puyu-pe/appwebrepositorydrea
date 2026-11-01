@@ -7,6 +7,7 @@ var inpSearchParameter,
 
 var selectionStorageKey = '';
 var selectionMode = '';
+var downloadPreparationInFlight = false;
 $(function () {
     $('#divSearch').formValidation(objectValidate(
         {
@@ -37,6 +38,16 @@ function checkDownloadButtonVisibility() {
     } else {
         $('#downloadBtn').hide();
     }
+
+    setDownloadButtonBusyState(downloadPreparationInFlight);
+}
+
+function setDownloadButtonBusyState(isBusy) {
+    var $button = $('#downloadBtn');
+
+    $button.prop('disabled', isBusy);
+    $button.attr('aria-busy', isBusy ? 'true' : 'false');
+    $button.find('.download-label').text(isBusy ? 'Descargando archivos' : 'Descargar archivos');
 }
 
 function searchSubjectExam() {
@@ -145,9 +156,9 @@ function restoreFiltersFromLocation() {
 }
 
 function initializeSelectionEvents() {
-    $('#selectAll').off('change').on('change', function () {
+    $('.js-exam-select-all').off('change').on('change', function () {
         var isChecked = $(this).prop('checked');
-        $('input[type="checkbox"][name="result[]"]').prop('checked', isChecked);
+        $('.js-exam-select').prop('checked', isChecked);
         if (isChecked) {
             savePersistedSelectionState({mode: 'all', ids: []});
         } else {
@@ -158,10 +169,10 @@ function initializeSelectionEvents() {
         checkDownloadButtonVisibility();
     });
 
-    $('input[type="checkbox"][name="result[]"]').off('change').on('change', function () {
+    $('.js-exam-select').off('change').on('change', function () {
         var persistedState = getPersistedSelectionState();
 
-        $('#selectAll').prop('checked', false);
+        $('.js-exam-select-all').prop('checked', false);
         if (persistedState.mode === 'all') {
             persistVisibleCheckedSelections();
         } else {
@@ -174,7 +185,17 @@ function initializeSelectionEvents() {
 
     $('#downloadBtn').off('click').on('click', function () {
         var selectedValues;
-        if (selectionMode === 'all') {
+        var originatingSelectionMode;
+        var originatingSelectionStorageKey;
+
+        if (downloadPreparationInFlight) {
+            return;
+        }
+
+        originatingSelectionMode = selectionMode;
+        originatingSelectionStorageKey = selectionStorageKey;
+
+        if (originatingSelectionMode === 'all') {
             selectedValues = {
                 search: inpSearchParameter.val(),
                 type: slcTypes.val(),
@@ -186,19 +207,75 @@ function initializeSelectionEvents() {
             selectedValues = getPersistedSelections();
         }
 
-        $.ajax({
+        downloadPreparationInFlight = true;
+        setDownloadButtonBusyState(true);
+        requestAnimationFrame(function () {
+            setTimeout(function () {
+                prepareDownload(originatingSelectionMode, originatingSelectionStorageKey, selectedValues);
+            }, 0);
+        });
+    });
+}
+
+function prepareDownload(originatingSelectionMode, originatingSelectionStorageKey, selectedValues) {
+    $.ajax({
             url: $("#downloadUrl").val(),
             type: "POST",
             data: {
                 _token: $("#csrf_token").val(),
-                mode: selectionMode === 'all' ? 'all' : 'checked',
+                mode: originatingSelectionMode === 'all' ? 'all' : 'checked',
                 ids: selectedValues
             },
             success: function (response) {
-                window.open(response.downloadUrl, '_blank');
+                if (!initiateDownload(response.downloadUrl)) {
+                    return;
+                }
+
+                clearPersistedSelections(originatingSelectionStorageKey);
+                if (selectionStorageKey === originatingSelectionStorageKey) {
+                    rehydrateSelections();
+                }
+            },
+            error: function () {
+                restoreDownloadButtonState(originatingSelectionStorageKey);
+            },
+            complete: function () {
+                restoreDownloadButtonState(originatingSelectionStorageKey);
             }
-        });
     });
+}
+
+function initiateDownload(downloadUrl) {
+    var iframe;
+
+    if (!downloadUrl) {
+        return false;
+    }
+
+    try {
+        iframe = document.createElement('iframe');
+        iframe.name = 'frontoffice-download-frame';
+        iframe.style.display = 'none';
+        iframe.src = downloadUrl;
+        document.body.appendChild(iframe);
+        window.setTimeout(function () {
+            if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
+            }
+        }, 300000);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+function restoreDownloadButtonState(originatingSelectionStorageKey) {
+    downloadPreparationInFlight = false;
+    if (selectionStorageKey === originatingSelectionStorageKey) {
+        rehydrateSelections();
+    } else {
+        setDownloadButtonBusyState(false);
+    }
 }
 
 function buildSelectionStorageKey() {
@@ -287,8 +364,11 @@ function savePersistedSelectionState(state) {
     }
 }
 
-function clearPersistedSelections() {
-    savePersistedSelectionState({mode: '', ids: []});
+function clearPersistedSelections(storageKey) {
+    try {
+        sessionStorage.setItem(storageKey || selectionStorageKey, JSON.stringify({mode: '', ids: []}));
+    } catch (error) {
+    }
 }
 
 function syncSelection(selectionId, isSelected) {
@@ -314,7 +394,7 @@ function syncSelection(selectionId, isSelected) {
 function persistVisibleCheckedSelections() {
     var visibleSelections = [];
 
-    $('input[type="checkbox"][name="result[]"]').each(function () {
+    $('.js-exam-select').each(function () {
         if ($(this).prop('checked')) {
             visibleSelections.push(this.value);
         }
@@ -337,11 +417,11 @@ function rehydrateSelections() {
     var persistedSelections = persistedState.ids;
     var isAllMode = persistedState.mode === 'all';
 
-    $('input[type="checkbox"][name="result[]"]').each(function () {
+    $('.js-exam-select').each(function () {
         $(this).prop('checked', isAllMode || persistedSelections.indexOf(String(this.value)) !== -1);
     });
 
-    $('#selectAll').prop('checked', isAllMode);
+    $('.js-exam-select-all').prop('checked', isAllMode);
     selectionMode = resolveSelectionMode();
     checkDownloadButtonVisibility();
 }
