@@ -75,8 +75,29 @@ class FrontofficeTypeExamControllerTest extends TestCase
 		$response->assertViewIs('frontoffice.typeexam._list');
 		$response->assertSeeText('Public Exam');
 		$response->assertSeeText('Ver detalles');
+		$response->assertSee('button type="button" id="downloadBtn"', false);
+		$response->assertSee('aria-busy="false"', false);
+		$response->assertSee('aria-hidden="true"', false);
+		$response->assertSee('<span class="download-label">Descargar archivos</span>', false);
+		$this->assertSelectionCheckboxMarkup($response->getContent());
 		$response->assertDontSee('it-breadcrumb-area', false);
 		$response->assertDontSee('assets/frontoffice/viewResources/typeexam/view.js', false);
+	}
+
+	private function assertSelectionCheckboxMarkup($content)
+	{
+		preg_match_all('/<input type="checkbox" id="([^"]+)"/', $content, $checkboxIds);
+
+		$this->assertSame($checkboxIds[1], array_values(array_unique($checkboxIds[1])));
+		$this->assertSame(1, substr_count($content, 'id="type-exam-select-all"'));
+		$this->assertSame(1, substr_count($content, 'id="type-exam-select-exam-public"'));
+		$this->assertStringContainsString('id="type-exam-select-all" name="selectAllExams" class="ml-10 js-exam-select-all"', $content);
+		$this->assertStringContainsString('id="type-exam-select-exam-public" name="selectedExamIds[]"', $content);
+		$this->assertStringContainsString('class="mt-10 ml-10 js-exam-select"', $content);
+		$this->assertStringContainsString('<label for="type-exam-select-all" class="visually-hidden">Seleccionar todos los exámenes</label>', $content);
+		$this->assertStringContainsString('<label for="type-exam-select-exam-public" class="visually-hidden">Seleccionar examen: Public Exam</label>', $content);
+		$this->assertStringNotContainsString('id="selectAll"', $content);
+		$this->assertStringNotContainsString('id="result[]"', $content);
 	}
 
 	public function test_legacy_type_exam_route_redirects_to_listar_preserving_query_string()
