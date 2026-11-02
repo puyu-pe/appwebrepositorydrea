@@ -31,7 +31,6 @@
                                 </div>
                                 <div class="it-signup-btn mb-40">
                                     {{csrf_field()}}
-                                    <input type="hidden" name="hdIdUser" id="hdIdUser" value="{{$tUser->idUser}}">
                                     <button class="it-btn large" onclick="sendfrmReset();">Guardar cambios</button>
                                 </div>
                             </div>

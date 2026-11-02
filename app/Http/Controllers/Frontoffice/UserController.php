@@ -9,10 +9,10 @@ use App\Models\TRole;
 use App\Models\TUserRole;
 use App\Validation\UserValidation;
 
-use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Request;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\TUser;
 use Illuminate\Support\Facades\Mail;
@@ -22,9 +22,9 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function actionLogin(Request $request, Encrypter $encrypter, SessionManager $sessionManager)
+    public function actionLogin(Request $request, SessionManager $sessionManager)
     {
-        if ($_POST) {
+        if ($request->isMethod('post')) {
             try {
                 $this->_so->mo->listMessage = (new UserValidation())->validationLogin($request);
 
@@ -34,7 +34,17 @@ class UserController extends Controller
 
                 $tUser = TUser::whereRaw('email=?', [$request->input('txtEmail')])->first();
 
-                if (($tUser == null || ($tUser != null && $encrypter->decrypt($tUser->password) != $request->input('passPassword')))) {
+                $passwordMatches = false;
+
+                if ($tUser != null && $tUser->password !== '') {
+                    try {
+                        $passwordMatches = Hash::check($request->input('passPassword'), $tUser->password);
+                    } catch (\Throwable $e) {
+                        $passwordMatches = false;
+                    }
+                }
+
+                if ($tUser == null || !$passwordMatches) {
                     return PlatformHelper::redirectError(['Usuario o Contraseña Incorrecto'], 'usuario/acceder');
                 }
 
@@ -74,9 +84,9 @@ class UserController extends Controller
         return view('frontoffice/user/login');
     }
 
-    public function actionRegister(Request $request, Encrypter $encrypter)
+    public function actionRegister(Request $request)
     {
-        if ($_POST) {
+        if ($request->isMethod('post')) {
             try {
                 DB::beginTransaction();
 
@@ -99,7 +109,7 @@ class UserController extends Controller
                 $tUser->idUser = uniqid();
 
                 $tUser->email = trim($request->input('txtEmail'));
-                $tUser->password = $encrypter->encrypt(trim($request->input('passPasswordUser')));
+                $tUser->password = Hash::make(trim($request->input('passPasswordUser')));
                 $tUser->numberDni = $request->input('txtNumberDni');
                 $tUser->firstName = trim($request->input('txtFirstName'));
                 $tUser->surName = trim($request->input('txtSurName'));
@@ -226,7 +236,7 @@ class UserController extends Controller
         return view('frontoffice/user/edit');
     }
 
-    public function actionChange(Request $request, SessionManager $sessionManager, Encrypter $encrypter)
+    public function actionChange(Request $request, SessionManager $sessionManager)
     {
         if($request->has('hdIdUserValue'))
         {
@@ -257,7 +267,7 @@ class UserController extends Controller
 
             if($request->input('passPasswordUser')!='')
             {
-                $tUser->password=$encrypter->encrypt(trim($request->input('passPasswordUser')));
+                $tUser->password=Hash::make(trim($request->input('passPasswordUser')));
             }
 
             $tUser->save();
@@ -270,29 +280,38 @@ class UserController extends Controller
         }
     }
 
-    public function actionReset($token, Request $request, Encrypter $encrypter)
+    public function actionReset($token, Request $request)
     {
         try {
-            if ($_POST && $request->has('hdIdUser')) {
+            if ($request->isMethod('post')) {
                 DB::beginTransaction();
 
-                $this->_so->mo->listMessage = (new UserValidation())->validationReset($request);
+                $tResetPassword = TResetPassword::where('token', $token)->lockForUpdate()->first();
 
-                if ($this->_so->mo->existsMessage()) {
+                if (!$tResetPassword) {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'usuario/resetear/' . $token);
+                    return PlatformHelper::redirectError(['No se encontró el link o ya venció el tiempo de acceso para cambio de contraseña.'], 'usuario/acceder');
                 }
 
-                $tUser = TUser::find($request->input('hdIdUser'));
+                if (trim((string) $request->input('passPasswordUser')) === '') {
+                    DB::rollBack();
 
-                if (!$tUser)
+                    return PlatformHelper::redirectError(['El campo "password" es requerido.'], 'usuario/resetear/' . $token);
+                }
+
+                $tUser = TUser::find($tResetPassword->idUser);
+
+                if (!$tUser) {
+                    DB::rollBack();
+
                     return PlatformHelper::redirectError(['No se encontró los datos del usuario.'], 'usuario/resetear/' . $token);
+                }
 
-                $tUser->password = $encrypter->encrypt(trim($request->input('passPasswordUser')));
+                $tUser->password = Hash::make(trim($request->input('passPasswordUser')));
                 $tUser->save();
 
-                TResetPassword::where('idUser', $tUser->idUser)->delete();
+                $tResetPassword->delete();
 
                 DB::commit();
 
@@ -317,7 +336,9 @@ class UserController extends Controller
         }
         catch (\Exception $e)
         {
-            DB::rollBack();
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
 
             return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'usuario/mostrar/1');
         }
