@@ -26,13 +26,17 @@ class SubjectController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/listar');
                 }
 
                 $tSubjectCodeExists=TSubject::whereRaw('codeSubject=?', [trim($request->input('txtCodeSubject'))])->exists();
 
                 if($tSubjectCodeExists)
-                    return PlatformHelper::redirectError(['Intente registrar otro código.'], 'curso/mostrar/1');
+                {
+                    DB::rollBack();
+
+                    return PlatformHelper::redirectError(['Intente registrar otro código.'], 'curso/listar');
+                }
 
                 $tSubject=new TSubject();
 
@@ -44,13 +48,13 @@ class SubjectController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'curso/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'curso/listar');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/listar');
             }
         }
 
@@ -71,14 +75,18 @@ class SubjectController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'curso/listar');
                 }
 
                 $tSubjectCodeExists=TSubject::whereRaw('codeSubject = ? AND idSubject != ?',
                     [trim($request->input('txtCodeSubject')), $request->input('hdIdSubject')])->exists();
 
                 if($tSubjectCodeExists)
-                    return PlatformHelper::redirectError(['Intente registrar otro código.'], 'curso/mostrar/1');
+                {
+                    DB::rollBack();
+
+                    return PlatformHelper::redirectError(['Intente registrar otro código.'], 'curso/listar');
+                }
 
                 $tSubject=TSubject::find($request->input('hdIdSubject'));
 
@@ -89,13 +97,13 @@ class SubjectController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'curso/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'curso/listar');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/listar');
             }
         }
 
@@ -121,34 +129,45 @@ class SubjectController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/mostrar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/listar');
             }
 
-            DB::delete('delete from tsubject where idSubject = ?', [$idSubject]);
+            $tSubject=TSubject::find($idSubject);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/mostrar/1');
+            if($tSubject!=null)
+            {
+                $tSubject->delete();
+            }
+
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/listar');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/listar');
         }
     }
 
-    public function actionGetAll(Request $request, $currentPage)
+    public function actionGetAll(Request $request, $currentPage=1)
     {
         $searchParameter=$request->has('searchParameter') ? $request->input('searchParameter') : '';
 
         $paginate=PlatformHelper::preparePaginate(TSubject::whereRaw('compareFind(concat(nameSubject), ?, 77)=1',[$searchParameter])
         ->orderby('created_at', 'desc'), 7, $currentPage);
 
-        return view('backoffice/subject/getall',
-        [
+        $viewData=[
             'listTSubject' => $paginate['listRow'],
             'currentPage' => $paginate['currentPage'],
             'quantityPage' => $paginate['quantityPage'],
             'searchParameter' => $searchParameter
-        ]);
+        ];
+
+        if($request->ajax())
+        {
+            return view('backoffice/subject/_list', $viewData);
+        }
+
+        return view('backoffice/subject/getall', $viewData);
     }
 }

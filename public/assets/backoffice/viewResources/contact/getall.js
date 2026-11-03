@@ -1,49 +1,47 @@
 'use strict';
 
-$(function()
-{
+$(function () {
+    initContactListValidation();
+    ajaxCrudBindPagination('divAjaxCrudList', initContactListValidation);
+});
+
+function initContactListValidation() {
     $('#divSearch').formValidation(objectValidate(
         {
             txtSearch:
-            {
-                validators:
                 {
-                    regexp:
+                    validators:
                     {
-                        message: '<b style="color: red;">Solo se permite texto y números.</b>',
-                        regexp: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙ\s@\.\-_]*$/
+                        regexp:
+                            {
+                                message: '<b style="color: red;">Solo se permite texto y números.</b>',
+                                regexp: /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙ\s@\.\-_]*$/
+                            }
                     }
                 }
-            }
-        }));
-});
+        })
+    );
+}
 
-function searchContact(text, url, event)
-{
-    var evt=event || window.event;
+function searchContact(text, url, event) {
+    var evt = event || window.event;
 
-    var code= evt.charCode || evt.keyCode || evt.which;
+    var code = evt.charCode || evt.keyCode || evt.which;
 
-    if(code==13)
-    {
-        var isValid=null;
+    if (code == 13) {
+        var isValid = null;
 
         $('#divSearch').data('formValidation').resetForm();
         $('#divSearch').data('formValidation').validate();
 
         isValid=$('#divSearch').data('formValidation').isValid();
 
-        if(!isValid)
-        {
+        if (!isValid) {
             incorrectNote();
 
             return;
         }
 
-        $('#modalLoading').show();
-
-        $('#txtSearch').attr('disabled', 'disabled');
-
-        window.location.href=url+'?searchParameter='+text;
+        ajaxCrudLoadList(url + '?searchParameter=' + encodeURIComponent(text), 'divAjaxCrudList', initContactListValidation);
     }
 }

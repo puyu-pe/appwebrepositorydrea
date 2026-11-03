@@ -64,5 +64,5 @@ function sendEditFrmTestimony()
         return;
     }
 
-    confirmDialogSend('frmEditTestimony');
+    ajaxCrudSubmitForm('frmEditTestimony', {reloadUrl: window.codideepBackofficeListUrl, ajaxContainerId: 'divAjaxCrudList', postReload: initTestimonyListValidation});
 }

@@ -50,5 +50,5 @@
             return;
         }
 
-        confirmDialogSend('frmEditGrade');
-    }
+		ajaxCrudSubmitForm('frmEditGrade', {reloadUrl: window.codideepBackofficeListUrl, ajaxContainerId: 'divAjaxCrudList', postReload: initGradeListValidation});
+	}

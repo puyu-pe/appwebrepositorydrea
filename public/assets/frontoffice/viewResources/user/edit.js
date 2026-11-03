@@ -107,6 +107,12 @@ $(function()
                     }
                 }
             }));
+
+    $('#frmEditUserProfile').off('submit.ajaxCrud').on('submit.ajaxCrud', function(event)
+    {
+        event.preventDefault();
+        sendFrmEditUserProfile();
+    });
 });
 
 function sendFrmEditUserProfile()
@@ -125,7 +131,17 @@ function sendFrmEditUserProfile()
         return;
     }
 
-    confirmDialogSend('frmEditUserProfile');
+    ajaxCrudSubmitFormData('frmEditUserProfile', {
+        onSuccess: function(response, form)
+        {
+            if(response.data!=null && response.data.avatarUrl!=null)
+            {
+                $('[data-user-avatar]').attr('src', response.data.avatarUrl);
+            }
+
+            form.find('input[type=file]').val('');
+        }
+    });
 }
 
 function sendFrmEditUser()

@@ -1,7 +1,7 @@
 @extends('frontoffice.layout')
 @section('generalBody')
     <!-- hero-area-start -->
-    <div class="it-hero-3-area it-hero-style-4 it-hero-space theme-bg-3 fix z-index">
+    <div class="home-hero it-hero-3-area it-hero-style-4 it-hero-space theme-bg-3 fix z-index">
         <div class="it-hero-3-shape-1">
             <img src="{{ asset('assets/frontoffice/img/hero/hero-4-shape1.png') }}" alt="">
         </div>
@@ -27,7 +27,7 @@
                                 las evaluaciones que las DRE/GRE realiza a nivel nacional.</p>
                         </div>
                         <div class="it-hero-3-btn-box d-flex align-items-center">
-                            <a class="it-btn-white" href="{{ url('tipoexamen/all/1') }}">
+                            <a class="it-btn-white" href="{{ url('tipoexamen/all/listar') }}">
                                 <span>
                                     Buscar evaluación
                                     <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
@@ -73,7 +73,7 @@
             <div class="row row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1 justify-content-center">
                 @foreach ($tTypeExam as $value)
                     <div class="col mb-30">
-                        <a href="{{ url('tipoexamen/'.$value->acronymTypeExam.'/1') }}">
+                        <a href="{{ url('tipoexamen/'.$value->acronymTypeExam.'/listar') }}">
                             <div class="it-category-4-item text-center">
                                 <div class="it-category-4-icon">
                                     <span>
@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="it-category-4-content">
                                     <h4 class="it-category-4-title">
-                                        <a href="{{ url('tipoexamen/'.$value->acronymTypeExam.'/1') }}">
+                                        <a href="{{ url('tipoexamen/'.$value->acronymTypeExam.'/listar') }}">
                                             {{ $value->nameTypeExam }}</a>
                                     </h4>
                                     <span>{{ $value->acronymTypeExam }}</span>
@@ -223,7 +223,7 @@
                         </div>
                         <div class="col-xl-5 col-lg-5 col-md-4">
                             <div class="it-course-button text-start text-md-end pt-25">
-                                <a class="it-btn-blue" href="{{url('tipoexamen/all/1')}}">
+                                <a class="it-btn-blue" href="{{url('tipoexamen/all/listar')}}">
                                     <span>
                                         Ver más evaluaciones
                                         <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
@@ -247,7 +247,7 @@
                             <div class="it-course-item">
                                 <div class="it-course-thumb mb-20 p-relative">
                                     <a href="{{ url('examen/ver/' . $topExam->codeExam) }}"><img
-                                            src="{{ asset('storage/exam-img/' . $topExam->idExam . '.jpg') }}"
+                                            src="{{ asset('storage/exam-img/' . $topExam->idExam . '.jpg?x=' . $topExam->updated_at) }}"
                                             alt="imagen vista previa"></a>
                                     <div class="it-course-thumb-text">
                                         <span>{{ strtoupper($topExam->tTypeExam->acronymTypeExam) }}</span>
@@ -504,28 +504,26 @@
                                 </div>
                                 <input type="hidden" id="txtSubject" name="txtSubject" value="Solicito Inscripción al sistema">
                                 {{csrf_field()}}
+                                <button type="submit" class="it-btn-blue">
+                                    <span>
+                                        Enviar datos
+                                        <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
+                                                  stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                            <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
+                                                  stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                </button>
                             </form>
-                            <input type="button" class="it-btn-blue" value="Enviar datos"
-                                   onclick="sendFrmContact();">
-                            <span>
-                                    Enviar datos
-                                    <svg width="17" height="14" viewBox="0 0 17 14" fill="none"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11 1.24023L16 7.24023L11 13.2402" stroke="currentcolor"
-                                              stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                                              stroke-linejoin="round"/>
-                                        <path d="M1 7.24023H16" stroke="currentcolor" stroke-width="1.5"
-                                              stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </span>
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <script
-            src="{{asset('assets/frontoffice/viewResources/contact/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+        <script src="{{asset('assets/frontoffice/viewResources/contact/insert.js')}}?x={{filemtime(public_path('assets/frontoffice/viewResources/contact/insert.js'))}}"></script>
         <!-- contact-area-end -->
 @endsection

@@ -2,6 +2,12 @@
 
 $(function()
 {
+    initGradeListValidation();
+    ajaxCrudBindPagination('divAjaxCrudList', initGradeListValidation);
+});
+
+function initGradeListValidation()
+{
     $('#divSearch').formValidation(objectValidate(
         {
             txtSearch:
@@ -16,7 +22,7 @@ $(function()
                 }
             }
         }));
-});
+}
 
 function searchGrade(text, url, event)
 {
@@ -40,10 +46,6 @@ function searchGrade(text, url, event)
             return;
         }
 
-        $('#modalLoading').show();
-
-        $('#txtSearch').attr('disabled', 'disabled');
-
-        window.location.href=url+'?searchParameter='+text;
-    }
+		ajaxCrudLoadList(url+'?searchParameter='+encodeURIComponent(text), 'divAjaxCrudList', initGradeListValidation);
+	}
 }

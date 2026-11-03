@@ -2,6 +2,17 @@
 
 var selectionMode = '';
 $(function () {
+    initExamListValidation();
+    initExamListActions();
+    if (typeof ajaxCrudBindPagination === 'function') {
+        ajaxCrudBindPagination('divAjaxCrudList', function () {
+            initExamListValidation();
+            initExamListActions();
+        });
+    }
+});
+
+function initExamListValidation() {
     $('#divSearch').formValidation(objectValidate(
         {
             txtSearch:
@@ -17,8 +28,10 @@ $(function () {
                 }
         })
     );
+}
 
-    $('input[type="checkbox"][name="result[]"]').change(function () {
+function initExamListActions() {
+    $('input[type="checkbox"][name="result[]"]').off('change.examList').on('change.examList', function () {
         var selected = $('input[type="checkbox"][name="result[]"]:checked');
         if (selected.length >= 2) {
             $('#downloadBtn').show();
@@ -27,7 +40,7 @@ $(function () {
         }
     });
 
-    $('#downloadBtn').click(function () {
+    $('#downloadBtn').off('click.examList').on('click.examList', function () {
         var selectedValues = $('input[type="checkbox"][name="result[]"]:checked').map(function () {
             return this.value;
         }).get();
@@ -45,7 +58,12 @@ $(function () {
             }
         });
     });
-});
+}
+
+function initExamListAfterAjaxReload() {
+    initExamListValidation();
+    initExamListActions();
+}
 
 function searchExam(text, url, event) {
     var evt = event || window.event;
@@ -66,12 +84,15 @@ function searchExam(text, url, event) {
             return;
         }
 
-        $('#modalLoading').show();
+        if (typeof ajaxCrudLoadList === 'function') {
+            ajaxCrudLoadList(url + '?searchParameter=' + encodeURIComponent(text), 'divAjaxCrudList', function () {
+                initExamListValidation();
+                initExamListActions();
+            });
 
-        $('#txtSearch').attr('disabled', 'disabled');
+            return;
+        }
 
-        window.location.href = url + '?searchParameter=' + text;
+        window.location.href = url + '?searchParameter=' + encodeURIComponent(text);
     }
 }
-
-

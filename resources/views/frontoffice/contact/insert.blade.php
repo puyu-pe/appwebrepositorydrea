@@ -134,8 +134,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-12 text-right">
                                         {{csrf_field()}}
-                                        <input type="button" class="it-btn" value="Enviar datos"
-                                               onclick="sendFrmContact();">
+                                         <button type="submit" class="it-btn">Enviar datos</button>
                                     </div>
                                 </div>
                             </form>
@@ -145,5 +144,5 @@
             </div>
         </div>
     </div>
-    <script src="{{asset('assets/frontoffice/viewResources/contact/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+    <script src="{{asset('assets/frontoffice/viewResources/contact/insert.js')}}?x={{filemtime(public_path('assets/frontoffice/viewResources/contact/insert.js'))}}"></script>
 @endsection

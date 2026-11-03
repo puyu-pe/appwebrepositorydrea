@@ -200,7 +200,7 @@
       <script src="{{asset('assets/backoffice/plugins/adminlte/bower_components/fullcalendar/dist/fullcalendar.min.js')}}"></script>
       <!-- fullCalendar es español -->
       <script src="{{asset('assets/backoffice/plugins/adminlte/bower_components/fullcalendar/dist/locale/es.js')}}"></script>
-      <script src="{{asset('js/codideepHelpers.js')}}"></script>
+      <script src="{{ asset('js/codideepHelpers.js') }}?v={{ filemtime(public_path('js/codideepHelpers.js')) }}"></script>
       <script src="{{asset('assets/backoffice/plugins/formvalidation/formValidation.min.js')}}"></script>
       <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
       <script src="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.js')}}"></script>

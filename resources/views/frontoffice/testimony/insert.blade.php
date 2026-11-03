@@ -86,8 +86,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-12 text-right">
                                         {{csrf_field()}}
-                                        <input type="button" class="it-btn" value="Registrar opinión"
-                                               onclick="sendFrmTestimony();">
+                                         <button type="submit" class="it-btn">Registrar opinión</button>
                                     </div>
                                 </div>
                             </form>
@@ -97,5 +96,5 @@
             </div>
         </div>
     </div>
-    <script src="{{asset('assets/frontoffice/viewResources/testimony/insert.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+    <script src="{{asset('assets/frontoffice/viewResources/testimony/insert.js')}}?x={{filemtime(public_path('assets/frontoffice/viewResources/testimony/insert.js'))}}"></script>
 @endsection

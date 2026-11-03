@@ -2,6 +2,12 @@
 
 $(function()
 {
+    $('#frmEditExam').off('submit.examAjax').on('submit.examAjax', function(event)
+    {
+        event.preventDefault();
+        sendFrmEditExam();
+    });
+
     $('#frmEditExam').formValidation(objectValidate(
         {
             txtDescriptionExam:
@@ -263,5 +269,9 @@ function sendFrmEditExam()
         return;
     }
 
-    confirmDialogSend('frmEditExam');
+    ajaxCrudSubmitFormData('frmEditExam', {
+        reloadUrl: window.codideepBackofficeListUrl || 'examen/listar',
+        ajaxContainerId: 'divAjaxCrudList',
+        postReload: typeof initExamListAfterAjaxReload == 'function' ? initExamListAfterAjaxReload : null
+    });
 }

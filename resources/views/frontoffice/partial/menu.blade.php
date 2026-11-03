@@ -20,11 +20,11 @@
                                         <ul class="it-submenu submenu">
                                             <li id="mALL"
                                                 class="{{Session::get('subMenu')=='mALLTYPE' ? 'active' : ''}}">
-                                                <a href="{{url('tipoexamen/all/1')}}">General</a></li>
+                                                <a href="{{url('tipoexamen/all/listar')}}">General</a></li>
                                             @foreach ($menuTypeExamItem as $item)
                                             <li id="{{'m'.strtoupper($item->acronymTypeExam)}}"
                                                 class="{{Session::get('subMenu')=='m'.strtoupper($item->acronymTypeExam).'TYPE' ? 'active' : ''}}">
-                                                <a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/1')}}">
+                                                <a href="{{url('tipoexamen/'.$item->acronymTypeExam.'/listar')}}">
                                                     {{$item->acronymTypeExam != 'other' ? 'Evaluaciones '.strtoupper($item->acronymTypeExam) : 'Otros'}}</a></li>
                                             @endforeach
                                         </ul>
@@ -36,7 +36,7 @@
                                             @foreach ($menuSubjectItem as $item_subject)
                                                 <li id="{{'m'.strtoupper($item_subject->codeSubject)}}"
                                                     class="{{Session::get('subMenu')=='m'.strtoupper($item_subject->codeSubject).'SUBJECT' ? 'active' : ''}}">
-                                                    <a href="{{url('curso/'.$item_subject->codeSubject.'/1')}}">
+                                                    <a href="{{url('curso/'.$item_subject->codeSubject.'/listar')}}">
                                                         {{$item_subject->nameSubject}}</a></li>
                                             @endforeach
                                         </ul>
@@ -48,7 +48,7 @@
                                             @foreach ($menuGradeItem as $item_grade)
                                                 <li id="{{'m'.strtoupper($item_grade->codeGrade)}}"
                                                     class="{{Session::get('subMenu')=='m'.strtoupper($item_grade->codeGrade).'GRADE' ? 'active' : ''}}">
-                                                    <a href="{{url('grado/'.$item_grade->codeGrade.'/1')}}">
+                                                    <a href="{{url('grado/'.$item_grade->codeGrade.'/listar')}}">
                                                         {{$item_grade->descriptionGrade}}</a></li>
                                             @endforeach
                                         </ul>
@@ -88,6 +88,10 @@
                                 </span>
                                 </a>
                             </div>
+                            <a class="mobile-session-control d-md-none" href="{{url('usuario/acceder')}}"
+                               aria-label="{{Session::get('idUser') ? 'Mi cuenta' : 'Iniciar sesión'}}">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
                             <div class="it-header-2-bar d-xl-none">
                                 <button class="it-menu-bar"><i class="fa-solid fa-bars"></i></button>
                             </div>

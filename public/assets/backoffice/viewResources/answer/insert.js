@@ -1,5 +1,14 @@
 'use strict';
 
+$(function()
+{
+    $('#frmInsertAnswer').off('submit.ajaxCrud').on('submit.ajaxCrud', function(event)
+    {
+        event.preventDefault();
+        sendInsertAnswer();
+    });
+});
+
 function validateNotEmptyResponse() {
     let total_empty_response = 0;
     let status_response = false;
@@ -35,5 +44,22 @@ function sendInsertAnswer()
         return false;
     }
 
-    confirmDialogSend('frmInsertAnswer');
+    ajaxCrudSubmitForm('frmInsertAnswer', {
+        onSuccess: function(response, form)
+        {
+            var reloadUrl=window.codideepBackofficeListUrl || response.redirectUrl || 'examen/listar';
+
+            form[0].reset();
+            form.closest('.modal').modal('hide');
+
+            if($('#divAjaxCrudList').length)
+            {
+                ajaxCrudLoadList(
+                    reloadUrl,
+                    'divAjaxCrudList',
+                    typeof initExamListAfterAjaxReload == 'function' ? initExamListAfterAjaxReload : null
+                );
+            }
+        }
+    });
 }

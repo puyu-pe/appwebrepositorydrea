@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontoffice;
 
 use App\Http\Controllers\Controller;
+use App\Helper\PlatformHelper;
 use App\Models\TExam;
 use App\Models\TExamRating;
 
@@ -50,30 +51,26 @@ class ExamRatingController extends Controller
             $tExam->rating_average = $rating->avg;
             $tExam->save();
 
-            $response = [
-                'success' => true,
+            $data = [
                 'data' => [
                     'tExamRating' => $tExamRating,
                     'rating' => $rating
-                ],
-                'message' => $message
+                ]
             ];
 
             DB::commit();
 
-            return response()->json($response, 200);
+            return PlatformHelper::jsonSuccess([$message], 200, null, $data);
         } catch (ModelNotFoundException $th) {
             DB::rollBack();
 
-            $response = [
-                'success' => false,
+            $data = [
                 'data' => [
                     'tExamRating' => null
-                ],
-                'message' => $th->getMessage()
+                ]
             ];
 
-            return response()->json($response, 500);
+            return PlatformHelper::jsonError([$th->getMessage()], 404, null, $data);
         }
     }
 }

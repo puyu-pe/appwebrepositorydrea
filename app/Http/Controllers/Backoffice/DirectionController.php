@@ -26,14 +26,14 @@ class DirectionController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'direccion/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'direccion/listar');
                 }
 
                 $tDirectionExists=TDirection::whereRaw('compareFind(concat(namesortDirection), ?, 77)=1',[trim($request->input('txtNameSort'))])->exists();
 
                 if($tDirectionExists==true)
                 {
-                    return PlatformHelper::redirectError(['Esta DRE ya fue registrada.'], 'direccion/mostrar/1');
+                    return PlatformHelper::redirectError(['Esta DRE ya fue registrada.'], 'direccion/listar');
                 }
 
                 $tDirection = new TDirection();
@@ -59,13 +59,13 @@ class DirectionController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'direccion/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'direccion/listar');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'direccion/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'direccion/listar');
             }
         }
 
@@ -86,14 +86,14 @@ class DirectionController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'direccion/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'direccion/listar');
                 }
 
                 $tDirectionExists=TDirection::whereRaw('compareFind(concat(namesortDirection), ?, 77)=1 AND idDirection!=?',[trim($request->input('txtNameSort')), $request->input('hdIdDirection')])->exists();
 
                 if($tDirectionExists==true)
                 {
-                    return PlatformHelper::redirectError(['Esta materia ya fue registrada, pruebe con otro nombre.'], 'direccion/mostrar/1');
+                    return PlatformHelper::redirectError(['Esta materia ya fue registrada, pruebe con otro nombre.'], 'direccion/listar');
                 }
 
                 $tDirection=TDirection::find($request->input('hdIdDirection'));
@@ -127,13 +127,13 @@ class DirectionController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'direccion/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'direccion/listar');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'direccion/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'direccion/listar');
             }
         }
 
@@ -159,7 +159,7 @@ class DirectionController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que pertenecen a esta Direccción.'], 'direccion/mostrar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que pertenecen a esta Direccción.'], 'direccion/listar');
             }
 
             $tDirection = TDirection::find($idDirection);
@@ -174,29 +174,35 @@ class DirectionController extends Controller
 
             DB::delete('delete from tdirection where idDirection = ?', [$idDirection]);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'direccion/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'direccion/listar');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'direccion/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'direccion/listar');
         }
     }
 
-    public function actionGetAll(Request $request, $currentPage)
+    public function actionGetAll(Request $request, $currentPage=1)
     {
         $searchParameter=$request->has('searchParameter') ? $request->input('searchParameter') : '';
 
         $paginate=PlatformHelper::preparePaginate(TDirection::whereRaw('compareFind(concat(namecompleteDirection, namesortDirection, nameRegion), ?, 77)=1',[$searchParameter])
         ->orderby('created_at', 'desc'), 7, $currentPage);
 
-        return view('backoffice/direction/getall',
-        [
+        $viewData=[
             'listTDirection' => $paginate['listRow'],
             'currentPage' => $paginate['currentPage'],
             'quantityPage' => $paginate['quantityPage'],
             'searchParameter' => $searchParameter
-        ]);
+        ];
+
+        if($request->ajax())
+        {
+            return view('backoffice/direction/_list', $viewData);
+        }
+
+        return view('backoffice/direction/getall', $viewData);
     }
 }

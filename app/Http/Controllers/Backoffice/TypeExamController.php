@@ -26,13 +26,13 @@ class TypeExamController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'tipoexamen/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'tipoexamen/listar');
                 }
 
                 $tTypeExamAcronym = TTypeExam::whereRaw('acronymTypeExam=?', [trim($request->input('txtAcronymTypeExam'))])->exists();
 
                 if($tTypeExamAcronym)
-                    return PlatformHelper::redirectError(['Intente registrar otro tipo de siglas.'], 'tipoexamen/mostrar/1');
+                    return PlatformHelper::redirectError(['Intente registrar otro tipo de siglas.'], 'tipoexamen/listar');
 
                 $tTypeExam=new TTypeExam();
 
@@ -41,6 +41,7 @@ class TypeExamController extends Controller
                 $tTypeExam->nameTypeExam = trim($request->input('txtNameTypeExam'));
                 $tTypeExam->acronymTypeExam = trim($request->input('txtAcronymTypeExam'));
                 $tTypeExam->descriptionTypeExam = trim($request->input('txtDescriptionTypeExam'));
+                $tTypeExam->numberExecuteYear = $request->input('numberExecute');
                 $tTypeExam->extensionImageType = strtolower($request->file('fileTypeExamLogo')->getClientOriginalExtension());
 
                 $tTypeExam->save();
@@ -49,13 +50,13 @@ class TypeExamController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'tipoexamen/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], 'tipoexamen/listar');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'tipoexamen/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'tipoexamen/listar');
             }
         }
 
@@ -76,14 +77,14 @@ class TypeExamController extends Controller
                 {
                     DB::rollBack();
 
-                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'tipoexamen/mostrar/1');
+                    return PlatformHelper::redirectError($this->_so->mo->listMessage, 'tipoexamen/listar');
                 }
 
                 $tTypeExamAcronym = TTypeExam::whereRaw('acronymTypeExam=? AND idTypeExam != ?',
                     [trim($request->input('txtAcronymTypeExam')), $request->input('hdIdTypeExam')])->exists();
 
                 if($tTypeExamAcronym)
-                    return PlatformHelper::redirectError(['Intente registrar otro tipo de siglas.'], 'tipoexamen/mostrar/1');
+                    return PlatformHelper::redirectError(['Intente registrar otro tipo de siglas.'], 'tipoexamen/listar');
 
                 $tTypeExam=TTypeExam::find($request->input('hdIdTypeExam'));
 
@@ -113,13 +114,13 @@ class TypeExamController extends Controller
 
                 DB::commit();
 
-                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'tipoexamen/mostrar/1');
+                return PlatformHelper::redirectCorrect(['Cambios realizados correctamente.'], 'tipoexamen/listar');
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
 
-                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'tipoexamen/mostrar/1');
+                return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'tipoexamen/listar');
             }
         }
 
@@ -144,7 +145,7 @@ class TypeExamController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'tipoexamen/mostrar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'tipoexamen/listar');
             }
 
             $tTypeExam=TTypeExam::find($idTypeExam);
@@ -158,29 +159,35 @@ class TypeExamController extends Controller
 
             DB::delete('delete from ttypeexam where idTypeExam = ?', [$idTypeExam]);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'tipoexamen/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'tipoexamen/listar');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'tipoexamen/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'tipoexamen/listar');
         }
     }
 
-    public function actionGetAll(Request $request, $currentPage)
+    public function actionGetAll(Request $request, $currentPage=1)
     {
         $searchParameter=$request->has('searchParameter') ? $request->input('searchParameter') : '';
 
         $paginate=PlatformHelper::preparePaginate(TTypeExam::whereRaw('compareFind(concat(nameTypeExam, acronymTypeExam, descriptionTypeExam), ?, 77)=1',[$searchParameter])
         ->orderby('created_at', 'desc'), 7, $currentPage);
 
-        return view('backoffice/typeexam/getall',
-        [
+        $viewData=[
             'listTTypeExam' => $paginate['listRow'],
             'currentPage' => $paginate['currentPage'],
             'quantityPage' => $paginate['quantityPage'],
             'searchParameter' => $searchParameter
-        ]);
+        ];
+
+        if($request->ajax())
+        {
+            return view('backoffice/typeexam/_list', $viewData);
+        }
+
+        return view('backoffice/typeexam/getall', $viewData);
     }
 }

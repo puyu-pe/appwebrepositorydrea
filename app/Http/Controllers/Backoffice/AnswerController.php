@@ -14,6 +14,8 @@ class AnswerController extends Controller
 {
     public function actionInsert(Request $request)
     {
+        $routeRedirect=$this->formRedirectRoute($request);
+
         try
         {
             if ($request->has('hdIdExam'))
@@ -66,8 +68,7 @@ class AnswerController extends Controller
 
                 DB::commit();
 
-                $previousUrl = url()->previous();
-                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], $previousUrl);
+                return PlatformHelper::redirectCorrect(['Inserción realizada correctamente.'], $routeRedirect);
             }
 
             $tExam = TExam::find($request->input('idExam'));
@@ -96,8 +97,18 @@ class AnswerController extends Controller
         {
             DB::rollBack();
 
-            return PlatformHelper::redirectError([$e->getMessage()], 'examen/mostrar/1');
+            return PlatformHelper::redirectError([$e->getMessage()], $routeRedirect);
         }
+    }
+
+    private function formRedirectRoute(Request $request)
+    {
+        if($request->ajax() || $request->expectsJson() || $request->wantsJson())
+        {
+            return $request->headers->get('referer', 'examen/mostrar/1');
+        }
+
+        return url()->previous();
     }
 
     public function actionDelete($idSubject)
@@ -108,18 +119,18 @@ class AnswerController extends Controller
 
             if($tExam==true)
             {
-                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/mostrar/1');
+                return PlatformHelper::redirectError(['No puede eliminar este registro, ya existe evaluaciones que utilizan esta denominación.'], 'curso/listar');
             }
 
             DB::delete('delete from tsubject where idSubject = ?', [$idSubject]);
 
-            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/mostrar/1');
+            return PlatformHelper::redirectCorrect(['Operación realizada correctamente.'], 'curso/listar');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/mostrar/1');
+            return PlatformHelper::catchException(__CLASS__, __FUNCTION__, $e->getMessage(), 'curso/listar');
         }
     }
 }

@@ -25,7 +25,7 @@
                         <div class="it-evn-details-thumb mb-35"
                              style="text-align: center; background: #DEDEDE; padding: 10px">
 
-                            <img src="{{ asset('storage/exam-img/' . $tExam->idExam . '.jpg') }}"
+                            <img src="{{ asset('storage/exam-img/' . $tExam->idExam . '.jpg?x=' . $tExam->updated_at) }}"
                                  alt="Vista previa"
                                  style="width: 250px; box-shadow: #0A0909  0px 0px 10px; border-radius: 10px; border: 2px solid #0A0909"
                             >

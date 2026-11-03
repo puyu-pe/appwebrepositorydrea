@@ -3,6 +3,12 @@
 
 $(function()
 {
+    $('#frmInsertExam').off('submit.examAjax').on('submit.examAjax', function(event)
+    {
+        event.preventDefault();
+        sendInsertExam();
+    });
+
     $('#frmInsertExam').formValidation(objectValidate({
         txtDescriptionExam:
         {
@@ -362,6 +368,23 @@ function getSelectedValues() {
     return selectedValues.length > 0 ? selectedValues : null;
 }
 
+function resetInsertExamForm(form)
+{
+    form[0].reset();
+    form.data('formValidation').resetForm(true);
+    form.find('input[type=file]').val('');
+    form.find('.fileinput-filename').empty();
+    form.find('img[data-file-preview]').attr('src', '');
+
+    $('#selectTypeExam, #selectDirectionExam, #selectGrade, #selectSubject, #selectKeywordExam, #selectTypeAnswerExam').trigger('change.select2');
+    $('#tblResponseExam > tbody').empty();
+    $('#dvOther').hide();
+    $('#btnModalResponse').hide();
+    $('#txtResponseExamPermit').prop('readonly', true);
+    $('#selectTypeAnswerExam').prop('disabled', true);
+    $('#modalAccess').modal('hide');
+}
+
 function sendInsertExam()
 {
     var isValid=null;
@@ -389,5 +412,10 @@ function sendInsertExam()
         return;
     }
 
-    confirmDialogSend('frmInsertExam');
+    ajaxCrudSubmitFormData('frmInsertExam', {
+        onSuccess: function(response, form)
+        {
+            resetInsertExamForm(form);
+        }
+    });
 }

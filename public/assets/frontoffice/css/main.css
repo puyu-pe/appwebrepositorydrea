@@ -429,6 +429,17 @@ input[type=color] {
   animation: tfLeftToRight 0.4s forwards;
   transform: translateY(-1px);
 }
+.it-btn:disabled,
+.it-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(35%);
+  box-shadow: none;
+}
+.it-btn:disabled:hover span svg,
+.it-btn[aria-disabled="true"]:hover span svg {
+  animation: none;
+}
 .it-btn.black-bg {
   background-color: black;
 }
@@ -656,6 +667,31 @@ input[type=color] {
 .it-btn-blue:hover span svg {
   animation: tfLeftToRight 0.4s forwards;
   transform: translateY(-1px);
+}
+.it-btn-blue:disabled,
+.it-btn-blue[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(35%);
+  box-shadow: none;
+}
+.it-btn-blue:disabled:hover span svg,
+.it-btn-blue[aria-disabled="true"]:hover span svg {
+  animation: none;
+}
+
+#frmContact input:not([type="hidden"]):disabled,
+#frmContact textarea:disabled,
+#frmContact select:disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  -webkit-text-fill-color: #6c757d;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+#frmContact input:-webkit-autofill:disabled {
+  box-shadow: 0 0 0 1000px #e9ecef inset;
 }
 
 .it-btn-theme-sm {

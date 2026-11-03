@@ -53,7 +53,7 @@
                             asset('img/userlogo.png') :
                             asset('storage/user/'.Session::get('idUser').'.'.Session::get('avatarExtension').'?x='.Session::get('updated_at'))}}"
                                                              style="border: 1px solid #999999; border-radius: 50%; width: 150px; "
-                                                             class="img-circle" alt="User Image">
+                                                             class="img-circle" data-user-avatar alt="User Image">
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,9 +107,7 @@
                                                                 {{csrf_field()}}
                                                                 <input type="hidden" id="hdIdUser" name="hdIdUser"
                                                                        value="{{Session::get('idUser')}}">
-                                                                <input type="button" class="it-btn"
-                                                                       value="Guardar Cambios"
-                                                                       onclick="sendFrmEditUserProfile();">
+                                                                 <button type="submit" class="it-btn">Guardar Cambios</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -182,5 +180,5 @@
         </div>
     </div>
 
-    <script src="{{asset('assets/frontoffice/viewResources/user/edit.js?x='.env('CACHE_LAST_UPDATE'))}}"></script>
+    <script src="{{asset('assets/frontoffice/viewResources/user/edit.js')}}?x={{filemtime(public_path('assets/frontoffice/viewResources/user/edit.js'))}}"></script>
 @endsection

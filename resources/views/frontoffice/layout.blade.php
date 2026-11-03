@@ -160,7 +160,7 @@
         <script src="{{asset('assets/frontoffice/js/ajax-form.js')}}"></script>
         <script src="{{asset('assets/frontoffice/js/main.js')}}"></script>
         <script src="{{asset('assets/backoffice/plugins/sweetalert/sweetalert.min.js')}}"></script>
-        <script src="{{asset('js/codideepHelpers.js')}}"></script>
+        <script src="{{ asset('js/codideepHelpers.js') }}?v={{ filemtime(public_path('js/codideepHelpers.js')) }}"></script>
         <script src="{{asset('assets/backoffice/plugins/formvalidation/formValidation.min.js')}}"></script>
         <script src="{{asset('assets/backoffice/plugins/formvalidation/bootstrap.validation.min.js')}}"></script>
         <script src="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.js')}}"></script>
