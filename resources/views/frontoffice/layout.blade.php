@@ -23,7 +23,7 @@
         <link rel="stylesheet" href="{{asset('assets/frontoffice/css/spacing.css')}}">
         <link rel="stylesheet" href="{{asset('assets/frontoffice/css/main.css')}}">
         <link rel="stylesheet" href="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/layout.css')}}">
+        <link rel="stylesheet" href="{{asset('css/layout.css?x='.env('CACHE_LAST_UPDATE'))}}">
         <link rel="stylesheet" href="{{asset('css/cssPagination.css')}}">
         <link rel="stylesheet" href="{{asset('css/cssExamType.css')}}">
 

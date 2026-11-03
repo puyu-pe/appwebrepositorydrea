@@ -39,7 +39,7 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
       <link rel="stylesheet" href="{{asset('assets/backoffice/plugins/pnotify/pnotify.custom.min.css')}}">
       <link rel="stylesheet" href="{{asset('css/cssPagination.css')}}">
-      <link rel="stylesheet" href="{{asset('css/layout.css')}}">
+      <link rel="stylesheet" href="{{asset('css/layout.css?x='.env('CACHE_LAST_UPDATE'))}}">
       <!-- jQuery 3 -->
       <script src="{{asset('assets/backoffice/plugins/adminlte/bower_components/jquery/dist/jquery.min.js')}}"></script>
     </head>
