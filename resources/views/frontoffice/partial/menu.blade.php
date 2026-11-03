@@ -88,6 +88,10 @@
                                 </span>
                                 </a>
                             </div>
+                            <a class="mobile-session-control d-md-none" href="{{url('usuario/acceder')}}"
+                               aria-label="{{Session::get('idUser') ? 'Mi cuenta' : 'Iniciar sesión'}}">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </a>
                             <div class="it-header-2-bar d-xl-none">
                                 <button class="it-menu-bar"><i class="fa-solid fa-bars"></i></button>
                             </div>

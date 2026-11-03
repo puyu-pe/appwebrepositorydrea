@@ -84,6 +84,131 @@ class FrontofficeTypeExamControllerTest extends TestCase
 		$response->assertDontSee('assets/frontoffice/viewResources/typeexam/view.js', false);
 	}
 
+	public function test_public_evaluation_lists_omit_page_count_column()
+	{
+		$routes = [
+			'/tipoexamen/all/listar?type=type-1',
+			'/curso/all/listar?subject=subject-1',
+			'/grado/all/listar?grade=grade-1',
+		];
+
+		foreach ($routes as $route) {
+			$response = $this->withHeaders([
+				'X-Requested-With' => 'XMLHttpRequest'
+			])->get($route);
+
+			$response->assertOk();
+			$content = $response->getContent();
+			$this->assertStringNotContainsString('<th>Páginas</th>', $content);
+			$this->assertStringNotContainsString('1 páginas', $content);
+			$this->assertSame(1, preg_match('/<tr>(?<row>(?:(?!<\/tr>).)*<th(?:(?!<\/tr>).)*)<\/tr>/s', $content, $headerRow));
+			$this->assertSame(7, substr_count($headerRow['row'], '<th'));
+			$this->assertSame(1, preg_match('/<tr>(?<row>(?:(?!<\/tr>).)*Public Exam(?:(?!<\/tr>).)*)<\/tr>/s', $content, $examRow));
+			$this->assertSame(7, substr_count($examRow['row'], '<td'));
+
+			$emptyResponse = $this->withHeaders([
+				'X-Requested-With' => 'XMLHttpRequest'
+			])->get($route . '&searchParameter=MissingExam');
+
+			$emptyResponse->assertOk();
+			$emptyResponse->assertSee('colspan="7"', false);
+		}
+	}
+
+	public function test_public_evaluation_views_share_responsive_layout_contract()
+	{
+		$variants = [
+			['/tipoexamen/all/listar', 'btnSearchType'],
+			['/curso/all/listar', 'btnSearchSubject'],
+			['/grado/all/listar', 'btnSearchGrade'],
+		];
+
+		foreach ($variants as [$route, $searchButtonId]) {
+			$response = $this->get($route);
+
+			$response->assertOk();
+			$content = $response->getContent();
+			$this->assertSingleElementHasClasses($content, 'div', ['row', 'evaluation-search-row']);
+			$this->assertElementByAttributeHasClasses($content, 'div', 'id', 'divSearch', ['col-12', 'col-md-10', 'evaluation-search-field']);
+			$this->assertSingleElementHasClasses($content, 'div', ['col-12', 'col-md-2', 'evaluation-search-action']);
+			$this->assertElementByAttributeHasClasses($content, 'button', 'id', $searchButtonId, []);
+			$this->assertSingleElementHasClasses($content, 'div', ['row', 'evaluation-filter-row']);
+			$this->assertSame(4, count($this->openingTagsWithClass($content, 'div', 'evaluation-filter')));
+			$this->assertElementByAttributeHasClasses($content, 'div', 'id', 'divAjaxExamList', []);
+			$this->assertSingleElementHasClasses($content, 'div', ['table-responsive', 'evaluation-table-scroll']);
+			$this->assertSingleElementHasClasses($content, 'table', ['table', 'evaluation-results-table']);
+			$this->assertSame([], $this->openingTagsWithClasses($content, 'table', ['table', 'table-responsive']));
+			$this->assertSingleElementHasClasses($content, 'div', ['row', 'evaluation-results-actions']);
+			$this->assertSingleElementHasClasses($content, 'div', ['col-12', 'col-md-4', 'evaluation-download-action']);
+			$this->assertElementByAttributeHasClasses($content, 'input', 'id', 'downloadUrl', []);
+			$this->assertElementByAttributeHasClasses($content, 'input', 'id', 'csrf_token', []);
+			$this->assertElementByAttributeHasClasses($content, 'button', 'id', 'downloadBtn', ['btn', 'btn-primary', 'btn-success', 'evaluation-download-button']);
+			$this->assertSingleElementHasClasses($content, 'div', ['col-12', 'col-md-8', 'evaluation-pagination']);
+		}
+
+		$layoutCss = File::get(public_path('css/layout.css'));
+		$this->assertMatchesRegularExpression(
+			'/@media \(max-width: 767\.98px\).*?\.evaluation-download-button\s*\{\s*width: 100%;\s*\}/s',
+			$layoutCss
+		);
+	}
+
+	private function assertElementByAttributeHasClasses($content, $tagName, $attribute, $value, array $expectedClasses)
+	{
+		$elements = array_values(array_filter($this->openingTags($content, $tagName), function ($element) use ($attribute, $value) {
+			return $this->markupAttribute($element, $attribute) === $value;
+		}));
+
+		$this->assertCount(1, $elements);
+		$this->assertClassesInclude($elements[0], $expectedClasses);
+	}
+
+	private function assertSingleElementHasClasses($content, $tagName, array $expectedClasses)
+	{
+		$elements = $this->openingTagsWithClasses($content, $tagName, $expectedClasses);
+
+		$this->assertCount(1, $elements);
+	}
+
+	private function assertClassesInclude($markup, array $expectedClasses)
+	{
+		$classes = preg_split('/\s+/', trim($this->markupAttribute($markup, 'class') ?: ''));
+
+		foreach ($expectedClasses as $expectedClass) {
+			$this->assertContains($expectedClass, $classes);
+		}
+	}
+
+	private function openingTagsWithClass($content, $tagName, $className)
+	{
+		return $this->openingTagsWithClasses($content, $tagName, [$className]);
+	}
+
+	private function openingTagsWithClasses($content, $tagName, array $expectedClasses)
+	{
+		return array_values(array_filter($this->openingTags($content, $tagName), function ($element) use ($expectedClasses) {
+			$classes = preg_split('/\s+/', trim($this->markupAttribute($element, 'class') ?: ''));
+
+			return count(array_diff($expectedClasses, $classes)) === 0;
+		}));
+	}
+
+	private function openingTags($content, $tagName)
+	{
+		preg_match_all('/<' . preg_quote($tagName, '/') . '\b[^>]*>/i', $content, $matches);
+
+		return $matches[0];
+	}
+
+	private function markupAttribute($markup, $name)
+	{
+		if (preg_match('/\s' . preg_quote($name, '/') . '\s*=\s*(["\'])(.*?)\1/s', $markup, $matches) !== 1) {
+			return null;
+		}
+
+		return html_entity_decode($matches[2], ENT_QUOTES);
+	}
+
 	private function assertSelectionCheckboxMarkup($content)
 	{
 		preg_match_all('/<input type="checkbox" id="([^"]+)"/', $content, $checkboxIds);

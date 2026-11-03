@@ -95,3 +95,82 @@ table > thead > tr > th, table > tbody > tr > td
 {
   margin-bottom: 2px;
 }
+
+.mobile-session-control
+{
+  align-items: center;
+  color: var(--it-common-white);
+  display: flex;
+  font-size: 18px;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.evaluation-search-row
+{
+  margin-bottom: 24px;
+}
+
+.evaluation-search-field .it-sv-details-sidebar-search
+{
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.evaluation-search-action
+{
+  display: flex;
+}
+
+.evaluation-search-action .it-btn
+{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.evaluation-filter
+{
+  margin-bottom: 16px;
+}
+
+.evaluation-table-scroll
+{
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.evaluation-results-table
+{
+  margin-bottom: 0;
+  min-width: 760px;
+}
+
+@media (min-width: 1200px)
+{
+  .home-hero
+  {
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 767.98px)
+{
+  .evaluation-search-field
+  {
+    margin-bottom: 16px;
+  }
+
+  .evaluation-download-action
+  {
+    margin-bottom: 16px;
+  }
+
+  .evaluation-download-button
+  {
+    width: 100%;
+  }
+}

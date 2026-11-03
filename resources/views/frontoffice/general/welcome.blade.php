@@ -1,7 +1,7 @@
 @extends('frontoffice.layout')
 @section('generalBody')
     <!-- hero-area-start -->
-    <div class="it-hero-3-area it-hero-style-4 it-hero-space theme-bg-3 fix z-index">
+    <div class="home-hero it-hero-3-area it-hero-style-4 it-hero-space theme-bg-3 fix z-index">
         <div class="it-hero-3-shape-1">
             <img src="{{ asset('assets/frontoffice/img/hero/hero-4-shape1.png') }}" alt="">
         </div>

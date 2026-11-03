@@ -33,10 +33,10 @@
 
     <div class="it-course-area it-course-style-2 it-course-style-5 p-relative pt-50 pb-100">
         <div class="container">
-            <div class="row">
+            <div class="row evaluation-search-row">
                 <input type="hidden" id="hdCodeSubject" value="{{$codeSubject}}">
-                <div id="divSearch" class="col-md-11">
-                    <div class="it-sv-details-sidebar-search mb-55">
+                <div id="divSearch" class="col-12 col-md-10 evaluation-search-field">
+                    <div class="it-sv-details-sidebar-search">
                         <input id="txtSearch" type="text" placeholder="Información para búsqueda (Enter)"
                                value="{{ $filtersData->searchParameter }}">
                         <button type="submit">
@@ -44,15 +44,15 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-1">
+                <div class="col-12 col-md-2 evaluation-search-action">
                     <button id="btnSearchSubject" class="it-btn btn btn-block btn-success">
                         <span>Buscar</span>
                     </button>
                 </div>
             </div>
-            <div class="row">
+            <div class="row evaluation-filter-row">
                 @if ($codeSubject != 'all')
-                    <div class="col-md-3" style="display: none;">
+                    <div class="col-12 col-md-3 evaluation-filter" style="display: none;">
                         <div class="postbox__select">
                             <select id="slcSubjects">
                                 <option value="{{$codeSubject}}" selected>{{$codeSubject}}</option>
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="col-3">
+                    <div class="col-12 col-md-3 evaluation-filter">
                         <div class="postbox__select">
                             <select id="slcSubjects">
                                 <option value="all">Todos los cursos</option>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 @endif
-                <div class="col-{{$codeSubject == 'all' ? '3' : '4'}}">
+                <div class="col-12 col-md-{{$codeSubject == 'all' ? '3' : '4'}} evaluation-filter">
                     <div class="postbox__select">
                         <select id="slcTypes">
                             <option value="all">Todos los tipos</option>
@@ -85,7 +85,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-{{$codeSubject == 'all' ? '3' : '4'}}">
+                <div class="col-12 col-md-{{$codeSubject == 'all' ? '3' : '4'}} evaluation-filter">
                     <div class="postbox__select">
                         <select id="slcGrades">
                             <option value="all">Todos los grados</option>
@@ -97,7 +97,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-{{$codeSubject == 'all' ? '3' : '4'}}">
+                <div class="col-12 col-md-{{$codeSubject == 'all' ? '3' : '4'}} evaluation-filter">
                     <div class="postbox__select">
                         <select id="slcYears">
                             <option value="all">Todos los años</option>

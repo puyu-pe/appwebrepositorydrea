@@ -1,5 +1,7 @@
 <div class="row">
-    <table class="table table-responsive">
+    <div class="col-12">
+    <div class="table-responsive evaluation-table-scroll">
+    <table class="table evaluation-results-table">
         <tr>
             <th class="align-top">
                 <div class="d-flex align-items-start">
@@ -17,13 +19,12 @@
             <th>Curso</th>
             <th>Grado</th>
             <th>Año</th>
-            <th>Páginas</th>
             <th></th>
         </tr>
 
         @if ($listTExam->isEmpty())
             <tr>
-                <td colspan="8">
+                <td colspan="7">
                     <center>
                         <h5 class="mt-10">No se encontraron resultados.</h5>
                     </center>
@@ -50,9 +51,6 @@
                 <td>{{ $exam->tGrade->descriptionGrade ?? '-' }}</td>
                 <td>{{ $exam->yearExam }}</td>
                 <td>
-                    {{ $exam->totalPageExam == 1 ? $exam->totalPageExam . ' páginas' : $exam->totalPageExam . ' páginas' }}
-                </td>
-                <td>
                     <a href="{{ url('examen/ver/' . $exam->codeExam) }}" class="btn btn-primary">
                         Ver detalles
                     </a>
@@ -60,18 +58,20 @@
             </tr>
         @endforeach
     </table>
+    </div>
+    </div>
 </div>
-<div class="row">
-    <div class="col-4">
+<div class="row evaluation-results-actions">
+    <div class="col-12 col-md-4 evaluation-download-action">
         <input type="hidden" id="downloadUrl" value="{{ url('download/selected') }}">
         <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
-        <button type="button" id="downloadBtn" style="display:none;" class="btn btn-primary btn-success"
+        <button type="button" id="downloadBtn" style="display:none;" class="btn btn-primary btn-success evaluation-download-button"
                 aria-busy="false">
             <i class="fa fa-download" aria-hidden="true"></i>
             <span class="download-label">Descargar archivos</span>
         </button>
     </div>
-    <div class="col-8">
+    <div class="col-12 col-md-8 evaluation-pagination">
         {!! ViewHelper::renderPaginationFrontExams(
             'tipoexamen/'.$acronymTypeExam.'/listar',
             $quantityPage,
